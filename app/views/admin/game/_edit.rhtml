@@ -1,0 +1,54 @@
+<td></td>
+<td colspan="<%= @colspan %>">
+<% if @item.id %>
+	<div id="edit<%= @item.id %>">
+	<%= form_remote_tag :url=>{:action=>"update",:id=>@item.id}, :update => "item#{@item.id}",:loading=>visual_effect(:fade,"edit#{@item.id}",:duration=>0.25) %>
+<% else %>
+	<div id="new_item">
+	<%= form_remote_tag :url=>{:action=>"update"}, :update => "item_list" %>
+<% end %>
+
+<table class="editbox">
+	<tr>
+		<td>
+			<% if @item.id %>
+				<%= link_to_remote "Cancel",{:url=>{:action=>"list",:id=>@item.id},:update=>"item#{@item.id}", :loading=>visual_effect(:fade,"edit#{@item.id}",:duration=>0.25)}%>
+			<% else %>
+				<%= link_to_remote "Close",{:url=>{:action=>"new"},:update=>"item_new", :loading=>visual_effect(:fade,"new_item",:duration=>0.25)}%>
+			<% end %>
+		</td>
+		<td class="label">Week</td>
+		<td colspan="2"><%= text_field "item","week",:size=>3 %></td>
+	</tr>
+	<tr>
+		<td></td>
+			<td class="label">Game Time</td>
+			<td colspan="2"><%= datetime_select "item", "gametime" %></td>
+	<tr>
+		<td></td>
+		<td class="label">Away Team</td>
+		<td class="left"><%= select "item","away_team_id",@teams %></td>
+		<td class="left"><%= text_field "item","away_score",:size=>3 %> points</td>
+	</tr>
+	<tr >
+		<td>
+		</td>
+		<td class="label">Home Team</td>
+		<td class="left"><%= select "item","home_team_id",@teams %></td>
+		<td class="left"><%= text_field "item","home_score",:size=>3 %> points</td>
+	</tr>
+	<tr>
+	 <td>
+	   	<% if @item.id %>
+				<%= submit_tag "Update" %>
+			<% else %>
+				<%= submit_tag "Create" %>
+			<% end %>
+		</td>
+		<td class="label">Bowl Game?</td>
+		<td colspane="2" class="left"><%= check_box "item","is_bowl" %> </td>
+	</tr>
+</table>
+<%= end_form_tag %>
+</div>
+</td>

@@ -1,0 +1,25 @@
+<td></td>
+<td colspan="<%= @item.class.displayCols %>">
+<div id="editbox<%= @item.id %>">
+<%= form_remote_tag :url=>{:action=>"update",:id=>@item.id}, :update => "item#{@item.id}",:loading=>visual_effect(:blindup,"editbox#{@item.id}") %>
+	<table class="editbox">
+	<tr>
+		<td style="text-align:left; vertical-align:top;">
+			<%= link_to_remote image_rollover("cancel#{@item.id}","cancel_off","cancel_on"), :url => {:action => "cancel", :id => @item.id}, :update=>"item#{@item.id}" %>
+		</td>
+	</tr>
+
+	<%= @content_for_layout %>
+
+	<tr>
+		<td>
+			<%= submit_to_remote "delete#{@item.id}","Delete", {:url=>{:action=>"delete", :id=>@item.id}, :update=>"item#{@item.id}", :confirm => "Confirm Deletion: #{@item.to_s}",:complete=>"Element.remove(\'item#{@item.id}\')"} %>
+		</td>
+		<td>
+			<%= submit_tag "Submit" %>
+		</td>
+	</tr>
+	</table>
+<%= end_form_tag %>
+</div>
+</td>

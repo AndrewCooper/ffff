@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+usera:
+  id: 1
+  login: usera
+  firstname: example
+  lastname: user
+  password: 5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8 # SHA1(password)
+  admin: 0
+  new_password: 0
+userb:
+  id: 2
+  login: userb
+  firstname: another
+  lastname: example
+  password: 5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8 # SHA1(password)
+  admin: 0
+  new_password: 0

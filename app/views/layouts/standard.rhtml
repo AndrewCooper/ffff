@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<title>HKC's Fall Fanatic Football Frenzy III</title>
+	<%= stylesheet_link_tag 'style' %>
+	<%= stylesheet_link_tag 'layout' %>
+	<%= stylesheet_link_tag 'tables' %>
+	<%= javascript_include_tag 'sha1' %>
+	<%= javascript_include_tag 'prototype' %>
+	<%= javascript_include_tag 'effects' %>
+	<%= javascript_include_tag 'functions' %>
+</head>
+<body>
+
+<div id="left">
+	<div class="Article">
+		<div class="ArticleHeader"><%= link_to image_tag("hkc_logo",:title=>"FFFF Home"),:controller=>"/" %></div>
+		<div class="ArticleFooter">
+			<div class="ArticleFooterBody"></div>
+		</div>
+	</div>
+	<%= render_partial 'shared/game' %>
+	<% if @session[:user] %>
+		<%= render_partial 'shared/user' %>
+	<% else %>
+		<%= render_partial 'shared/guest' %>
+	<% end %>
+</div>
+
+<div id="main">
+	<div class="Article">
+		<div class="ArticleHeader"></div>
+		<div class="ArticleFooter">
+			<div class="ArticleFooterBody"><%= image_tag("ffff_logo",:title=>"Fall Fanatic Football Frenzy, version 3.0") %></div>
+		</div>
+	</div>
+	<div class="Article">
+		<div class="ArticleHeader"><%= @title %>&nbsp;</div>
+		<div class="ArticleLongContent">
+			<div class="ArticleBody">
+				<% if @flash[:warning] %>
+					<div class="warning">
+						<%= @flash[:warning] %>
+					</div>
+				<% end %>
+				<% if @flash[:notice] %>
+					<div class="notice">
+						<%= @flash[:notice] %>
+					</div>
+				<% end %>
+				<%= @content_for_layout %>
+			</div>
+			<div class="ArticleFooter">
+				<div class="ArticleFooterBody">Fall Fanatic Football Frenzy is a service of HK Creations. &copy;2005</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
+
+

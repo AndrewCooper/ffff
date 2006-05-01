@@ -1,0 +1,27 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+first_pick:
+ id: 1
+ game_id:a
+ user_id:f
+ home_score:d
+ away_score:fe
+ pick_score:fe
+ is_closest:aaa
+
+first_pick:
+ id: 1
+ game_id:a
+ user_id:f
+ home_score:d
+ away_score:fe
+ pick_score:fe
+ is_closest:aaa
+
+first_pick:
+ id: 1
+ game_id:a
+ user_id:f
+ home_score:d
+ away_score:fe
+ pick_score:fe
+ is_closest:aaa

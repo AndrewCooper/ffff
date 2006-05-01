@@ -1,0 +1,10 @@
+<table style="font-size:.8em;">
+	<tr>
+	<% @weeks.each do |game|%>
+		<% week = game.week %>
+		<td><%= link_to "Week #{week}",:anchor=>week %></td>
+		<%= if week % 7 == 0 then "</tr><tr>" end%>
+	<% end %>
+	</tr>
+</table>
+<%= @response_body %>

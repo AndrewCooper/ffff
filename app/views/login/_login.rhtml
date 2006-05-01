@@ -1,0 +1,8 @@
+<br />
+<%= form_tag({:controller => "login",:action => "login"},{:onsubmit => "response.value=hex_hmac_sha1(hex_sha1(password.value),challenge.value);password.value='';challenge.value='';Effect.BlindUp('loginFormDiv',{duration:0.25})"}) %>
+<%= hidden_field_tag "response" %>
+<%= hidden_field_tag "challenge", @session[:challenge] %>
+Login:<br /><%= text_field_tag "login" %>
+Password:<br /><%= password_field_tag "password" %>
+<%= submit_tag "Log in" %>
+<%= end_form_tag %>

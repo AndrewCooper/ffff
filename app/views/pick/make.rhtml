@@ -1,0 +1,51 @@
+<% if @games.size > 0 %>
+<% week = 0 %>
+<% @games.each_index do |rowidx| %>
+	<% @game = @games[rowidx] %>
+		<% if @game.week != week %>
+			<% week = @game.week %>
+			<%= form_tag%>
+			<table style="border:4px #fff ridge; padding: 1em; margin: 0 auto; width:90%;" cellpadding="3px" cellspacing="0">
+			<tr><td class="center" colspan="7"><h1>Week <%= week %></h1></td></tr>
+		<% end %>
+		<%= hidden_field_tag "picks[#{@game.gid}][game_id]", @game.gid %>
+		<%= hidden_field_tag "picks[#{@game.gid}][pick_id]", @game.pid %>
+  	<% if (@game.is_bowl? && @game.bname != "") %>
+  		<tr><td colspan="7" class="center bt bl br"><h2><%= @game.bname %></h2></td><tr>
+  	<% end %>	
+		<tr>
+			<td class="bt bb bl" style="text-align:left; width:30%;">
+				<div style="font-weight: bold;"><%= @game.aloc %> <%= @game.aname %></div>
+				<div style="font-style:italic; font-size:.6em;">
+					Record: <%= @game.arec %><br />
+					Rank: <%= @game.arankap %> AP - <%= @game.arankusa %> USA<br />
+					<%= @game.aconf %><br />
+				</div>
+			</td>
+			<td class="bt bb"><%= link_to image_tag("/logos/#{@game.aimg}",:size=>"50x50"),{:controller=>"team",:action=>"show",:id=>@game.aid} %></td>
+			<td class="bt br bb"><%= text_field_tag "picks[#{@game.gid}][away_score]",@game.pascore,:size=>3 %></td>
+			<td class="center" style="font-size:.6em">@<br/><%= @game.gametime.strftime("%I:%M%p") %><br /><%= @game.gametime.strftime("%a") %><br /><%= @game.gametime.strftime("%m/%d/%y") %><br /><%= @tz %></td>
+			<td class="bt bl bb"><%= text_field_tag "picks[#{@game.gid}][home_score]",@game.phscore,:size=>3 %></td>
+			<td class="bt bb"><%= link_to image_tag("/logos/#{@game.himg}",:size=>"50x50"),{:controller=>"team",:action=>"show",:id=>@game.hid} %></td>
+			<td class="bt br bb" style="text-align:left; width:30%;">
+				<div style="font-weight: bold;"><%= @game.hloc %> <%= @game.hname %></div>
+				<div style="font-style:italic; font-size:.6em;">
+					Record: <%= @game.hrec %><br />
+					Rank: <%= @game.hrankap %> AP - <%= @game.hrankusa %> USA<br />
+					<%= @game.hconf %><br />
+				</div>
+			</td>
+		</tr>
+		<tr><td style="height:0px;"></td></tr>
+		<% if !@games[rowidx+1] || @games[rowidx+1].week != week %>
+			<tfoot style='text-align:center;'>
+				<tr>
+					<td colspan='7'><%= submit_tag "Submit Picks" %></td>
+				</tr>
+			</tfoot>
+			</table>
+			<br />
+		<%= end_form_tag %>
+		<% end %>
+	<% end %>
+<% end %>

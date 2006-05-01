@@ -1,0 +1,46 @@
+<div class="Article">
+	<div class="ArticleHeader">Information</div>
+	<div class="ArticleLongContent">
+		<div class="ArticleBody">
+			<ul>
+				<% user = @session[:user] %>
+				<li>Name: <%= user[:name] %></li>
+				<li>Rank: <%= user[:stats][:rank] %></li>
+				<li>Score: <%= user[:stats][:score] %></li>
+				<% ties = user[:stats][:ties] %>
+				<% if ties.size > 0 %>
+					<li>Tied With: 
+						<ul style="margin-left:1em">
+							<% ties.each do |name| %>
+								<%= "<li>#{name}</li>" %>
+							<% end %>
+						</ul>
+					</li>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+	<div class="ArticleFooter">
+		<div class="ArticleFooterBody"></div>
+	</div>
+</div>
+<div class="Article">
+	<div class="ArticleHeader">User Options</div>
+	<div class="ArticleLongContent">
+		<div class="ArticleBody">
+			<ul>
+				<li><%= link_to "Make Picks",:controller=>"/pick",:action=>"make" %></li>
+				<li><%= link_to "Past Picks",:controller=>"/pick",:action=>"review" %></li>
+				<li><%= link_to "Edit Profile",:controller=>"/user",:action=>"profile" %></a></li>
+				<li><%= link_to("Logout",{:controller => "/login",:action => "logout"}) %></li>
+			</ul>
+		</div>
+	</div>
+	<div class="ArticleFooter">
+		<div class="ArticleFooterBody"></div>
+	</div>
+</div>
+<% logger.info "Session :"+@session[:user].inspect %>
+<% if @session[:user][:admin]==1 %>
+	<%= render_partial 'shared/admin' %>
+<% end %>

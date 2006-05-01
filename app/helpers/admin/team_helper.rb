@@ -1,0 +1,3 @@
+module Admin::TeamHelper
+
+end

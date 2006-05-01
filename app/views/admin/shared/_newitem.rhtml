@@ -1,0 +1,1 @@
+<%= link_to_remote "Create New #{@item.class.name.pluralize}",:url=>{:action=>"edit"},:update=>"item_new",:complete=>visual_effect(:appear,"item_new",:duration=>0.5) %>

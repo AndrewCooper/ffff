@@ -1,0 +1,26 @@
+<%= javascript_include_tag 'md5' %>
+<%= javascript_include_tag 'rijndael' %>
+
+<%= form_tag({:action=>"changepass"},{:onsubmit => "ffff_encrypt(this);"}) %>
+<%= hidden_field_tag "salt",session[:cpsalt] %>
+<%= hidden_field_tag "formkey" %>
+<%= hidden_field_tag "response" %>
+<%= hidden_field_tag "plaintext" %>
+<table style="margin:1em 3em;">
+<tr class="">
+	<td class="label">Current</td>
+	<td class=""><%= password_field_tag "password" %></td>
+</tr>
+<tr class="">
+	<td class="label">New</td>
+	<td class=""><%= password_field_tag "newpassword" %></td>
+</tr>
+<tr class="">
+	<td class="label">Confirm New</td>
+	<td class=""><%= password_field_tag "newpassconf" %></td>
+</tr>
+<tr class="">
+	<td colspan="2" class='center'><%= submit_tag "Change Password" %></td>
+</tr>
+</table>
+<%= end_form_tag %>

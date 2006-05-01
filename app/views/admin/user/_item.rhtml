@@ -1,0 +1,26 @@
+<td>
+	<%= link_to_remote image_rollover("edit#{@item.id}","edit_off","edit_on"), {:url=>{:action=>"edit", :id=>@item.id}, :update=>"item#{@item.id}",:complete=>visual_effect(:appear,"edit#{@item.id}",:duration=>0.5)} %>
+</td>
+<td>
+	<%= @item.lastname %>
+</td>
+<td>
+	<%= @item.firstname %>
+</td>
+<td>
+	<%= @item.login %>
+</td>
+<td>
+	<%= @item.email %>
+</td>
+<td class="center">
+	<%= if @item.admin? then "X" else "-" end%>
+</td>
+<td class="center">
+	<%= if @item.new_password? then "X" else "-" end%>
+</td>
+<td class="center">
+	<%= form_remote_tag :url=>{:action=>"delete",:id=>@item.id},:confirm=>"This will delete #{@item.firstname} #{@item.lastname}. Proceed?",:update=>"item#{@item.id}",:loading=>"Element.remove('item#{@item.id}')" %>
+		<%= submit_tag "X" %>
+	<%= end_form_tag %>
+</td>

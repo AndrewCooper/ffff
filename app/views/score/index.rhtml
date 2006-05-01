@@ -1,0 +1,27 @@
+<table border="0" cellpadding="2" cellspacing="0" style="text-align:center; margin:1em auto;">
+<% if @scores.size > 0 %>
+	<thead>
+		<tr>
+			<td>Players</td>
+			<td>Wins Picked</td>
+			<td>7 for 7's</td>
+			<td>Closest Picked Games</td>
+			<td>Perfect Picks</td>
+			<td class="sorted">Score</td>
+		</tr>
+	</thead>
+<% else %>
+	<tr><td>There are currently no standings</td></tr>
+<% end %>
+<% @scores.each do |score|%>
+	<tr>
+		<td style="text-align:right"><%= score.firstname+" "+score.lastname %></td>
+		<td><%= score.sum_wins %></td>
+		<td><%= score.sum_sevens %></td>
+		<td><%= score.sum_closests %></td>
+		<td><%= score.sum_perfects %></td>
+		<td class="sorted"><%= score.sum_total %></td>
+	</tr>
+<% end %>
+</table>
+
