@@ -1,59 +1,73 @@
 <?php
-	include("head.php");
-	global $db_link;
-	echo "<h1>Edit User Preferences</h1>";
-	echo "<a href=\"toc.php\">Back to Table of Contents</a><br />";
-	echo "<br />\n";
-
-	if ($_GET['action'] == "user_update") {
-		if ($_POST['newPassword1'] == "") {
-			$passq = "";
-		} else if ($_POST['newPassword1'] == $_POST['newPassword2']) {
-			$passq = "passwd=\"".crypt($_POST['newPassword1'])."\",";
+session_start();
+include('functions.php');
+if(!isset($_SESSION['ffff_user_data'])) {
+	hk_redir_rel('index.php');
+} elseif($_POST['submitter']=="Submit Information") {
+	if($_SESSION['ffff_user_data']['id']!=-1) {
+		$db=hk_db_connect();
+		$_SESSION['message']="UPDATE users SET username=\"{$_POST['newUsername']}\", firstname=\"{$_POST['newFirstname']}\", lastname=\"{$_POST['newLastname']}\", email=\"{$_POST['newEmail']}\" WHERE id={$_SESSION['ffff_user_data']['id']}";
+		if ($db->query("UPDATE users SET username=\"{$_POST['newUsername']}\", firstname=\"{$_POST['newFirstname']}\", lastname=\"{$_POST['newLastname']}\", email=\"{$_POST['newEmail']}\" WHERE id={$_SESSION['ffff_user_data']['id']}")) {
+			$_SESSION['message']="Information successfully updated";
 		} else {
-			unset($passq);
-			$error_msg = "<div style=\"color:red; font-weight: bold; text-align:center; white-space:nowrap;\">Passwords do not match. Go back and try again</div><br />";
+			$_SESSION['error']="Error updating information:<br />".$db->error;
 		}
-		if (isset($passq)) {
-			$update_query = "UPDATE participants set name=\"".$_POST['newUsername']."\",".$passq."email=\"".$_POST['newEmail']."\",firstname=\"".$_POST['newFirstName']."\",lastname=\"".$_POST['newLastName']."\",phone=\"".$_POST['newPhone']."\" WHERE id=\"".$_SESSION['login_id']."\"";
-			echo $update_query;
-			if (mysql_query($update_query,$db_link)) {
-				$success_msg = "<div style=\"font-weight:bold;\">User Update Successful.</div>";
+		if ($_POST['oldPassword']!=NULL || $_POST['newPassword1']!=NULL) {
+			$res=$db->query("SELECT * FROM users WHERE id={$_SESSION['ffff_user_data']['id']}");
+			$data=$res->fetch_assoc();
+			if (md5($_POST['oldPassword'])==$data['password']) {
+				if ($_POST['newPassword1']==$_POST['newPassword2']) {
+					$db->query("UPDATE users SET password=\"".md5($_POST['newPassword1'])."\" WHERE id={$_SESSION['ffff_user_data']['id']}");
+					$_SESSION['message'].="<br />Password successfully changed.";
+				} else {
+					$_SESSION['error']="Error setting password:<br />New passwords do not match.";
+				}
 			} else {
-				$error_msg = "There were problems with the update.<br />".mysql_error()."<br />";
+				$_SESSION['error']="Error setting password:<br />Old password not correct.";
 			}
+			$res->close();
 		}
-	}
-	if (!isset($success_msg)) {
-		if (isset($error_msg)) {
-			echo $error_msg;
-			$data = array('name' => $_POST['newUsername'], 'email' => $_POST['newEmail'], 'firstname' => $_POST['newFirstName'], 'lastname' => $_POST['newLastName'], 'phone' => $_POST['newPhone']);
-		} else {
-			$data_query = "SELECT * FROM participants WHERE id=\"{$_SESSION['login_id']}\"";
-			$data_result = mysql_query($data_query,$db_link);
-			echo mysql_error();
-			$data = mysql_fetch_assoc($data_result);
-		}
-		echo <<<CODE
-		<div class="databox">
-			<form action="user.php?action=user_update" method="post">
-				<table border="0" cellspacing="0">
-					<tr><td style="text-align:right;">Username:</td><td><input type="text" name="newUsername" size="20" maxlength="20" value="{$data['name']}" /></td></tr>
-					<tr><td style="text-align:right;">Password:</td><td><input type="password" name="newPassword1" size="20" maxlength="20" /></td></tr>
-					<tr><td style="text-align:right;">Confirm Password:</td><td><input type="password" name="newPassword2" size="20" maxlength="20" /></td></tr>
-					<tr><td style="text-align:right;">Email:</td><td><input type="text" name="newEmail" size="20" maxlength="255" value="{$data['email']}" /></td></tr>
-					<tr><td style="text-align:right;">First Name:</td><td><input type="text" name="newFirstName" size="20" maxlength="20" value="{$data['firstname']}" /></td></tr>
-					<tr><td style="text-align:right;">Last Name:</td><td><input type="text" name="newLastName" size="20" maxlength="20" value="{$data['lastname']}" /></td></tr>
-					<tr><td style="text-align:right;">Phone #:</td><td><input type="text" name="newPhone" size="20" maxlength="20" value="{$data['phone']}" /></td></tr>
-					<tr><td style="border-top:1px solid black;"></td><td style="border-top:1px solid black;"><input type="reset" name="reset" value="Reset" />&nbsp;<input type="submit" name="submitter" value="Update" /></td></tr>
-				</table>
-			</form>
-		</div>
-CODE;
+		$db->close();
+		hk_redir_rel('user.php');
 	} else {
-		echo $success_msg;
-		echo "<a href=\"user.php\">Back to User Preferences</a><br />";
-		echo "<a href=\"toc.php\">Back to Table of Contents</a><br />";
+		$_SESSION['error']="I'm sorry, the guest account may not make account changes.";
+		hk_redir_rel('user.php');
 	}
-	include("foot.php");
+} else {
+	include('head.html');
+	echo <<<CODE
+	<div class="head5" style="text-align:right;"><a href="admin.php">[Administration]</a></div>
+	<img src="images/logo.gif" /><br />
+	<div style="font-size:smaller;"><a href="toc.php">[Back to Table of Contents]</a></div><br />
+	<div class="head1">Edit User Information</div>
+CODE;
+	hk_check_status();
+	get_userinfo_table();
+	include('foot.html');
+}
+
+function get_userinfo_table() {
+	$db = hk_db_connect();
+	$res = $db->query("SELECT * FROM users WHERE id={$_SESSION['ffff_user_data']['id']}");
+	$data = $res->fetch_assoc();
+	echo <<<CODE
+	<div class="box1">
+	<form action="user.php?action=user_update" method="post">
+	<table border="0" cellspacing="0" cellpadding="2" style="margin:auto;text-align:center;">
+	<tfoot><tr><td colspan="2"><input type="submit" name="submitter" value="Submit Information" /></td></tr></tfoot>
+	<tr><td style="width:50%;text-align:right;" class="tl">Username:</td>	<td style="width:50%;text-align:left;" class="tr"><input type="text" name="newUsername" size="20" maxlength="20" value="{$data['username']}" readonly="readonly" /></td></tr>
+	<tr><td style="width:50%;text-align:right;" class="l">Email:</td>		<td style="width:50%;text-align:left;" class="r"><input type="text" name="newEmail" size="20" maxlength="255" value="{$data['email']}" /></td></tr>
+	<tr><td style="width:50%;text-align:right;" class="l">First Name:</td>	<td style="width:50%;text-align:left;" class="r"><input type="text" name="newFirstname" size="20" maxlength="20" value="{$data['firstname']}" /></td></tr>
+	<tr><td style="width:50%;text-align:right;" class="bl">Last Name:</td>	<td style="width:50%;text-align:left;" class="rb"><input type="text" name="newLastname" size="20" maxlength="20" value="{$data['lastname']}" /></td></tr>
+	<tr><td colspan="2"><hr /><div class="box2" style="margin:auto;width:75%;">To change your password, enter your current password, the new password, and the new password again to confirm.</div></td></tr>
+	<tr><td style="width:50%;text-align:right;" class="tl">Current Password:</td>	<td style="width:50%;text-align:left;" class="tr"><input type="password" name="oldPassword" size="20" maxlength="20" /></td></tr>
+	<tr><td style="width:50%;text-align:right;" class="l">New Password:</td>		<td style="width:50%;text-align:left;" class="r"><input type="password" name="newPassword1" size="20" maxlength="20" /></td></tr>
+	<tr><td style="width:50%;text-align:right;" class="bl">Confirm Password:</td>	<td style="width:50%;text-align:left;" class="rb"><input type="password" name="newPassword2" size="20" maxlength="20" /></td></tr>
+	</table>
+	</form>
+	</div>
+CODE;
+	$res->close();
+	$db->close();
+}
 ?>

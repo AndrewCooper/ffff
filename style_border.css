@@ -1,0 +1,115 @@
+td.l {
+	border-width: 0px 0px 0px 1px;
+	border-style: solid;
+	border-color: #666666;
+}
+
+td.b {
+	border-width: 0px 0px 1px 0px;
+	border-style: solid;
+	border-color: #666666;
+}
+td.bl {
+	border-width: 0px 0px 1px 1px;
+	border-style: solid;
+	border-color: #666666;
+}
+
+td.r {
+	border-width: 0px 1px 0px 0px;
+	border-style: solid;
+	border-color: #666666;
+}
+td.rl {
+	border-width: 0px 1px 0px 1px;
+	border-style: solid;
+	border-color: #666666;
+}
+td.rb {
+	border-width: 0px 1px 1px 0px;
+	border-style: solid;
+	border-color: #666666;
+}
+td.rbl {
+	border-width: 0px 1px 1px 1px;
+	border-style: solid;
+	border-color: #666666;
+}
+
+td.t {
+	border-width: 1px 0px 0px 0px;
+	border-style: solid;
+	border-color: #666666;
+}
+td.tl {
+	border-width: 1px 0px 0px 1px;
+	border-style: solid;
+	border-color: #666666;
+}
+td.tb {
+	border-width: 1px 0px 1px 0px;
+	border-style: solid;
+	border-color: #666666;
+}
+td.tbl {
+	border-width: 1px 0px 1px 1px;
+	border-style: solid;
+	border-color: #666666;
+}
+td.tr {
+	border-width: 1px 1px 0px 0px;
+	border-style: solid;
+	border-color: #666666;
+}
+td.trl {
+	border-width: 1px 1px 0px 1px;
+	border-style: solid;
+	border-color: #666666;
+}
+td.trb {
+	border-width: 1px 1px 1px 0;
+	border-style: solid;
+	border-color: #666666;
+}
+td.trbl {
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	border-color: #666666;
+}
+
+td.trbls {
+	border: 1px #666666 solid;
+	background-color: #BBBBBB;
+}
+td.ti {
+	border-style:solid;
+	border-width:0px 0px 1px 1px;
+	border-color:#808080;
+}
+td.bwl_name {
+	border-style:solid;
+	border-width:1px 1px 0px 1px;
+	border-color:#808080;
+	font-size: large;
+	font-weight: bolder;
+	font-style: normal;
+	text-align:center;
+}
+td.bwl_desc {
+	border-style:solid;
+	border-width:0px 1px 0px 1px;
+	border-color:#808080;
+	font-size: smaller;
+	font-weight: normal;
+	font-style: oblique;
+	text-align:center;
+}
+td.bwl_loc {
+	border-style:solid;
+	border-width:1px 1px 0px 1px;
+	border-color:#808080;
+	font-size: small;
+	font-weight: bold;
+	font-style: normal;
+	text-align:center;
+}

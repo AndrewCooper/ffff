@@ -1,121 +1,137 @@
 <?php
-	echo "\n<!-- BEGIN EDIT PICKS CODE -->\n";
-	global $db_link;
-	if ($_POST['submitter'] == "Edit Picks") {
-//		print_r($_POST);
-		$ids = explode(",",$_POST['ids']);
+session_start();
+include('../functions.php');
+if ($_GET['a']=='show') {
+	include('head.html');
+	get_picks_show();
+	include('foot.html');
+} elseif ($_GET['a']=='edit') {
+	include('head.html');
+	get_picks_edit();
+	include('foot.html');
+} else {
+	get_picks_frameset();
+}
 
-		foreach($ids as $id) {
-			$aways = $_POST["away_".$id];
-			$homes = $_POST["home_".$id];
-			$edit_query = "UPDATE picks SET away_score=\"$aways\",home_score=\"$homes\" WHERE id=\"$id\"";
-			hk_db_query($edit_query,$db_link);
+function get_picks_frameset() {
+echo <<<CODE
+<DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<title>ffff2 administration</title>
+</head>
+<frameset rows="*,120">
+	<frame name="picks_show" id="picks_show" src="picks.php?a=show" frameborder="1" marginheight="0" marginwidth="0" />
+	<frame name="picks_edit" id="picks_edit" src="picks.php?a=edit" frameborder="1" marginheight="0" marginwidth="0" />
+</frameset>
+</html>
+CODE;
+}
+function get_picks_show() {
+	if (!isset($_GET['week']) ) {
+		if ($_SESSION['thisweek']['id']==NULL) {
+			$thisweek=hk_get_week(1);
+		} else {
+			$thisweek=$_SESSION['thisweek'];
 		}
-		if ($_POST['zero'] == "on") {
-			$user_r = hk_db_query("SELECT id FROM participants ORDER BY id",$db_link);
-			while($user_row = mysql_fetch_assoc($user_r)) {
-				$game_r = hk_db_query("SELECT id FROM games WHERE week_id = {$_POST['pickweek']} ORDER BY id",$db_link);
-				while($game_row = mysql_fetch_assoc($game_r)) {
-					$pick_r = hk_db_query("SELECT * FROM picks WHERE user_id = {$user_row['id']} && game_id = {$game_row['id']}",$db_link);
-					if(mysql_num_rows($pick_r) == 0) {
-						$pick_q = "INSERT INTO picks (user_id,game_id,home_score,away_score) VALUES ({$user_row['id']},{$game_row['id']},0,0)";
-//						echo $pick_q."<br />\n";
-						$pick_a = hk_db_query($pick_q,$db_link);
-					}
-				}
-			}
-		}
-	}
-	if (isset($_GET['week'])) {
-		$iweek = $_GET['week'];
 	} else {
-		$iweek = $_SESSION['week_id']+1;
+		$thisweek=hk_get_week($_GET['week']);
 	}
-	
-echo <<<CODE
-	<div style="text-align:left;">
-	<form action="admin.php" method="get">
-		Edit Picks for: 
-		<input type="hidden" name="page" value="picks" />
-		<select name="week">
-CODE;
-
-	for($i = $_SESSION['week_id']+1; $i >= 1; $i--) {
-		echo "\t\t<option value=\"$i\" ";
-		if ($iweek == $i) 
-			echo "selected=\"selected\" ";
-		echo ">".hk_week_name($i)."</option>\n";
-	}
-
-echo <<<CODE
-		</select>
-		<input type="submit" value="View" />
-	</form>
-	</div>
-CODE;
+	$db=hk_db_connect();
+	$wsel=get_week_combobox($thisweek['id']);
 	echo <<<CODE
-		<a name="week$iweek"><h2 style="text-align:left;">Week $iweek</h2></a>
-		<form action="admin.php?action=edit_picks&week=$iweek" method="post">
-		<table border="0" cellspacing="0">
-		<thead><tr><td></td>
+	<div class="head5" style="text-align:right;"><a href="admin.php">[Administration]</a></div>
+	<img src="../images/logo.gif" /><br /><br />
 CODE;
-
-	// Column Headers
-	echo "\n<!-- column headers -->\n";
-	$game_ids = array();
-	$game_result = hk_db_query("SELECT * FROM games WHERE week_id = $iweek ORDER BY id",$db_link);
-	while ($game_row = mysql_fetch_assoc($game_result)) {
-		$game_ids[] = $game_row['id'];
-		$homer = mysql_fetch_assoc(hk_db_query("SELECT * FROM teams WHERE id=\"{$game_row['home']}\"",$db_link));
-		$homen = $homer['name'];
-		$awayr = mysql_fetch_assoc(hk_db_query("SELECT * FROM teams WHERE id=\"{$game_row['away']}\"",$db_link));
-		$awayn = $awayr['name'];
-		echo "<td class=\"center_tbl\">$awayn</td><td class=\"center_trb\">$homen</td>\n";
-	}
-	echo "</tr></thead>\n";
-
-	// Final Score Line
-	echo "\n<!-- final score line -->\n";
-	$game_query = "SELECT away_score,home_score FROM games WHERE week_id = $iweek ORDER BY id";
-	$game_result = mysql_query($game_query,$db_link);
-	echo "<tr style=\"font-weight:bold;\"><td class=\"right_trbl\">Final Score</td>\n";
-	while ($game_row = mysql_fetch_assoc($game_result)) {
-		echo "<td class=\"center_tbl\">{$game_row['away_score']}</td><td class=\"center_trb\">{$game_row['home_score']}</td>\n";
-	}
-	echo "<td></td></tr>\n";
-
-	// User pick lines
-	echo "\n<!-- user pick lines -->\n";
-	$user_result = hk_db_query("SELECT id,firstname,lastname FROM participants ORDER BY firstname",$db_link);
-	$pick_ids = array();
-	while ($user_row = mysql_fetch_assoc($user_result)) {
+	hk_check_status();
+	echo <<<CODE
+	<div style="font-size:smaller;"><a href="../toc.php">[Back to Table of Contents]</a></div><br />
+	<div class="head2" style="text-align:left;">
+	<form action="picks.php" method="get" target="_self">
+	<input type="hidden" name="a" value="show" />Picks for $wsel<input type="submit" value="Change" /></form></div>
+	<table border='0' cellspacing='0' cellpadding='2' style="text-align:center;margin:auto;">
+	<thead><tr><td class="trbl">User</td>
+CODE;
+	$gres=$db->query("SELECT games.id, away.name AS aname, home.name AS hname FROM games LEFT JOIN teams AS away ON (away.id=games.away) LEFT JOIN teams AS home ON (home.id=games.home) WHERE week={$thisweek['id']} ORDER BY gametime");
+	while ($grow=$gres->fetch_assoc()) {
 		echo <<<CODE
-		<tr style="vertical-align:top;">
-		<td class="right_trbl">{$user_row['firstname']}&nbsp;{$user_row['lastname']}</td>\n
+		<td class="tbl">{$grow['aname']}</td>
+		<td class="tb">@</td>
+		<td class="trb">{$grow['hname']}</td>
 CODE;
-		foreach ($game_ids as $key => $gid) {
-			$pick_result = hk_db_query("SELECT * FROM picks WHERE user_id=\"{$user_row['id']}\" && game_id=\"$gid\"",$db_link);
-			$pick_row = mysql_fetch_assoc($pick_result);
-			if (mysql_num_rows($pick_result) > 0) {
-				$id = $pick_row['id'];
-				$pick_ids[] = $id;
-				$away_input = "<input type=\"text\" name=\"away_$id\" value=\"{$pick_row['away_score']}\" size=\"3\" />";
-				$home_input = "<input type=\"text\" name=\"home_$id\" value=\"{$pick_row['home_score']}\" size=\"3\" />";
-			} else {
-				$away_input = "";
-				$home_input = "";
-			}
-			echo "<td class=\"center_tbl\">$away_input</td>\n<td class=\"center_trb\">$home_input</td>\n";
-		}
-		echo "</tr>\n";
 	}
-	$idstr = implode(",",$pick_ids);
-	echo <<<CODE
-		</table><br />
-		<input type="checkbox" name="zero" />Zero empty picks<br />
-		<input type="hidden" name="pickweek" value="$iweek" />
-		<input type="hidden" name="ids" value="$idstr" />
-		<input type="submit" name="submitter" value="Edit Picks" size="5" maxlength="5" />
-		</form>
+	echo "<td></td><tr></thead>\n";
+	$ures=$db->query("SELECT id,CONCAT(firstname,' ',lastname) AS fullname FROM users WHERE id!=-1 ORDER BY lastname,firstname");
+	while ($urow=$ures->fetch_assoc()) {
+		echo <<<CODE
+		<tr><td class="trbl">{$urow['fullname']}</td>
 CODE;
+		$pres=$db->query("SELECT games.id,picks.* FROM games LEFT JOIN picks ON (picks.game=games.id AND picks.user={$urow['id']}) WHERE games.week={$thisweek['id']} ORDER BY gametime");
+		while ($prow=$pres->fetch_assoc()) {
+			echo <<<CODE
+			<td class="tbl">{$prow['away']}</td>
+			<td class="tb">@</td>
+			<td class="trb">{$prow['home']}</td>
+CODE;
+		}
+		echo <<<CODE
+		<td><a href="picks.php?a=edit&uid={$urow['id']}&week=${thisweek['id']}" target="picks_edit">Edit</a></td></tr>\n
+CODE;
+	}
+	echo "</table>";
+}
+
+function get_picks_edit() {
+$db=hk_db_connect();
+if ($_POST['submitter']=="Update") {
+	$away=$_POST['away'];
+	$home=$_POST['home'];
+	foreach($away as $pid => $val) {
+		$q="UPDATE picks SET home={$home[$pid]}, away={$away[$pid]} WHERE id=$pid";
+		$db->query($q);
+		$_SESSION['message'].=$q."<br />\n";
+		$_SESSION['error'].=$db->error;
+		
+	}
+	$_SESSION['message'].="Picks updated successfully. <br />";
+	echo "<script language=\"JavaScript\">\nparent.picks_show.location.reload();\n</script>";
+}
+if (isset($_GET['week']) && isset($_GET['uid'])) {
+	$uid=$_GET['uid'];
+	$week=$_GET['week'];
+	$getstr="&week=$week&uid=$uid";
+	echo <<<CODE
+	<div class="head3">$head</div>	
+	<form action="picks.php?a=edit$getstr" method="post" target="_self">
+	<input type="hidden" name="uid" value="{$_GET['uid']}" />
+	<table border="0" cellspacing="0" cellpadding="1" style="text-align:center; width:100%;">
+	<thead><tr>
+CODE;
+	$gres=$db->query("SELECT games.id, away.name AS aname, home.name AS hname FROM games LEFT JOIN teams AS away ON (away.id=games.away) LEFT JOIN teams AS home ON (home.id=games.home) WHERE week=$week ORDER BY gametime");
+	$width=100/($gres->num_rows*2);
+	while ($grow=$gres->fetch_assoc()) {
+		echo <<<CODE
+		<td class="tbl" style="width:$width;">{$grow['aname']}</td>
+		<td class="tb">@</td>
+		<td class="trb" style="width:$width;">{$grow['hname']}</td>
+CODE;
+	}
+	echo "<tr></thead>\n";
+	$pres=$db->query("SELECT games.id AS gid,picks.* FROM games LEFT JOIN picks ON (picks.game=games.id AND picks.user=$uid) WHERE games.week=$week ORDER BY gametime");
+	while ($prow=$pres->fetch_assoc()) {
+		echo <<<CODE
+		<td class="tbl"><input type="text" maxlength="3" name="away[{$prow['id']}]" value="{$prow['away']}" style="width:100%;" /></td>
+		<td class="tb">@</td>
+		<td class="trb"><input type="text" maxlength="3" name="home[{$prow['id']}]" value="{$prow['home']}" style="width:100%;" /></td>
+CODE;
+	}
+	echo <<<CODE
+	</table>
+	<input type="submit" name="submitter" value="Update" style="text-align:center;" />
+	</form>
+CODE;
+}
+}
 ?>

@@ -1,105 +1,77 @@
 <?php
-function hk_current_week() {
-	global $db_link;
-	$today = time();
-	$week_query = "SELECT id FROM weeks WHERE UNIX_TIMESTAMP(start)<=$today && UNIX_TIMESTAMP(end)>=$today";
-	$week_res = hk_db_query($week_query,$db_link);
-	if (mysql_num_rows($week_res) != 0) {
-		$week_row = mysql_fetch_assoc($week_res);
-		return $week_row['id'];
+require('config.inc.php');
+require('func_get_week.php');
+
+function hk_db_connect() {
+	global $hk_config;
+	return new mysqli($hk_config['mysql_server'],$hk_config['mysql_user'],$hk_config['mysql_pass'],$hk_config['database']);
+}
+function hk_db_connect_admin() {
+	global $hk_config;
+	return new mysqli($hk_config['mysql_server'],$hk_config['mysql_admin_user'],$hk_config['mysql_admin_pass'],$hk_config['database']);
+}
+
+function hk_redir_rel($page) {
+	$dir=dirname($_SERVER['PHP_SELF']);
+	if ($dir=="/") {
+		$dir="";
+	}
+	header("Location: http://".$_SERVER['HTTP_HOST'].$dir."/".$page);
+}
+
+function hk_setcookie($name,$value) {
+	if(!setcookie($name,$value,time()+60*60*24*7,'/')) {
+		echo "setting cookie failed";
+	}
+}
+function hk_delcookie($name) {
+	setcookie($name,"",time()-3600,'/');
+}
+function hk_check_status() {
+	if (isset($_SESSION['error'])) {
+		echo "<div style=\"color:red; text-algin:center;\">\n{$_SESSION['error']}\n</div><br />\n";
+		unset($_SESSION['error']);
+	}
+	if (isset($_SESSION['message'])) {
+		echo "<div style=\"color:green; text-algin:center;\">\n{$_SESSION['message']}\n</div><br />\n";
+		unset($_SESSION['message']);
+	}
+}
+function hk_week_name($week_data) {
+	//requires $week_data to be an array with at least id and postseason columns
+	if ($week_data['postseason'] != 0) {
+		$name = "Bowl Week ".$week_data['postseason'];
 	} else {
-		return null;
+		$name = "Week ".$week_data['id'];
 	}
+	return $name;
 }
-
-function hk_week_list($asc=true) {
-	echo "<select name=\"week\">\n";
-	$weekr = hk_db_query("SELECT id,postseason FROM weeks ORDER BY id".($asc?"":" DESC"),$db_link);
-	while ($week_row = mysql_fetch_assoc($weekr)) {
-		echo "\t<option value=\"{$week_row['id']}\">".hk_week_name($week_row['id'])."</option>\n";
+function hk_num_suffix($number) {
+	$driver = substr("$number", -1);
+	switch($driver) {
+	case '1':
+		$suffix = "st";
+		break;
+	case '2':
+		$suffix = "nd";
+		break;
+	case '3':
+		$suffix = "rd";
+		break;
+	default:
+		$suffix = "th";
+		break;
 	}
-	echo "</select>\n";
+	return $suffix;
 }
-
-function hk_week_name($week_id) {
-	global $db_link;
-	$week_query = "SELECT id,postseason FROM weeks WHERE id = \"$week_id\"";
-	$week_row = mysql_fetch_assoc(hk_db_query($week_query,$db_link));
-	if ($week_row['postseason'] == "0") {
-		$week_name = "Week {$week_row['id']}";
-		$next_week = "Week $nweek_id";
-	} else {
-		$ps_wid = $week_row['postseason'];
-		$week_name = "Bowl Season";
-		$ps_wid++;
-		$next_week = "End of Game";
-		unset($ps_wid);
-	}
-	return $week_name;
+function hk_print_r($var) {
+	echo "<pre style=\"font-size:normal; text-align:left;\">\n";
+	print_r($var);
+	echo "</pre>\n";
 }
-
-function hk_db_query($query,$link) {
-	if ($result = mysql_query($query,$link)) {
-		return $result;
-	} else {
-		echo "<div>".$query."<br />".mysql_error($link)."</div>";
-		return $result;
-	}
+function echoln ($str) {
+	echo $str."<br />\n";
 }
-
-function hk_debug($str) {
-	echo "<div>****DEBUG**** ".$str."</div>\n";
-}
-
-function log_out() {
-	if (!setcookie("ffff_auto_login","",time()-604800)) {
-		echo "Error deleting cookie";
-	} else {
-		unset($_SESSION['login_id']);
-		unset($_SESSION['is_admin']);
-		unset($_SESSION['full_name']);
-		unset($_SESSION['week_id']);
-		header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php");
-	}
-}
-
-function log_in() {
-	if (isset($_COOKIE['ffff_auto_login']) && !isset($_SESSION['login_id'])) {
-		if ($_COOKIE['ffff_auto_login'] != "deleted") {
-			$db_link = mysql_connect("localhost","hkc","hkc");
-			mysql_select_db("ffff");
-			$cookievars = explode(":",$_COOKIE['ffff_auto_login']);
-			$_SESSION['login_id'] = $cookievars[0];
-			$_SESSION['is_admin'] = $cookievars[1];
-			$_SESSION['full_name'] = $cookievars[2];
-			$today = time();
-			$week_query = "SELECT id FROM weeks WHERE UNIX_TIMESTAMP(start)<=$today && UNIX_TIMESTAMP(end)>=$today";
-			$week_result = mysql_query($week_query,$db_link);
-			$week_row = mysql_fetch_assoc($week_result);
-			$_SESSION['week_id'] = $week_row['id'];
-			if ($_SERVER['PHP_SELF'] == dirname($_SERVER['PHP_SELF'])."/index.php") {
-				$file = dirname($_SERVER['PHP_SELF'])."/toc.php";
-				header("Location: http://".$_SERVER['HTTP_HOST'].$file);
-			}
-		}
-	}
-}
-
-function num_suffix($num) {
-	if ($place == 11 || $place == 12 || $place == 13) {
-		$suf = "th";
-	} else if ($place % 10 == 1) {
-		$suf = "st";
-	} else if ($place % 10 == 2) {
-		$suf = "nd";
-	} else if ($place % 10 == 3) {
-		$suf = "rd";
-	} else {
-		$suf = "th";
-	}
-	return $suf;
-}
-
 function print_table($data,$table="<table border=\"1\" cellspacing=\"0\">",$params=null) {
 	echo $table."\n";
 	foreach($data as $rowid => $row) {
@@ -114,5 +86,62 @@ function print_table($data,$table="<table border=\"1\" cellspacing=\"0\">",$para
 		echo "</tr>\n";	
 	}
 	echo "</table>\n";
+}
+function get_week_combobox($weekid=1,$name="week") {
+	$result="<select name=\"$name\">\n";
+	$db=hk_db_connect();
+	$res=$db->query("SELECT id,postseason FROM weeks ORDER BY id");
+	while ($row=$res->fetch_assoc()) {
+		$wname=hk_week_name($row);
+		if ($weekid==$row['id']) {
+			$selected="selected=\"selected\"";
+		} else {
+			$selected="";
+		}
+		$result.="<option value=\"{$row['id']}\" $selected >$wname</option>\n";
+	}
+	$result.="</select>\n";
+	return $result;
+}
+function get_team_combobox($name="team",$def=NULL) {
+	$result="<select name=\"$name\">\n";
+	$db=hk_db_connect();
+	$res=$db->query("SELECT id,name FROM teams ORDER BY name");
+	while ($row=$res->fetch_assoc()) {
+		if ($def==NULL) {
+			$def=$row['id'];
+		}
+		if ($def==$row['id']) {
+			$selected="selected=\"selected\"";
+		} else {
+			$selected="";
+		}
+		$result.="<option value=\"{$row['id']}\" $selected >{$row['name']}</option>\n";
+	}
+	$result.="</select>\n";
+	return $result;
+}
+function get_game_combobox($def=NULL,$name="game") {
+	$result="<select name=\"$name\">\n";
+	if ($def==NULL) {
+		$selected="selected=\"selected\"";
+	}
+	$result.="<option value=\"-1\" $selected >No Game.</option>\n";
+	$db=hk_db_connect();
+	$res=$db->query("SELECT games.id, away.name AS aname, home.name AS hname FROM games LEFT JOIN teams AS away ON (away.id=games.away) LEFT JOIN teams AS home ON (home.id=games.home) WHERE games.week= ANY (SELECT id FROM weeks WHERE postseason!=0) ORDER BY games.gametime");
+	echo $db->error;
+	while ($row=$res->fetch_assoc()) {
+		if ($def==NULL) {
+			$def=$row['id'];
+		}
+		if ($def==$row['id']) {
+			$selected="selected=\"selected\"";
+		} else {
+			$selected="";
+		}
+		$result.="<option value=\"{$row['id']}\" $selected >{$row['aname']} @ {$row['hname']}</option>\n";
+	}
+	$result.="</select>\n";
+	return $result;
 }
 ?>

@@ -1,4 +1,15 @@
 <?php
+session_start();
+include('../functions.php');
+calculate_scores();
+
+function calculate_scores() {
+	$db=hk_db_connect();
+	$res=$db->query("SELECT MIN(week) AS minweek, MAX(week) AS maxweek FROM games");
+	$row=$res->fetch_assoc();
+	$res->close();
+	$maxweek=hk_get_week($row['maxweek']);
+	$minweek=hk_get_week($row['minweek']);
 	$total_wins = array();
 	$total_sevens = array();
 	$total_exacts = array();
@@ -6,7 +17,7 @@
 	$total_total = array();
 	ob_start();
 	echo <<<CODE
-		<h1><a name="top">Results from Week {$_POST['start']} to Week {$_POST['end']}</a></h1>
+		<h1><a name="top">Score Report for {$minweek['name']} to {$maxweek['name']}</a></h1>
 		<a href="toc.php">Back to Table of Contents</a><br /><br />
 		<h3>Scores are calculated using the formula*:</h3>
 		<table style="font-family:monospace; border:1px black solid; text-align:center; margin:0px auto;">
@@ -16,30 +27,24 @@
 		<tr><td style="text-align:left;">+ |picked point spread - real point spread|</td></tr>
 		</table>
 		*Scores are applicable only if the correct winner was picked.<br />
-		A <span style="font-weight:bold; color:red">red</span> score indicates the lowest score for a game.
-CODE;
-	
-	echo "<br /><br />";
+		A <span style="font-weight:bold; color:red">red</span> score indicates the lowest score for a game.<br /><br />
 
-echo <<<CODE
 		<form name="selweek" action="" method="get" onsubmit="chweek(); return false;">
 			View: <select name="week" onchange="chweek()">
 CODE;
-		$weekr = hk_db_query("SELECT id,postseason FROM weeks ORDER BY id",$db_link);
-		while ($week_row = mysql_fetch_assoc($weekr)) {
-			if ($week_row['id'] >= $_POST['start'] && $week_row['id'] <= $_POST['end']) {
-				echo "\t\t\t<option value=\"{$week_row['id']}\">".hk_week_name($week_row['id'])."</option>\n";
-			}
+		$wres=$db->query("SELECT id,postseason FROM weeks ORDER BY id");
+		while ($wrow = $wres->fetch_assoc()) {
+			echo "<option value=\"{$wrow['id']}\">".hk_week_name($wrow)."</option>\n";
 		}
 
-echo <<<CODE
+		echo <<<CODE
 			</select>
 			<input type="submit" value="View" />
 		</form>
 CODE;
 
-	for ($iweek = $_POST['start']; $iweek <= $_POST['end']; $iweek++) {
-		
+	for ($iweek = $minweek['id']; $iweek <= $maxweek['id']; $iweek++) {
+		$week_data=hk_get_week($iweek);
 		$score_array = array(); //user x game
 
 		$wins = array();
@@ -49,32 +54,38 @@ CODE;
 		$total = array();
 		$game_closest = array();
 		
-		$user_result = hk_db_query("SELECT * FROM participants ORDER BY firstname",$db_link);
-		while ($user_row = mysql_fetch_assoc($user_result)) {
-			$game_result = hk_db_query("SELECT id,home_score,away_score FROM games WHERE week_id=\"$iweek\"",$db_link);
+		$ures = $db->query("SELECT * FROM users WHERE id != -1 ORDER BY lastname,firstname");
+		while ($user_row = $ures->fetch_assoc()) {
 			$uid = $user_row['id'];
 			if (!isset($wins[$uid])) {
 				$wins[$uid] = 0;
 				$exacts[$uid] = 0;
 				$bonus[$uid] = 0;
 			}
-			while ($game_row = mysql_fetch_assoc($game_result)) {
-				$pick = mysql_fetch_assoc(hk_db_query("SELECT id,away_score,home_score FROM picks WHERE game_id=\"{$game_row['id']}\" && user_id=\"{$user_row['id']}\"",$db_link));
-				$hp = $pick['home_score'];
-				$ap = $pick['away_score'];
-				$ha = $game_row['home_score'];
-				$aa = $game_row['away_score'];
-				if (($hp>$ap&&$ha>$aa) || ($hp<$ap&&$ha<$aa) || ($hp==$ap&&$ha==$aa)) {
-					$wins[$uid] += 1;
-					$score = abs($hp-$ha)+abs($ap-$aa)+abs(abs($hp-$ap)-abs($ha-$aa));
-					if ($score == 0) {
-						$exacts[$uid] += 1;
+			$gres = $db->query("SELECT id,home_score,away_score FROM games WHERE week=\"$iweek\" ORDER BY gametime");
+			while ($grow = $gres->fetch_assoc()) {
+				$q="SELECT id,away,home FROM picks WHERE game=\"{$grow['id']}\" AND user=\"$uid\"";
+				$pres = $db->query($q);
+				if ($pres->num_rows > 0) {
+					$prow = $pres->fetch_assoc();
+					$hp = $prow['home'];
+					$ap = $prow['away'];
+					$ha = $grow['home_score'];
+					$aa = $grow['away_score'];
+					if (($hp>$ap&&$ha>$aa) || ($hp<$ap&&$ha<$aa) || ($hp==$ap&&$ha==$aa)) {
+						$wins[$uid] += 1;
+						$score = abs($hp-$ha)+abs($ap-$aa)+abs(abs($hp-$ap)-abs($ha-$aa));
+						if ($score == 0) {
+							$exacts[$uid] += 1;
+						}
+					} else {
+						$score = -1;
 					}
 				} else {
 					$score = -1;
 				}
-				//echo $uid." x ".$game_row['id']."<br />";
-				$score_array[$uid][$game_row['id']] = $score;
+				//echo $uid." x ".$grow['id']."<br />";
+				$score_array[$uid][$grow['id']] = $score;
 			}
 			if ($wins[$uid] == 7) {
 				$sevens[$uid] = 1;
@@ -114,24 +125,24 @@ CODE;
 	
 		//Results table for a week
 		echo "<hr />";
-		echo "<a name=\"week$iweek\"><h2 style=\"text-align:left;\">".hk_week_name($iweek)."</a><br />\n";
+		echo "<a name=\"week$iweek\"><h2 style=\"text-align:left;\">".$week_data['name']."</a><br />\n";
 		echo "<span style=\"font-size:10px; font-weight:normal;\">[<a href=\"#top\">Back to top</a>]</span>\n</h2>\n";
 		echo "<table border=\"1\" cellspacing=\"0\" cellpadding=\"2\">\n";
 		echo "<tr style=\"text-align:center;\"><td></td><td colspan=\"".count($score_array[$sa1])."\">Score Formula Result for Games</td>";
 		echo "<td colspan=\"5\">Week Scores</td><td colspan=\"5\">Total Scores</td></tr>\n";
 		echo "<tr><td>Player Name</td>";
 		foreach ($score_array[$sa1] as $game => $gamev) {
-			$gamer = mysql_fetch_assoc(hk_db_query("SELECT home,away FROM games WHERE id=\"$game\"",$db_link));
-			$homen = mysql_fetch_assoc(hk_db_query("SELECT name FROM teams WHERE id=\"{$gamer['home']}\"",$db_link));
-			$awayn = mysql_fetch_assoc(hk_db_query("SELECT name FROM teams WHERE id=\"{$gamer['away']}\"",$db_link));
-			 echo "<td>{$awayn['name']}&nbsp;@<br />{$homen['name']}</td>";
+			$gres = $db->query("SELECT home.name AS hname, away.name AS aname FROM games LEFT JOIN teams AS home ON (home.id=games.home) LEFT JOIN teams AS away ON (away.id=games.away) WHERE games.id=\"$game\"");
+			$grow = $gres->fetch_assoc();
+			echo "<td>{$grow['aname']}<br />@<br />{$grow['hname']}</td>";
 		}
 
 		echo "\n<td>Wins</td><td>7&nbsp;of&nbsp;7's</td><td>Perfects</td><td>Closests</td><td>Score</td>\n";
 		echo "<td>Wins</td><td>7&nbsp;of&nbsp;7's</td><td>Perfects</td><td>Closests</td><td>Score</td></tr>\n";
 		foreach ($score_array as $user => $user_ary) {
-			$usern = mysql_fetch_assoc(hk_db_query("SELECT firstname,lastname FROM participants WHERE id=\"$user\"",$db_link));
-			echo "<tr style=\"text-align:right;\"><td>{$usern['firstname']}<br />{$usern['lastname']}</td>";
+			$ures = $db->query("SELECT firstname,lastname FROM users WHERE id=\"$user\"");
+			$urow = $ures->fetch_assoc();
+			echo "<tr style=\"text-align:right;\"><td>{$urow['firstname']}<br />{$urow['lastname']}</td>";
 			foreach ($user_ary as $game => $gamev) {
 				if ($gamev == -1) {
 					echo "<td>N/A</td>";
@@ -151,7 +162,8 @@ CODE;
 	}
 	$output = ob_get_contents();
 	ob_end_clean();
-	$file = fopen("scores.php","w");
+	include("head.html");
+	$file = fopen("../scores.php","w");
 	if (fwrite($file,$output)) {
 		echo "scores.php successfully written to disk";
 	} else {
@@ -159,10 +171,11 @@ CODE;
 	}
 	fclose($file);
 	foreach ($wins as $user => $user_ary) {
-		$update = "UPDATE participants SET score=\"".$total_total[$user]."\",wins=\"".$total_wins[$user]."\",closest=\"".$total_closest[$user]."\",exact=\"".$total_exacts[$user]."\",sevens=\"".$total_sevens[$user]."\" WHERE id=\"$user\"";
-		//echo "<div class=\"databox\">$update</div>\n";
-		mysql_query($update,$db_link);
-		//echo mysql_error($db_link);
+		$update = "UPDATE scores SET score=\"{$total_total[$user]}\",wins=\"{$total_wins[$user]}\",closests=\"{$total_closest[$user]}\",perfects=\"{$total_exacts[$user]}\",sevens=\"{$total_sevens[$user]}\" WHERE user=\"$user\"";
+		echo $update."<br />\n";
+		$db->query($update);
+		echo $db->error;
 	}
-
+	include("foot.html");
+}
 ?>

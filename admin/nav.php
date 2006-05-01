@@ -1,37 +1,46 @@
 <?php
-	echo <<<CODE
-	<div style="margin:0px auto; text-align:left;">
-	<img src="../images/hkc_logo.gif" /><br />
-	<span style="font-size:larger;">Player Administration:</span>
-		<ul>
-		<li><a href="admin.php?action=edit_user">Create New Player</a></li>
-		<li><a href="admin.php?action=edit_user">Edit Player</a></li>
-		<li>Change user to: \n<form action="admin.php?action=change_user" method="post">\n<select name="new_user">
-CODE;
-		$user_query = "SELECT firstname,lastname,id FROM participants";
-		$user_result = mysql_query($user_query,$db_link);
-		while($user_row = mysql_fetch_assoc($user_result)) {
-			echo "<option value=\"{$user_row['id']}\" ";
-			if ($_SESSION['login_id'] == $user_row['id']) {
-				echo "selected=\"selected\"";
-			}
-			echo ">{$user_row['firstname']}&nbsp;{$user_row['lastname']}</option>\n";
-		}
-		echo <<<CODE
-		</select>\n<br /><input type="submit" name="submitter" value="Change" />\n</form>\n</li>
-		</ul>
+session_start();
+include('../functions.php');
+include('head.html');
+$ud = $_SESSION['ffff_user_data'];
+$thisweek = hk_get_week();
+$_SESSION['thisweek'] = $thisweek;
 
-	<span style="font-size:larger;">Game Administration:</span>
-		<ul>
-		<li><a href="admin.php?page=teams" target="main">Edit Teams</a></li>
-		<li><a href="admin.php?page=games" target="main">Edit Games</a></li>
-		<li><a href="admin.php?page=bowls" target="main">Edit Bowls</a></li>
-		<li><a href="admin.php?page=picks" target="main">Batch Edit Picks</a></li>
-		<li style="white-space:nowrap;">Calculate Scores
-			<form action="admin.php?page=calc_scores" method="post" target="main">
-			From Week:<input type="text" name="start" size="3" value="1" />\n<br />To Week:<input type="text" name="end" size="3" value="{$_SESSION['week_id']}" />\n<br /><input type="submit" name="submitter" value="Calculate" />
-			</form>
-		</li>
-		</ul>
+echo <<<CODE
+<div style="margin:0px auto; text-align:left;">
+<img src="../images/hkc_logo.gif" /><br />
+<div style="font-size:smaller;text-align:center;"><a href="../toc.php" target="_top">[Remove Administration Frame]</a></div><br />
+<div style="font-size:smaller;text-align:center;"><a href="../toc.php" target="main">[Show Table of Contents]</a></div><br />
+<span style="font-size:larger;">Player Administration:</span>
+<ul>
+<li><a href="user.php">Create New User</a></li>
+<li><a href="user.php?a=e">Edit Current User</a></li>
+<li>Change user to: \n<form action="../login.php?a=su" method="post" target="_top">\n<select name="newid">
 CODE;
+$db = hk_db_connect();
+$ures= $db->query("SELECT firstname,lastname,id FROM users ORDER BY lastname,firstname");
+while($urow=$ures->fetch_assoc()) {
+echo "<option value=\"{$urow['id']}\" ";
+if ($_SESSION['ffff_user_data']['id'] == $urow['id']) {
+	echo "selected=\"selected\"";
+}
+echo ">{$urow['firstname']}&nbsp;{$urow['lastname']}</option>\n";
+}
+echo <<<CODE
+</select>\n<br /><input type="submit" name="submitter" value="Change" /></li>
+</form>
+<li><a href="user.php?a=del">Delete a User</a></li>
+</ul>
+
+<span style="font-size:larger;">Game Administration:</span>
+<ul>
+<li><a href="teams.php">Edit Teams</a></li>
+<li><a href="games.php">Edit Games</a></li>
+<li><a href="bowls.php">Edit Bowls</a></li>
+<li><a href="picks.php">Batch Edit Picks</a></li>
+<li><a href="calc_scores.php">Calculate Scores</a></li>
+<li><a href="rankings.php">Update Rankings</a></li>
+</ul>
+CODE;
+include('foot.html');
 ?>

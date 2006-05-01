@@ -1,112 +1,132 @@
 <?php
-	echo "\n<!-- BEGIN EDIT BOWL GAMES CODE -->\n";
-	global $db_link;
-	echo "<h1>Edit Bowl Games</h1>";
-	$hk_week = $_SESSION['week_id']+1;
-	if ($_POST['submitter'] == "Edit Bowls") {
-		$bowl_ids = explode(",",$_POST['ids']);
-		foreach($bowl_ids as $id) {
-			$name = $_POST["name_".$id];
-			$location = $_POST["location_".$id];
-			$description = $_POST["description_".$id];
-			$game_id = $_POST["game_".$id];
-			$multiplier = $_POST["multiplier_".$id];
-			$edit_query = "UPDATE bowls SET name=\"$name\",location=\"$location\",description=\"$description\",game_id=\"$game_id\" WHERE id=\"$id\"";
-			hk_db_query($edit_query,$db_link);
-			//echo "<div>$edit_query</div><br />\n";
-		}
-	} else if ($_POST['submitter'] == "Create Bowl") {
-		$bowl_query = "INSERT INTO bowls (name,location,description,game_id,multiplier) VALUES (\"{$_POST['name']}\",\"{$_POST['location']}\",\"{$_POST['description']}\",\"{$_POST['game']}\",\"{$_POST['multiplier']}\")";
-		hk_db_query($bowl_query,$db_link);
-		echo "<div>$bowl_query</div><br />\n";
-	}
-	
-	// New Bowl Creation
-	echo <<<CODE
-	<form action="admin.php?page=bowls" method="post">
-	<table border="1" cellspacing="0" cellpadding="3">
-	<thead><h3>Add A Bowl Game:</h3></thead>
-	<tr><td>Bowl Name</td><td>Bowl Location</td><td>Bowl Description</td><td>Game</td><td>Score Multiplier</td></tr>
-	<tr>
-	<td><textarea name="name" rows="4" cols="16"></textarea></td>
-	<td><textarea name="location" rows="4" cols="16"></textarea></td>
-	<td><textarea name="description" rows="4" cols="16"></textarea></td>
-	<td><select name="game">\n
-CODE;
-	$week_result = hk_db_query("SELECT id,postseason FROM weeks WHERE postseason != 0 ORDER BY postseason DESC",$db_link);
-	while ($week_r = mysql_fetch_assoc($week_result)) {
-		echo "\t\t<optgroup label=\"Bowl Week {$week_r['postseason']}\">\n";
-		$game_result = hk_db_query("SELECT id,week_id,home,away FROM games WHERE week_id = \"{$week_r['id']}\" ORDER BY id",$db_link);
-		while ($game_r = mysql_fetch_assoc($game_result)) {
-			$home_r = mysql_fetch_assoc(hk_db_query("SELECT name FROM teams WHERE id=\"{$game_r['home']}\"",$db_link));
-			$away_r = mysql_fetch_assoc(hk_db_query("SELECT name FROM teams WHERE id=\"{$game_r['away']}\"",$db_link));
-			echo "\t\t\t<option value=\"{$game_r['id']}\">{$away_r['name']} vs. {$home_r['name']}</option>\n";
-		}
-		echo "\t\t</optgroup>\n";
-	}
+session_start();
+include('../functions.php');
+if ($_GET['a']=='show') {
+	include('head.html');
+	hk_check_status();
+	get_bowl_show();
+	include('foot.html');
+} elseif ($_GET['a']=='edit') {
+	include('head.html');
+	get_bowl_edit();
+	include('foot.html');
+} else {
+	get_bowl_frameset();
+}
 
-	echo <<<CODE
-	</select></td>
-	<td><input type="textbox" name="multiplier" size="5" value="2" /></td>
-	</tr>
-	</table>
-	<input type="submit" name="submitter" value="Create Bowl" />
-	</form>
+function get_bowl_frameset() {
+echo <<<CODE
+<DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<title>ffff2 administration</title>
+</head>
+<frameset rows="*,175">
+	<frame name="bowl_show" id="bowl_show" src="bowls.php?a=show" frameborder="1" marginheight="0" marginwidth="0" />
+	<frame name="bowl_edit" id="bowl_edit" src="bowls.php?a=edit" frameborder="1" marginheight="0" marginwidth="0" />
+</frameset>
+</html>
 CODE;
+}
 
-	// Edit Bowls
-	if (isset($_GET['week'])) {
-		$iweek = $_GET['week'];
-		$weekStr = "week=".$_GET['week'];
-	} else {
-		$iweek = $hk_week;
-		$weekStr = "";
-	}
-	echo "<h3>Edit A Bowl Game:</h3>";
+function get_bowl_show() {
+	$db=hk_db_connect();
 	echo <<<CODE
-	<form action="admin.php?action=edit_bowls" method="post">
-	<table border="1" cellspacing="0" cellpadding="3">
-	<tr><td>Bowl Name</td><td>Bowl Location</td><td>Bowl Description</td><td>Game</td><td>Score Multiplier</td></tr>
+	<div class="head5" style="text-align:right;"><a href="admin.php">[Administration]</a></div>
+	<img src="../images/logo.gif" /><br /><br />
+	<div style="font-size:smaller;"><a href="../toc.php">[Back to Table of Contents]</a></div><br />
+	<div class="box2"><a href="bowls.php?a=edit&week={$_GET['week']}" target="bowl_edit">Create New Bowl</a></div><br />
+	<div class="head2" style="text-align:left;">Bowl Games</div>
+	<table border='1' cellspacing='0' cellpadding='2' style="text-align:center;margin:auto;">
+	<tr><td>Name</td><td>Description</td><td>Location</td><td>Game</td><td>Multiplier</td><td></td></tr>
 CODE;
-	$bowls_result = hk_db_query("SELECT * FROM bowls ORDER BY id",$db_link);
-	$bowl_ids = array();
-	while($bowl_row = mysql_fetch_assoc($bowls_result)) {
-		$id = $bowl_row['id'];
-		$bowl_ids[] = $id;
+	$res=$db->query("SELECT bowls.*, away.name AS aname, home.name AS hname FROM bowls LEFT JOIN games ON (games.id=bowls.game) LEFT JOIN teams AS away ON (away.id=games.away) LEFT JOIN teams AS home ON (home.id=games.home) ORDER BY games.gametime");
+	echo $db->error;
+	while ($row=$res->fetch_assoc()) {
 		echo <<<CODE
 		<tr>
-		<td><textarea name="name_$id" rows="4" cols="16">{$bowl_row['name']}</textarea></td>
-		<td><textarea name="location_$id" rows="4" cols="16">{$bowl_row['location']}</textarea></td>
-		<td><textarea name="description_$id" rows="4" cols="16">{$bowl_row['description']}</textarea></td>
-		<td><select name="game_$id" >\n
-CODE;
-		$week_result = hk_db_query("SELECT id,postseason FROM weeks WHERE postseason != 0 ORDER BY postseason DESC",$db_link);
-		while ($week_r = mysql_fetch_assoc($week_result)) {
-			echo "\t\t<optgroup label=\"Bowl Week {$week_r['postseason']}\">\n";
-			$game_result = hk_db_query("SELECT id,week_id,home,away FROM games WHERE week_id = \"{$week_r['id']}\" ORDER BY id",$db_link);
-			while ($game_r = mysql_fetch_assoc($game_result)) {
-				$home_r = mysql_fetch_assoc(hk_db_query("SELECT name FROM teams WHERE id=\"{$game_r['home']}\"",$db_link));
-				$away_r = mysql_fetch_assoc(hk_db_query("SELECT name FROM teams WHERE id=\"{$game_r['away']}\"",$db_link));
-				if ($bowl_row['game_id'] == $game_r['id']) {
-					$sel = "selected=\"selected\"";
-				} else {
-					$sel = "\"\"";
-				}
-				echo "\t\t\t<option value=\"{$game_r['id']}\" $sel>{$away_r['name']} vs. {$home_r['name']}</option>\n";
-			}
-			echo "\t\t</optgroup>\n";
-		}
-		echo <<<CODE
-		</select></td>
-		<td><input name="multiplier_$id" type="textbox" size="5" value="{$bowl_row['multiplier']}" /></td></tr>
+		<td>{$row['name']}</td>
+		<td>{$row['description']}</td>
+		<td>{$row['location']}</td>
+		<td>{$row['aname']} @ {$row['hname']}</td>
+		<td>{$row['multiplier']}</td>
+		<td><a href="bowls.php?a=edit&id={$row['id']}" target="bowl_edit">Edit</a></td></tr>
 CODE;
 	}
-	$idstr = implode(",",$bowl_ids);
+	echo "</table>";
+}
+
+function get_bowl_edit() {
+	$db=hk_db_connect();
+	if ($_POST['submitter']=="Create") {
+		$q="INSERT INTO bowls (name,description,location,game,multiplier) VALUES ('{$_POST['name']}', '{$_POST['description']}', '{$_POST['location']}', '{$_POST['game']}', '{$_POST['multiplier']}')";
+		$db->query($q);
+		$_SESSION['message'].="Bowl creation status: <br />".$q;
+		$_SESSION['error'].=$db->error;
+		echo "<script language=\"JavaScript\">\nparent.bowl_show.location.reload();\n</script>";
+	} elseif ($_POST['submitter']=="Update") {
+		$q="UPDATE bowls SET name='{$_POST['name']}', description='{$_POST['description']}', location='{$_POST['location']}', game='{$_POST['game']}', multiplier='{$_POST['multiplier']}' WHERE id={$_POST['uid']}";
+		$db->query($q);
+		$_SESSION['message'].="Bowl update status: <br />".$q;
+		$_SESSION['error'].=$db->error;
+		echo "<script language=\"JavaScript\">\nparent.bowl_show.location.reload();\n</script>";
+	} elseif ($_POST['submitter']=="Delete") {
+		$res=$db->query("SELECT name FROM bowls WHERE bowls.id={$_POST['uid']}");
+		echo $db->error;
+		$t=$res->fetch_assoc();
+		echo <<<CODE
+		<div class="head2" style="color:red;">WARNING</div>
+		<div class="box1">You are about to delete all data for the {$t['name']}. This action is NOT reversable.</div>
+		<div class="head3">Confirm Deletion?<br />
+		<form action="bowls.php?a=edit" method="post" target="_self">
+		<input type="hidden" name="uid" value="{$_POST['uid']}" />
+		<input type="submit" name="submitter" value="Confirm" />
+		</form>
+		</div><hr />
+CODE;
+	} elseif ($_POST['submitter']=="Confirm") {
+		$q="DELETE FROM bowls WHERE id={$_POST['uid']}";
+		$db->query($q);
+		$_SESSION['message']="Bowl Successfully Deleted.";
+		unset($_GET['id']);
+		echo "<script language=\"JavaScript\">\nparent.bowl_show.location.reload();\n</script>";
+	}
+	if (isset($_GET['id'])) {
+		$res=$db->query("SELECT * FROM bowls WHERE id={$_GET['id']}");
+		$bowl=$res->fetch_assoc();
+		$submit="<td style=\"width:50%;\"><input type=\"submit\" name=\"submitter\" value=\"Update\" /></td><td style=\"width:50%;\"><input type=\"submit\" name=\"submitter\" value=\"Delete\" /></td>";
+		$head="Update bowl";
+		$getstr="&id=".$_GET['id'];
+		$gsel=get_game_combobox($bowl['game']);
+	} else {
+		$head="Create bowl";
+		$submit="<td colspan=\"2\"><input type=\"submit\" name=\"submitter\" value=\"Create\" /></td>";
+		$gsel=get_game_combobox();
+	}
 	echo <<<CODE
+	<div class="head3">$head</div>	
+	<form action="bowls.php?a=edit$getstr" method="post" target="_self">
+	<input type="hidden" name="uid" value="{$_GET['id']}" />
+	<table border='0' cellspacing='0' cellpadding='2' style="text-align:center;width:100%;">
+	<tr>
+	<td style="width:30%;">Name</td>
+	<td style="width:30%;">Description</td>
+	<td style="width:30%;">Location</td>
+	<td style="width:10%;">Multiplier</td>
+	</tr>
+	<tr>
+	<td><input name="name" type="text" value="{$bowl['name']}" style="width:100%;" /></td>
+	<td><input name="description" type="text" value="{$bowl['description']}" style="width:100%;" /></td>
+	<td><input name="location" type="text" value="{$bowl['location']}" style="width:100%;" /></td>
+	<td><input name="multiplier" type="text" value="{$bowl['multiplier']}" style="width:100%;" /></td>
+	</table><hr />
+	<table border='0' cellspacing='0' cellpadding='2' style="text-align:center;width:100%;">
+	<tr><td colspan="2">Game: $gsel</td></tr>
+	<tr>$submit</tr>
 	</table>
-	<input type="hidden" name="ids" value="$idstr" />
-	<input type="submit" name="submitter" value="Edit Bowls" />
 	</form>
 CODE;
-
+}
 ?>

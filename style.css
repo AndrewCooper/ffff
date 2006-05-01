@@ -1,25 +1,50 @@
-.blah {
-	width:20%;
-	text-align:right;
+@import url('style_border.css');
+.box1 {
+	border-color: #FFFFFF;
+	border-width: 4px;
+	border-style: ridge;
+	padding: 2px;
 }
-.blah2 {
-	width:50%;
-	text-align:left;
+.box2 {
+	border-color: #FFFFFF;
+	border-width: 2px;
+	border-style: groove;
+	padding: 2px;
 }
-.heading1 {
-	font-size: 16px;
-	font-weight: bold;
+.dataBox {
+	border-color: #FFFFFF;
+	border-width: 2px;
+	border-style: groove;
+	padding: 2px;
 }
-.heading2 {
-	font-weight: bold;
+.head1 {
+	font-size:xx-large;
+	font-weight:bold;
 }
+.head2 {
+	font-size:x-large;
+	font-weight:bold;
+}
+.head3 {
+	font-size:large;
+	font-weight:bold;
+}
+.head4 {
+	font-size:medium;
+	font-weight:bold;
+}
+.head5 {
+	font-size:small;
+	font-weight:bold;
+}
+
 .mainContent {
 	background-color: #9F9F9F;
 	background-image: url("images/bin_bground.gif");
 	/*background-position: 50% 50%;
 	background-repeat: no-repeat;*/
 	color: #000000;
-	font-size: 10pt;
+	font-size: medium;
 	font-family: serif;
 	padding: 0 0 0 5px;
 	text-align: center;
@@ -40,131 +65,54 @@ body {
 	background-color: #808080;
 	text-align:center;
 }
-div.spacer {
-	width:15px;
-	height:15px;
-}
-div.dataBox {
-	border-color: #FFFFFF;
-	border-width: 2px;
-	border-style: groove;
-	padding: 2px;
-	white-space: nowrap;
-}
 img {
 	border-width: 0px;
 }
-li {
-	padding: 2px 0px 2px 0px;
-}
-/*h1,h2,h3 { 
-	margin: 10px auto 10px 15%;
-	text-align:left;
-}*/
-table.layouttable {
-	margin:5px auto;
-	text-align:center;
-	font-size:10px;
-}
-td.editTitle {
-	text-align:right;
+hr {
+	width:85%;
 }
 
-/* table cell bordering and text-alignment */
-td.center_trbl {
-	text-align: center;
-	border: 1px #666666 solid;
-}
-td.center_trb {
-	text-align: center;
-	border-width: 1px 1px 1px 0;
-	border-style: solid;
-	border-color: #666666;
-}
-td.center_trl {
-	text-align: center;
-	border-width: 1px 1px 0px 1px;
-	border-style: solid;
-	border-color: #666666;
-}
-td.center_tbl {
-	text-align: center;
-	border-width: 1px 0 1px 1px;
-	border-style: solid;
-	border-color: #666666;
-}
-td.center_tb {
-	text-align: center;
-	border-width: 1px 0px 1px 0px;
-	border-style: solid;
-	border-color: #666666;
-}
-td.center_rbl {
-	text-align: center;
-	border-width: 0px 1px 1px 1px;
-	border-style: solid;
-	border-color: #666666;
-}
-td.center_rl {
-	text-align: center;
-	border-width: 0px 1px 0px 1px;
-	border-style: solid;
-	border-color: #666666;
-}
-
-td.right_trbl {
-	white-space: nowrap;
-	text-align: right;
-	border: 1px #666666 solid;
-}
-td.left_trbl {
-	white-space: nowrap;
-	text-align: left;
-	border: 1px #666666 solid;
-}
-
-
-td.tlc {		
+td.border_tlc {		
 	background-image: url("images/top_left_corner.gif");
 	background-repeat: no-repeat;
 	width:15px;
 	height:15px;
 }
-td.trc {
+td.border_trc {
 	background-image: url("images/top_right_corner.gif");
 	background-repeat: no-repeat;
 	width:15px;
 	height:15px;
 }
-td.blc {
+td.border_blc {
 	background-image: url("images/bottom_left_corner.gif");
 	background-repeat: no-repeat;
 	width:15px;
 	height:15px;
 }
-td.brc {
+td.border_brc {
 	background-image: url("images/bottom_right_corner.gif");
 	background-repeat: no-repeat;
 	width:15px;
 	height:15px;
 }
 
-td.tb {		
+td.border_tb {		
 	background-image: url("images/top_border.gif");
 	background-repeat: repeat-x;
 	height:15px;
 }
-td.lb {
+td.border_lb {
 	background-image: url("images/left_border.gif");
 	background-repeat: repeat-y;
 	width:15px;
 }
-td.rb {
+td.border_rb {
 	background-image: url("images/right_border.gif");
 	background-repeat: repeat-y;
 	width:15px;
 }
-td.bb {
+td.border_bb {
 	background-image: url("images/bottom_border.gif");
 	background-repeat: repeat-x;
 	height:15px;
