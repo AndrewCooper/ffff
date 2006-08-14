@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   has_many :picks, :dependent => true
   
   def session_info
-    {:name=>"#{self[:firstname]} #{self[:lastname]}",:uid=>self[:id],:admin=>self[:admin]}
+    {:name=>"#{self[:firstname]} #{self[:lastname]}",:uid=>self[:id],:admin=>self[:is_admin]}
   end
 
   protected

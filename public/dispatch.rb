@@ -1,4 +1,4 @@
-#!/Developer/Applications/Locomotive/Bundles/rails-1.1.1-max.bundle/Contents/Resources/ports/bin/ruby
+#!/usr/bin/env ruby
 
 require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
 

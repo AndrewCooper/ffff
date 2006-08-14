@@ -14,7 +14,7 @@
 	<%= @item.email %>
 </td>
 <td class="center">
-	<%= if @item.admin? then "X" else "-" end%>
+	<%= if @item.is_admin? then "X" else "-" end%>
 </td>
 <td class="center">
 	<%= if @item.new_password? then "X" else "-" end%>
