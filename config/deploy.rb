@@ -11,7 +11,7 @@
 # form the root of the application path.
 
 set :application, "ffff"
-set :repository, "http://svn.yourhost.com/#{application}/trunk"
+set :repository, "http://svn.hkcreations.org/#{application}/trunk"
 
 # =============================================================================
 # ROLES
@@ -29,7 +29,7 @@ role :db,  "hkcreations.org", :primary => true
 # =============================================================================
 # OPTIONAL VARIABLES
 # =============================================================================
-set :deploy_to, "/home/acooper/ffff.hkcreations/org" # defaults to "/u/apps/#{application}"
+set :deploy_to, "/home/acooper/ffff.hkcreations.org" # defaults to "/u/apps/#{application}"
 # set :user, "flippy"            # defaults to the currently logged in user
 # set :scm, :darcs               # defaults to :subversion
 # set :svn, "/path/to/svn"       # defaults to searching the PATH
