@@ -3,7 +3,7 @@
 	<div class="ArticleLongContent">
 		<div class="ArticleBody">
 			You are not logged in.<br />
-			<%= link_to_remote "Click to log in.",:url=>{:controller=>"/login",:action=>"request_login"},:update => "loginFormDiv",:complete=>visual_effect(:blindDown,"loginFormDiv",:duration=>0.25) %>
+			<%= link_to_remote "Click to log in.",:url=>{:controller=>"/login",:action=>"request_login"},:update => "loginFormDiv" %>
 			
 			<div id="loginFormDiv">
 				

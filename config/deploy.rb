@@ -121,3 +121,10 @@ task :long_deploy do
   restart
   enable_web
 end
+
+desc "An after-deploy task to swap the production .htaccess file"
+task :after_deploy, :roles=>[:web,:app] do
+  run "mv public/.htaccess public/.htaccess.development"
+  run "mv public/.htaccess.production public/.htaccess"
+end
+  

@@ -23,7 +23,7 @@ class Admin::BowlController < Admin::AdminController
   	if @params[:id]
   		@item = Bowl.find(@params[:id])
 #  		@game = Game.find_with_teamnames(:conditions=>"games.id = #{@item.game_id}").first
-  		render (:partial => "item") and return
+  		render(:partial => "item") and return
   	else
   		@items = Bowl.find(:all, :order=>"name")
   	end

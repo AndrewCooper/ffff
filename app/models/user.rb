@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
   def session_info
     {:name=>"#{self[:firstname]} #{self[:lastname]}",:uid=>self[:id],:admin=>self[:is_admin]}
   end
+  
+  def name
+    self.firstname+" "+self.lastname
+  end
 
   protected
 

@@ -33,7 +33,7 @@ class Admin::TeamController < Admin::AdminController
 	def list
 		if @params[:id]
 			@item = Team.find(@params[:id])
-			render (:partial => "item") and return
+			render(:partial => "item") and return
 		else
 			@items = Team.find(:all,:order=>"location")
 		end

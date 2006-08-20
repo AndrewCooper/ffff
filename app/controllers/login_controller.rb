@@ -21,7 +21,7 @@ class LoginController < ApplicationController
 				if user.new_password == 1
 					user.update_attribute("new_password",0)
 					flash[:notice] = "You are now encouraged to change your password."
-					redirect_to (:controller => "/user",:action=>"profile") and return
+					redirect_to(:controller => "/user",:action=>"profile") and return
 				end
 			else
 				flash[:notice]= "Password incorrect for "+@params[:login]
