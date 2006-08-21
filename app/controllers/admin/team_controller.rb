@@ -79,17 +79,23 @@ class Admin::TeamController < Admin::AdminController
 			end
 		end
 		if @params["logo"] == "true"
-			host = "espn-att.starwave.com"
-			Net::HTTP.start(host,80) do |http|
-				@teams.each do |team|
-					if team.espnid != 0
-						grab_logo(http,team)
-						team.save
-					end
-				end
-			end
+		  if File.exists?(FFFF_LOGOS_DIR) && File.directory?(FFFF_LOGOS_DIR) && File.writable?(FFFF_LOGOS_DIR) then
+  			host = "espn-att.starwave.com"
+  			Net::HTTP.start(host,80) do |http|
+  				@teams.each do |team|
+  					if team.espnid != 0
+  						grab_logo(http,team)
+  						team.save
+  					end
+  				end
+  			end
+			else
+			  flash[:error] = "#{FFFF_LOGOS_DIR} does not exist, is not a directory, or is not writable. "
+		  end
 		end
-		flash.now[:notice] = "Teams successfully updated"
+		if flash[:error].nil? then
+  		flash.now[:notice] = "Teams successfully updated"
+		end
 		redirect_to :action=>"index"
 	end
 
@@ -114,7 +120,7 @@ class Admin::TeamController < Admin::AdminController
 		response = http.get(img)
 		if response.code == '200'
 			n = "#{team.location} #{team.name}".gsub(" ","_")+".gif"
-			File.open("#{RAILS_ROOT}/public/logos/"+n, "wb") do |f| 
+			File.open(FFFF_LOGOS_DIR+n, "wb") do |f| 
 				f.write(response.body)
 			end
 			team.image = n
