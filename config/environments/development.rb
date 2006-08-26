@@ -19,3 +19,13 @@ config.action_view.debug_rjs                         = true
 
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
+
+# Include your app's configuration here:
+ActionMailer::Base.server_settings = {
+  :address  => "mail.dreamhost.com",
+  :port  => 587, 
+  :domain  => "ffff.hkcreations.org",
+  :user_name  => "m8475547",
+  :password  => "*gw!oC",
+  :authentication  => :login
+}

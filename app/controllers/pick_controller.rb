@@ -5,18 +5,19 @@ class PickController < ApplicationController
 		@now = current_app_time
 		@tz = time_zone
 		if request.get?
-			@games = Game.find_by_sql("SELECT games.id AS gid, games.gametime, games.week, games.is_bowl, 
-			picks.id AS pid, picks.home_score AS phscore, picks.away_score AS pascore, 
-			away.name AS aname, away.image AS aimg, away.location AS aloc, away.conference AS aconf, away.rankAP AS arankap, away.rankUSA AS arankusa, away.record AS arec, away.id AS aid, away.espnid AS aespnid, 
-			home.name AS hname, home.image AS himg, home.location AS hloc, home.conference AS hconf, home.rankAP AS hrankap, home.rankUSA AS hrankusa, home.record AS hrec, home.id AS hid, home.espnid AS hespnid,
-  		bowl.name AS bname, bowl.location AS bloc, bowl.multiplier AS bmult, bowl.url AS burl
-			FROM games
-			LEFT JOIN picks ON picks.game_id = games.id and picks.user_id = #{session[:user][:uid]}
-			LEFT JOIN teams AS away ON away.id = games.away_team_id
-			LEFT JOIN teams AS home ON home.id = games.home_team_id
-  		LEFT JOIN bowls AS bowl ON bowl.game_id = games.id
-			WHERE games.gametime >= '#{@now.to_formatted_s(:db)}'
-			ORDER BY games.week,games.gametime")
+		  @games = Game.upcoming_games_with_picks(session[:user][:uid],@now)
+			# @games = Game.find_by_sql("SELECT games.id AS gid, games.gametime, games.week, games.is_bowl, 
+			# picks.id AS pid, picks.home_score AS phscore, picks.away_score AS pascore, 
+			# away.name AS aname, away.image AS aimg, away.location AS aloc, away.conference AS aconf, away.rankAP AS arankap, away.rankUSA AS arankusa, away.record AS arec, away.id AS aid, away.espnid AS aespnid, 
+			# home.name AS hname, home.image AS himg, home.location AS hloc, home.conference AS hconf, home.rankAP AS hrankap, home.rankUSA AS hrankusa, home.record AS hrec, home.id AS hid, home.espnid AS hespnid,
+			#   		bowl.name AS bname, bowl.location AS bloc, bowl.multiplier AS bmult, bowl.url AS burl
+			# FROM games
+			# LEFT JOIN picks ON picks.game_id = games.id and picks.user_id = #{session[:user][:uid]}
+			# LEFT JOIN teams AS away ON away.id = games.away_team_id
+			# LEFT JOIN teams AS home ON home.id = games.home_team_id
+			#   		LEFT JOIN bowls AS bowl ON bowl.game_id = games.id
+			# WHERE games.gametime >= '#{@now.to_formatted_s(:db)}'
+			# ORDER BY games.week,games.gametime")
 			if @games.size == 0
 				flash.now[:notice] = "There are no games for you to pick right now."
 			end

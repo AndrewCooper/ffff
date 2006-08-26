@@ -18,7 +18,7 @@ class LoginController < ApplicationController
 			calc_response = HMAC::SHA1.hexdigest(user.password,@session[:challenge]);
 			if calc_response == @params[:response]
 				update_session(user)
-				if user.new_password == 1
+				if user.new_password?
 					user.update_attribute("new_password",0)
 					flash[:notice] = "You are now encouraged to change your password."
 					redirect_to(:controller => "/user",:action=>"profile") and return

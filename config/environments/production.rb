@@ -19,3 +19,13 @@ config.action_controller.perform_caching             = true
 
 FFFF_BACKUP_DIR = "~/backups/rails/"
 FFFF_LOGOS_DIR = "~/ffff.hkcreations.org/logos/"
+
+# Include your app's configuration here:
+ActionMailer::Base.server_settings = {
+  :address  => "mail.dreamhost.com",
+  :port  => 587, 
+  :domain  => "ffff.hkcreations.org",
+  :user_name  => "m8475547",
+  :password  => "*gw!oC",
+  :authentication  => :login
+}

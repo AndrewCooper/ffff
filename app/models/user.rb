@@ -18,17 +18,17 @@ class User < ActiveRecord::Base
   # If its empty we assume that the user didn't want to change his
   # password and just reset it to the old value.
   def before_validation
-    if password.empty?      
-      if self.new_record?
+    if password.empty? then
+      if self.new_record? then
         self.password = "football!"
-        @password_update=true
+        @password_update = :true
       else
         user = User.find(self.id)
         self.password = user.password
-        @password_update=false
+        @password_update = :false
       end
     else
-      @password_update=true
+      @password_update = :true
     end
   end
 

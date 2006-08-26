@@ -48,7 +48,7 @@ class Admin::DatabaseController < ApplicationController
       if File.exists?bakfile then
         flash[:notice] = dbfile+" successfully backed up to "+bakfile
       else
-        flash[:error] = "An error occurred while backup up SQLite."
+        flash[:warning] = "An error occurred while backup up SQLite."
       end
     end
     
@@ -58,7 +58,7 @@ class Admin::DatabaseController < ApplicationController
       if system("mysqldump",options) then
         flash[:notice] = "Mysql successfully backed up to "+bakfile
       else
-        flash[:error] = "An error occurred while backup up Mysql."
+        flash[:warning] = "An error occurred while backup up Mysql."
       end
     end
     

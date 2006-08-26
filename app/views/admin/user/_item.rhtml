@@ -14,6 +14,9 @@
 	<%= @item.email %>
 </td>
 <td class="center">
+	<%= if @item.alerts? then "X" else "-" end%>
+</td>
+<td class="center">
 	<%= if @item.is_admin? then "X" else "-" end%>
 </td>
 <td class="center">

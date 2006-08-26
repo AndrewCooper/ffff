@@ -6,3 +6,4 @@ Login:<br /><%= text_field_tag "login" %>
 Password:<br /><%= password_field_tag "password" %>
 <%= submit_tag "Log in" %>
 <%= end_form_tag %>
+<%= link_to "Forgot Password?", {:controller=>"user", :action=>"forgot_password"} %>

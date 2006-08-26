@@ -90,10 +90,10 @@ class Admin::TeamController < Admin::AdminController
   				end
   			end
 			else
-			  flash[:error] = "#{FFFF_LOGOS_DIR} does not exist, is not a directory, or is not writable. "
+			  flash[:warning] = "#{FFFF_LOGOS_DIR} does not exist, is not a directory, or is not writable. "
 		  end
 		end
-		if flash[:error].nil? then
+		if flash[:warning].nil? then
   		flash.now[:notice] = "Teams successfully updated"
 		end
 		redirect_to :action=>"index"

@@ -5,8 +5,6 @@ class ApplicationController < ActionController::Base
 	before_filter :authorize_user
 
 	#	@@games_per_week = 7
-	@@application_offset = 3*3600
-	@@application_timezone = ["EST","EDT"]
 
 	def authorize_user
 		unless session[:user]
@@ -35,13 +33,18 @@ class ApplicationController < ActionController::Base
 
 	def time_zone
 		if Time.new.dst?
-			@@application_timezone[1]
+			FFFF_SERVER_TIMEZONE[1]
 		else
-			@@application_timezone[0]
+			FFFF_SERVER_TIMEZONE[0]
 		end
 	end
 
 	def current_app_time
-		Time.at(Time.new+@@application_offset)
+		Time.new+FFFF_SERVER_OFFSET
 	end
+
+  def random_password(size = 8)
+    chars = (('a'..'z').to_a + ('a'..'z').to_a + ('0'..'9').to_a)
+    (1..size).collect{|a| chars[rand(chars.size)] }.join
+  end
 end
