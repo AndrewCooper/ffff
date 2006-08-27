@@ -22,7 +22,7 @@ FFFF_LOGOS_DIR = "~/ffff.hkcreations.org/logos/"
 
 # Include your app's configuration here:
 ActionMailer::Base.server_settings = {
-  :address  => "mail.dreamhost.com",
+  :address  => "mail.hkcreations.org",
   :port  => 587, 
   :domain  => "ffff.hkcreations.org",
   :user_name  => "m8475547",

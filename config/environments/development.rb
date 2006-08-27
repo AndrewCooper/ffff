@@ -22,7 +22,7 @@ config.action_mailer.raise_delivery_errors = false
 
 # Include your app's configuration here:
 ActionMailer::Base.server_settings = {
-  :address  => "mail.dreamhost.com",
+  :address  => "mail.hkcreations.org",
   :port  => 587, 
   :domain  => "ffff.hkcreations.org",
   :user_name  => "m8475547",

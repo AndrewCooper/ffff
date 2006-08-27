@@ -12,7 +12,8 @@ class UserController < ApplicationController
       newpass = random_password
       begin
         Notifications.deliver_forgot_password(user,newpass)
-      rescue Object => e
+      rescue Exception => e
+        logger.info "Exception: "+e.inspect
         flash[:warning] = "I'm sorry, a delivery error occured while trying to send your email.<br />Please contact an administrator at <a href=\"mailto:admin@hkcreations.org\">admin@hkcreations.org</a>."
       else
         flash[:notice] = "The email has been successfully sent."
