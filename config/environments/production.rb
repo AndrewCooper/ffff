@@ -17,8 +17,8 @@ config.action_controller.perform_caching             = true
 # Disable delivery errors if you bad email addresses should just be ignored
 # config.action_mailer.raise_delivery_errors = false
 
-FFFF_BACKUP_DIR = "~/backups/rails/"
-FFFF_LOGOS_DIR = "~/ffff.hkcreations.org/logos/"
+FFFF_BACKUP_DIR = "/home/acooper/backups/rails/"
+FFFF_LOGOS_DIR = "/home/acooper/ffff.hkcreations.org/logos/"
 
 # Include your app's configuration here:
 ActionMailer::Base.server_settings = {

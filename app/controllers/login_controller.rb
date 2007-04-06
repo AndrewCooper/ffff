@@ -16,6 +16,7 @@ class LoginController < ApplicationController
 		user = User.find(:first,:conditions=>["login=?",@params[:login]])
 		if user
 			calc_response = HMAC::SHA1.hexdigest(user.password,@session[:challenge]);
+			logger.info "Expected: "+calc_response
 			if calc_response == @params[:response]
 				update_session(user)
 				if user.new_password?

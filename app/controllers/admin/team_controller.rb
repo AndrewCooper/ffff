@@ -90,6 +90,7 @@ class Admin::TeamController < Admin::AdminController
   				end
   			end
 			else
+			  logger.info "Error: #{FFFF_LOGOS_DIR} does not exist, is not a directory, or is not writable."
 			  flash[:warning] = "#{FFFF_LOGOS_DIR} does not exist, is not a directory, or is not writable. "
 		  end
 		end
@@ -120,7 +121,9 @@ class Admin::TeamController < Admin::AdminController
 		response = http.get(img)
 		if response.code == '200'
 			n = "#{team.location} #{team.name}".gsub(" ","_")+".gif"
-			File.open(FFFF_LOGOS_DIR+n, "wb") do |f| 
+		  p = File.expand_path(n,FFFF_LOGOS_DIR)
+		  logger.info "Attempting to write file #{p}"
+			File.open(p, "wb") do |f| 
 				f.write(response.body)
 			end
 			team.image = n

@@ -51,7 +51,5 @@ end
 # end
 
 # Include your application configuration below
-FFFF_BACKUP_DIR = "#{RAILS_ROOT}/db/"
-FFFF_LOGOS_DIR = "#{RAILS_ROOT}/public/logos"
 FFFF_SERVER_OFFSET = 3*3600
 FFFF_SERVER_TIMEZONE = ["EST","EDT"]

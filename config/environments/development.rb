@@ -29,3 +29,6 @@ ActionMailer::Base.server_settings = {
   :password  => "*gw!oC",
   :authentication  => :login
 }
+
+FFFF_BACKUP_DIR = "#{RAILS_ROOT}/db/"
+FFFF_LOGOS_DIR = "#{RAILS_ROOT}/public/logos"
