@@ -21,7 +21,7 @@
 		</div>
 	</div>
 	<%= render_partial 'shared/game' %>
-	<% if @session[:user] %>
+	<% if session[:user] %>
 		<%= render_partial 'shared/user' %>
 	<% else %>
 		<%= render_partial 'shared/guest' %>
@@ -39,14 +39,14 @@
 		<div class="ArticleHeader"><%= @title %>&nbsp;</div>
 		<div class="ArticleLongContent">
 			<div class="ArticleBody">
-				<% if @flash[:warning] %>
+				<% if flash[:warning] %>
 					<div class="warning">
-						<%= @flash[:warning] %>
+						<%= flash[:warning] %>
 					</div>
 				<% end %>
-				<% if @flash[:notice] %>
+				<% if flash[:notice] %>
 					<div class="notice">
-						<%= @flash[:notice] %>
+						<%= flash[:notice] %>
 					</div>
 				<% end %>
 				<%= @content_for_layout %>
