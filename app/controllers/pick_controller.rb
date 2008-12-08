@@ -22,7 +22,7 @@ class PickController < ApplicationController
 				flash.now[:notice] = "There are no games for you to pick right now."
 			end
 		else
-			picks = @params["picks"]
+			picks = params["picks"]
 			picks.each do |key,pick|
 				game = Game.find(pick["game_id"])
 				if @now < game.gametime
@@ -31,7 +31,7 @@ class PickController < ApplicationController
 						dbpick.away_score = pick["away_score"] == "" ? 0 : pick["away_score"]
 						dbpick.home_score = pick["home_score"] == "" ? 0 : pick["home_score"]
 						dbpick.game_id = pick["game_id"]
-						dbpick.user_id = @session[:user][:uid]
+						dbpick.user_id = session[:user][:uid]
 						dbpick.save
 					else
 						dbpick = Pick.find(pick["pick_id"].to_i)
@@ -43,7 +43,7 @@ class PickController < ApplicationController
 					flash[:warning] = "The games for some of your picks have started. These picks are not updated."
 				end
 			end
-			flash[:notice] = "Your picks have been updated." 
+			flash[:notice] = "Your picks have been updated."
 			redirect_to(:action=>"make")
 		end
   end

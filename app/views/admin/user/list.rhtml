@@ -12,9 +12,9 @@
 		<td></td>
 	</tr>
 </thead>
-<% @items.each do |@item| %>
+<% @items.each do |@item| -%>
 	<tr id="item<%= @item.id %>" style="text-align:left;">
 		<%= render :partial => "item" %>
 	</tr>
-<% end %>
+<% end -%>
 </table>

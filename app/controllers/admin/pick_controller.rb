@@ -7,7 +7,7 @@ class Admin::PickController < Admin::AdminController
 
 	def edit
 		if request.get?
-			@user = User.find(@params[:id])
+			@user = User.find(params[:id])
 			if @user
 				@title = "Administration :: Picks :: #{@user.firstname} #{@user.lastname}"
 				@games = Game.find_by_sql(["SELECT games.id AS gid, games.gametime, games.week,
@@ -21,7 +21,7 @@ class Admin::PickController < Admin::AdminController
 				ORDER BY games.week DESC,games.gametime",@user.id])
 			end
 		else
-			picks = @params["picks"]
+			picks = params["picks"]
 			picks.each do |key,pick|
 				game = Game.find(pick["game_id"])
 				if pick["pick_id"] == ""

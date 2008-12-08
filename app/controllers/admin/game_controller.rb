@@ -1,13 +1,13 @@
 class Admin::GameController < Admin::AdminController
 	def delete
-		Game.delete(@params[:id])
+		Game.delete(params[:id])
 		render :nothing=>true
 	end
 
 	def edit
 		@colspan = 6
-		if @params[:id]
-			@item = Game.find_with_teamnames(:conditions=>"games.id = #{@params[:id]}").first
+		if params[:id]
+			@item = Game.find_with_teamnames(:conditions=>"games.id = #{params[:id]}").first
 		else
 			@item = Game.new
 			@item.gametime = current_app_time
@@ -21,8 +21,8 @@ class Admin::GameController < Admin::AdminController
 	end
 	
   def list
-  	if @params[:id]
-  		@item = Game.find_with_teamnames(:conditions=>"games.id = #{@params[:id]}").first
+  	if params[:id]
+  		@item = Game.find_with_teamnames(:conditions=>"games.id = #{params[:id]}").first
   		render (:partial => "item") and return
   	else
   		@items = Game.find_with_teamnames(:order=>"week,gametime")
@@ -35,15 +35,15 @@ class Admin::GameController < Admin::AdminController
 	end
 	
 	def update
-		if @params[:id]
-			@item = Game.find(@params[:id])
-			if @item.update_attributes(@params[:item])
-				redirect_to :action => "list",:id=>@params[:id]
+		if params[:id]
+			@item = Game.find(params[:id])
+			if @item.update_attributes(params[:item])
+				redirect_to :action => "list",:id=>params[:id]
 			else
 			 	render_text @item.errors.inspect  + "\n"
 			end
 		else
-			@item = Game.new(@params[:item])
+			@item = Game.new(params[:item])
 			if @item.save
 				redirect_to :action => "list","component"=>true
 			else 

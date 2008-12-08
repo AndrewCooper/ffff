@@ -7,6 +7,6 @@ class TeamController < ApplicationController
 
   def show
 		@title = "FFFF :: Show Team"
-		@team = Team.find(@params[:id])
+		@team = Team.find(params[:id])
   end
 end

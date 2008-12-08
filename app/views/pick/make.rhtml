@@ -4,7 +4,7 @@
 	<% @game = @games[rowidx] %>
 		<% if @game.week != week %>
 			<% week = @game.week %>
-			<%= form_tag%>
+			<% form_tag -%>
 			<table style="border:4px #fff ridge; padding: 1em; margin: 0 auto; width:90%;" cellpadding="3px" cellspacing="0">
 			<tr><td class="center" colspan="7"><h1>Week <%= week %></h1></td></tr>
 		<% end %>
@@ -45,7 +45,7 @@
 			</tfoot>
 			</table>
 			<br />
-		<%= end_form_tag %>
+			</form>
 		<% end %>
 	<% end %>
 <% end %>

@@ -1,13 +1,13 @@
 class Admin::BowlController < Admin::AdminController
 	def delete
-		Bowl.delete(@params[:id])
+		Bowl.delete(params[:id])
 		render :nothing=>true
 	end
 
 	def edit
 		@colspan = 5
-		if @params[:id]
-			@item = Bowl.find(@params[:id])
+		if params[:id]
+			@item = Bowl.find(params[:id])
 		else
 			@item = Bowl.new
 		end
@@ -20,8 +20,8 @@ class Admin::BowlController < Admin::AdminController
 	end
 
   def list
-  	if @params[:id]
-  		@item = Bowl.find(@params[:id])
+  	if params[:id]
+  		@item = Bowl.find(params[:id])
 #  		@game = Game.find_with_teamnames(:conditions=>"games.id = #{@item.game_id}").first
   		render(:partial => "item") and return
   	else
@@ -35,15 +35,15 @@ class Admin::BowlController < Admin::AdminController
 	end
 
 	def update
-		if @params[:id]
-			@item = Bowl.find(@params[:id])
-			if @item.update_attributes(@params[:item])
-				redirect_to :action => "list",:id=>@params[:id]
+		if params[:id]
+			@item = Bowl.find(params[:id])
+			if @item.update_attributes(params[:item])
+				redirect_to :action => "list",:id=>params[:id]
 			else
 			 	render_text @item.errors.inspect  + "\n"
 			end
 		else
-			@item = Bowl.new(@params[:item])
+			@item = Bowl.new(params[:item])
 			if @item.save
 				redirect_to :action => "list","component"=>true
 			else 

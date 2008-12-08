@@ -1,5 +1,5 @@
 <td>
-	<%= link_to_remote image_rollover("edit#{@item.id}","edit_off","edit_on"), {:url=>{:action=>"edit", :id=>@item.id}, :update=>"item#{@item.id}",:complete=>visual_effect(:appear,"edit#{@item.id}",:duration=>0.5)} %>
+	<%= link_to_remote image_tag("edit_off.png", :alt=>"edit#{@item.id}", :mouseover=>image_path("edit_on.png")), {:url=>{:action=>"edit", :id=>@item.id}, :update=>"item#{@item.id}",:complete=>visual_effect(:appear,"edit#{@item.id}",:duration=>0.5)} %>
 </td>
 <td class="center">
 	<%= @item.week %>
@@ -25,7 +25,7 @@
 	<% end %>
 </td>
 <td class="center">
-	<%= form_remote_tag :url=>{:action=>"delete",:id=>@item.id},:confirm=>"This will delete #{@item.away_name} vs #{@item.home_name}. Proceed?",:update=>"item#{@item.id}",:loading=>"Element.remove('item#{@item.id}')" %>
+	<% form_remote_tag :url=>{:action=>"delete",:id=>@item.id},:confirm=>"This will delete #{@item.away_name} vs #{@item.home_name}. Proceed?",:update=>"item#{@item.id}",:loading=>"Element.remove('item#{@item.id}')" -%>
 		<%= submit_tag "X" %>
-	<%= end_form_tag %>
+	<% end_form_tag -%>
 </td>

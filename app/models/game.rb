@@ -1,6 +1,6 @@
 class Game < ActiveRecord::Base
 	has_one :bowl
-	has_many :picks, :dependent=>true
+	has_many :picks, :dependent=>:delete_all
 	
 	def self.find_with_teamnames(options = {})
 		select = "SELECT games.*, away.name AS away_name, away.location AS away_loc, home.name AS home_name, home.location AS home_loc"

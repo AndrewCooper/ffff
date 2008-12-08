@@ -1,7 +1,7 @@
 <%= javascript_include_tag 'md5' %>
 <%= javascript_include_tag 'rijndael' %>
 
-<%= form_tag({:action=>"changepass"},{:onsubmit => "ffff_encrypt(this);"}) %>
+<% form_tag({:action=>"changepass"},{:onsubmit => "ffff_encrypt(this);"}) do -%>
 <%= hidden_field_tag "salt",session[:cpsalt] %>
 <%= hidden_field_tag "formkey" %>
 <%= hidden_field_tag "response" %>
@@ -23,4 +23,4 @@
 	<td colspan="2" class='center'><%= submit_tag "Change Password" %></td>
 </tr>
 </table>
-<%= end_form_tag %>
+<% end -%>

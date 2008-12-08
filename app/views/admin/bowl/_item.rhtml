@@ -1,5 +1,5 @@
 <td>
-	<%= link_to_remote image_rollover("edit#{@item.id}","edit_off","edit_on"), {:url=>{:action=>"edit", :id=>@item.id}, :update=>"item#{@item.id}",:complete=>visual_effect(:appear,"edit#{@item.id}",:duration=>0.5)} %>
+	<%= link_to_remote image_tag("edit_off.png", :alt=>"edit#{@item.id}", :mouseover=>image_path("edit_on.png")), {:url=>{:action=>"edit", :id=>@item.id}, :update=>"item#{@item.id}",:complete=>visual_effect(:appear,"edit#{@item.id}",:duration=>0.5)} %>
 </td>
 <td class="left">
 	<%= @item.name %>
