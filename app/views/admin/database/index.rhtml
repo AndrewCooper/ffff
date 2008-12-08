@@ -1,18 +1,18 @@
 <h2>Backup Database</h2>
 <div style="margin-left:1em">
-	<%= button_to "Initiate Backup",{:action=>"backup"} %>
-	
+  <%= button_to "Initiate Backup",{:action=>"backup"} %>
+
 </div>
 <br />
 <h2>Reset Database</h2>
 <div style="margin-left:1em">
-	<%= start_form_tag :action=>:reset %>
-	<%= check_box_tag	"users","1",false %> Users<br />
-	<%= check_box_tag "teams","1",false %> Teams<br />
-	<%= check_box_tag "games","1",true %> Games<br />
-	<%= check_box_tag "bowls","1",true %> Bowls<br />
-	<%= check_box_tag "picks","1",true %> Picks<br />
-	<%= check_box_tag "scores","1",true %> Scores<br />
-	<%= submit_tag "Reset Selected Tables",{:onClick=>"return confirm('All data in the selected tables will be lost. Proceed?');"} %>
-	<%= end_form_tag %>
+  <% form_tag :action=>:reset do %>
+    <%= check_box_tag	"users","1",false %> Users<br />
+    <%= check_box_tag "teams","1",false %> Teams<br />
+    <%= check_box_tag "games","1",true %> Games<br />
+    <%= check_box_tag "bowls","1",true %> Bowls<br />
+    <%= check_box_tag "picks","1",true %> Picks<br />
+    <%= check_box_tag "scores","1",true %> Scores<br />
+    <%= submit_tag "Reset Selected Tables",{:onClick=>"return confirm('All data in the selected tables will be lost. Proceed?');"} %>
+  <% end %>
 </div>

@@ -1,13 +1,13 @@
 <html>
-<head>
-  <title>: <%= controller.action_name %></title>
-  <%= stylesheet_link_tag 'scaffold' %>
-</head>
-<body>
+  <head>
+    <title>: <%= controller.action_name %></title>
+    <%= stylesheet_link_tag 'scaffold' %>
+  </head>
+  <body>
 
-<p style="color: green"><%= flash[:notice] %></p>
+    <p style="color: green"><%= flash[:notice] %></p>
 
-<%= @content_for_layout %>
+    <%= @content_for_layout %>
 
-</body>
+  </body>
 </html>

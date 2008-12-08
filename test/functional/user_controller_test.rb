@@ -5,19 +5,19 @@ require 'user_controller'
 class UserController; def rescue_action(e) raise e end; end
 
 class UserControllerTest < ActionController::TestCase
-	fixtures :users
+  fixtures :users
 	
-	def setup
-		@controller = UserController.new
-		@request    = ActionController::TestRequest.new
-		@response   = ActionController::TestResponse.new
-	end
+  def setup
+    @controller = UserController.new
+    @request    = ActionController::TestRequest.new
+    @response   = ActionController::TestResponse.new
+  end
 
-	def test_forgot_password_success
-		get :forgot_password
-		assert_response :success
+  def test_forgot_password_success
+    get :forgot_password
+    assert_response :success
 		
-		post :forgot_password, :username => users(:usera).login
+    post :forgot_password, :username => users(:usera).login
 		
-	end
+  end
 end

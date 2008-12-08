@@ -41,11 +41,11 @@ class NotificationsTest < Test::Unit::TestCase
   end
 
   private
-    def read_fixture(action)
-      IO.readlines("#{FIXTURES_PATH}/notifications/#{action}")
-    end
+  def read_fixture(action)
+    IO.readlines("#{FIXTURES_PATH}/notifications/#{action}")
+  end
 
-    def encode(subject)
-      quoted_printable(subject, CHARSET)
-    end
+  def encode(subject)
+    quoted_printable(subject, CHARSET)
+  end
 end

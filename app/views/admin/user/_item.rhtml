@@ -1,27 +1,27 @@
 <td>
-	<%= link_to_remote image_tag("edit_off.png", :alt=>"edit#{@item.id}", :mouseover=>image_path("edit_on.png")), {:url=>{:action=>"edit", :id=>@item.id}, :update=>"item#{@item.id}",:complete=>visual_effect(:appear,"edit#{@item.id}",:duration=>0.5)} %>
+  <%= link_to_remote image_tag("edit_off.png", :alt=>"edit#{@item.id}", :mouseover=>image_path("edit_on.png")), {:url=>{:action=>"edit", :id=>@item.id}, :update=>"item#{@item.id}",:complete=>visual_effect(:appear,"edit#{@item.id}",:duration=>0.5)} %>
 </td>
 <td>
-	<%= @item.lastname %>
+  <%= @item.lastname %>
 </td>
 <td>
-	<%= @item.firstname %>
+  <%= @item.firstname %>
 </td>
 <td>
-	<%= @item.login %>
+  <%= @item.login %>
 </td>
 <td>
-	<%= @item.email %>
+  <%= @item.email %>
 </td>
 <td class="center">
-	<%= if @item.alerts? then "X" else "-" end%>
+  <%= if @item.alerts? then "X" else "-" end%>
 </td>
 <td class="center">
-	<%= if @item.is_admin? then "X" else "-" end%>
+  <%= if @item.is_admin? then "X" else "-" end%>
 </td>
 <td class="center">
-	<%= if @item.new_password? then "X" else "-" end%>
+  <%= if @item.new_password? then "X" else "-" end%>
 </td>
 <td class="center">
-	<%= link_to_remote "[delete]", :url=>{:action=>"delete",:id=>@item.id}, :method=>:delete, :confirm=>"This will delete \'#{@item.firstname} #{@item.lastname}\'. Proceed?", :update=>"item#{@item.id}", :success=>"Element.remove('item#{@item.id}')" %>
+  <%= link_to_remote "[delete]", :url=>{:action=>"delete",:id=>@item.id}, :method=>:delete, :confirm=>"This will delete \'#{@item.firstname} #{@item.lastname}\'. Proceed?", :update=>"item#{@item.id}", :success=>"Element.remove('item#{@item.id}')" %>
 </td>

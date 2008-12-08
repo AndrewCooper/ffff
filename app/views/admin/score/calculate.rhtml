@@ -1,24 +1,24 @@
 <table>
-	<thead>
-	<tr>
-		<td>User</td>
-		<td>Week</td>
-		<td>Wins</td>
-		<td>Closests</td>
-		<td>Perfects</td>
-		<td>Sevens</td>
-	</tr>
-	</thead>
-<% @scores.each do |score| %>
-	<% if score.user %>
-		<tr>
-			<td><%= score.user.firstname %> <%= score.user.lastname %></td>
-			<td><%= score.week %></td>
-			<td><%= score.wins %></td>
-			<td><%= score.closests %></td>
-			<td><%= score.perfects %></td>
-			<td><%= score.sevens %></td>
-		</tr>
-	<% end%>
-<% end %>
+  <thead>
+    <tr>
+      <td>User</td>
+      <td>Week</td>
+      <td>Wins</td>
+      <td>Closests</td>
+      <td>Perfects</td>
+      <td>Sevens</td>
+    </tr>
+  </thead>
+  <% @scores.each do |score| %>
+    <% if score.user %>
+      <tr>
+        <td><%= score.user.firstname %> <%= score.user.lastname %></td>
+        <td><%= score.week %></td>
+        <td><%= score.wins %></td>
+        <td><%= score.closests %></td>
+        <td><%= score.perfects %></td>
+        <td><%= score.sevens %></td>
+      </tr>
+    <% end%>
+  <% end %>
 </table>

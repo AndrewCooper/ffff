@@ -1,16 +1,16 @@
 <div class="Article">
-	<div class="ArticleHeader">Login to FFFF</div>
-	<div class="ArticleLongContent">
-		<div class="ArticleBody">
-			You are not logged in.<br />
-			<%= link_to_remote "Click to log in.",:url=>{:controller=>"/login",:action=>"request_login"},:update => "loginFormDiv" %>
-			
-			<div id="loginFormDiv">
-				
-			</div>
-		</div>
-	</div>
-	<div class="ArticleFooter">
-		<div class="ArticleFooterBody"></div>
-	</div>
+  <div class="ArticleHeader">Login to FFFF</div>
+  <div class="ArticleLongContent">
+    <div class="ArticleBody">
+      You are not logged in.<br />
+      <%= link_to_remote "Click to log in.",:url=>{:controller=>"/login",:action=>"request_login"},:update => "loginFormDiv" %>
+
+      <div id="loginFormDiv">
+
+      </div>
+    </div>
+  </div>
+  <div class="ArticleFooter">
+    <div class="ArticleFooterBody"></div>
+  </div>
 </div>

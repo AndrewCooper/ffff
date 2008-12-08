@@ -6,7 +6,6 @@ class Notifications < ActionMailer::Base
     @recipients = user.email
     @from       = 'FFFF Administration <admin@hkcreations.org>'
     @sent_on    = Time.now
-    @headers    = {}
   end
 
   def forgot_password( user, new_pass )
@@ -15,7 +14,6 @@ class Notifications < ActionMailer::Base
     @recipients = user.email
     @from       = 'FFFF Administration <admin@hkcreations.org>'
     @sent_on    = Time.now
-    @headers    = {}
   end
 
   def picks_alert( user, games )
@@ -24,6 +22,5 @@ class Notifications < ActionMailer::Base
     @recipients = user.email
     @from       = 'FFFF Administration <admin@hkcreations.org>'
     @sent_on    = Time.now
-    @headers    = {}
   end
 end

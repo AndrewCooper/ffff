@@ -1,53 +1,54 @@
 <td></td>
 <td colspan="<%= @colspan %>">
-<% if @item.id %>
-	<div id="edit<%= @item.id %>">
-	<%= form_remote_tag :url=>{:action=>"update",:id=>@item.id}, :update => "item#{@item.id}",:loading=>visual_effect(:fade,"edit#{@item.id}",:duration=>0.25) %>
-<% else %>
-	<div id="new_item">
-	<%= form_remote_tag :url=>{:action=>"update"}, :update => "item_list" %>
-<% end %>
-
-	<table class="editbox">
-		<tr>
-			<td>
-				<% if @item.id %>
-					<%= link_to_remote "Cancel",{:url=>{:action=>"list",:id=>@item.id},:update=>"item#{@item.id}", :loading=>visual_effect(:fade,"edit#{@item.id}",:duration=>0.25)}%>
-				<% else %>
-					<%= link_to_remote "Close",{:url=>{:action=>"new"},:update=>"item_new", :loading=>visual_effect(:fade,"new_item",:duration=>0.25)}%>
-				<% end %>
-			</td>
-			<td class="label">Name</td>
-			<td class="left"><%= text_field "item", "name" %></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td class="label">Location</td>
-			<td class="left"><%= text_field "item", "location" %></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td class="label">URL</td>
-			<td class="left"><%= text_field "item", "location" %></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td class="label">Multiplier</td>
-			<td class="left"><%= text_field "item", "multiplier",:size=>3 %></td>
-		</tr>
-		<tr>
-			<td>
-				<% if @item.id %>
-					<%= submit_tag "Update" %>
-				<% else %>
-					<%= submit_tag "Create" %>
-				<% end %>
-			</td>
-			<td class="label">Game</td>
-			<td class="left"><%= select "item","game_id",@games %></td>
-		</tr>
-		<tr></tr>
-	</table>
-	<%= end_form_tag %>
-	</div>
+  <% if @item.id %>
+    <% divid = "edit#{@item.id}" %>
+    <% options = {:url=>{:action=>"update",:id=>@item.id}, :update => "item#{@item.id}",:loading=>visual_effect(:fade,"edit#{@item.id}",:duration=>0.25)} %>
+  <% else %>
+    <% divid="new_item" %>
+    <% options = {:url=>{:action=>"update"}, :update => "item_list"} %>
+  <% end %>
+  <div id="<%= divid %>">
+    <% form_tag options do %>
+      <table class="editbox">
+        <tr>
+          <td>
+            <% if @item.id %>
+              <%= link_to_remote "Cancel",{:url=>{:action=>"list",:id=>@item.id},:update=>"item#{@item.id}", :loading=>visual_effect(:fade,"edit#{@item.id}",:duration=>0.25)}%>
+            <% else %>
+              <%= link_to_remote "Close",{:url=>{:action=>"new"},:update=>"item_new", :loading=>visual_effect(:fade,"new_item",:duration=>0.25)}%>
+            <% end %>
+          </td>
+          <td class="label">Name</td>
+          <td class="left"><%= text_field "item", "name" %></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="label">Location</td>
+          <td class="left"><%= text_field "item", "location" %></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="label">URL</td>
+          <td class="left"><%= text_field "item", "location" %></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="label">Multiplier</td>
+          <td class="left"><%= text_field "item", "multiplier",:size=>3 %></td>
+        </tr>
+        <tr>
+          <td>
+            <% if @item.id %>
+              <%= submit_tag "Update" %>
+            <% else %>
+              <%= submit_tag "Create" %>
+            <% end %>
+          </td>
+          <td class="label">Game</td>
+          <td class="left"><%= select "item","game_id",@games %></td>
+        </tr>
+        <tr></tr>
+      </table>
+    <% end %>
+  </div>
 </td>
