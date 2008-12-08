@@ -1,16 +1,16 @@
 class CreateTeams < ActiveRecord::Migration
   def self.up
     create_table :teams do |t|
-      t.column :name, :string, :null=>false
-      t.column :image, :string, :null=>false
-      t.column :color, :string, :null=>false, :limit=>6
-      t.column :location, :string, :null=>false
-      t.column :conference, :string, :null=>false
+      t.column :name, :string, :null=>false, :default=>''
+      t.column :image, :string, :null=>false, :default=>''
+      t.column :color, :string, :null=>false, :default=>'000000'
+      t.column :location, :string, :null=>false, :default=>''
+      t.column :conference, :string, :null=>false, :default=>''
       t.column :rankAP, :integer, :null=>false, :default=>0
       t.column :rankUSA, :integer, :null=>false, :default=>0
-      t.column :record, :string, :null=>false
+      t.column :record, :string, :null=>false, :default=>''
       t.column :espnid, :integer, :null=>false, :default=>0
-      t.column :updated_on, :datetime, :null=>false
+      t.column :updated_on, :datetime, :null=>false, :default=>'2000-01-01T00:00:00'
     end
   end
 

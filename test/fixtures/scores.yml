@@ -1,5 +1,17 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-first_score:
-  id: 1
-another_score:
-  id: 2
+usera_score1: 
+  week: 1
+  total: 4
+  closests: 0
+  wins: 4
+  sevens: 0
+  perfects: 0
+  user: usera
+
+usera_score2:
+  week: 2
+  total: 4
+  closests: 0
+  wins: 4
+  sevens: 0
+  perfects: 0
+  user: usera

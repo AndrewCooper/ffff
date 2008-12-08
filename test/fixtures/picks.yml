@@ -1,27 +1,32 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-first_pick:
- id: 1
- game_id:a
- user_id:f
- home_score:d
- away_score:fe
- pick_score:fe
- is_closest:aaa
+usera_first_pick:
+  game: pokesVSsooners
+  user: usera
+  home_score: 7
+  away_score: 14
+  pick_score: 0
+  is_closest: 0
 
-first_pick:
- id: 1
- game_id:a
- user_id:f
- home_score:d
- away_score:fe
- pick_score:fe
- is_closest:aaa
+userb_first_pick:
+  game: pokesVSsooners
+  user: userb
+  home_score: 10
+  away_score: 14
+  pick_score: 0
+  is_closest: 0
 
-first_pick:
- id: 1
- game_id:a
- user_id:f
- home_score:d
- away_score:fe
- pick_score:fe
- is_closest:aaa
+usera_second_pick:
+  game: wildcatsVSjayhawks
+  user: usera
+  home_score: 14
+  away_score: 7
+  pick_score: 0
+  is_closest: 0
+
+userb_second_pick:
+  game: wildcatsVSjayhawks
+  user: userb
+  home_score: 10
+  away_score: 14
+  pick_score: 0
+  is_closest: 0

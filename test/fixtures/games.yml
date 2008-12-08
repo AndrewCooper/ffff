@@ -1,5 +1,19 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-first_game:
-  id: 1
-another_game:
-  id: 2
+pokesVSsooners:
+  home_team_id: sooners
+  home_score: 21
+  away_team_id: pokes
+  away_score: 26
+  is_bowl: 0
+  week: 1
+  gametime: <%= Time.now.tomorrow.to_s(:db) %>
+
+wildcatsVSjayhawks: 
+  home_team_id: jayhawks
+  home_score: 37
+  away_team_id: wildcats
+  away_score: 34
+  is_bowl: 0
+  week: 2
+  gametime: <%= Time.now.yesterday.to_s(:db) %>
+  

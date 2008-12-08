@@ -1,17 +1,31 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+admin:
+  login: admin
+  password: 5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8 # SHA1(password)
+  firstname: Admin
+  lastname: istrator
+  email: admin@hkcreations.org
+  is_admin: 1
+  new_password: 1
+
 usera:
-  id: 1
   login: usera
+  password: 5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8 # SHA1(password)
   firstname: example
   lastname: user
-  password: 5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8 # SHA1(password)
-  admin: 0
-  new_password: 0
+  email: nobody@hkcreations.org
+  is_admin: 0
+  new_password: 1
+  alerts: 1
+
 userb:
-  id: 2
   login: userb
+  password: 5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8 # SHA1(password)
   firstname: another
   lastname: example
-  password: 5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8 # SHA1(password)
-  admin: 0
-  new_password: 0
+  email: null.pointer.exception@hkcreations.org
+  is_admin: 0
+  new_password: 1
+  alerts: 1

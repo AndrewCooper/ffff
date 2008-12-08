@@ -1,5 +1,47 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-first_team:
-  id: 1
-another_team:
-  id: 2
+pokes:
+  name: Cowboys
+  espnid: 197
+  updated_on: 2008-10-03 12:35:11 -07:00
+  rankUSA: 22
+  conference: Big 12 - South
+  color: ff7300
+  rankAP: 21
+  image: Oklahoma_State_Cowboys.gif
+  record: 4-0
+  location: Oklahoma State
+
+sooners:
+  name: Sooners
+  espnid: 201
+  updated_on: 2008-10-03 12:35:11 -07:00
+  rankUSA: 1
+  conference: Big 12 - South
+  color: 7b0000
+  rankAP: 1
+  image: Oklahoma_Sooners.gif
+  record: 4-0
+  location: Oklahoma
+
+wildcats: 
+  name: Wildcats
+  espnid: 2306
+  updated_on: 2008-10-03 12:35:11 -07:00
+  rankUSA: 0
+  conference: Big 12 - North
+  color: "633194"
+  rankAP: 0
+  image: Kansas_State_Wildcats.gif
+  record: 3-1
+  location: Kansas State
+
+jayhawks: 
+  name: Jayhawks
+  espnid: 2305
+  updated_on: 2008-10-03 12:35:20 -07:00
+  rankUSA: 16
+  conference: Big 12 - North
+  color: 0337b4
+  rankAP: 16
+  image: Kansas_Jayhawks.gif
+  record: 3-1
+  location: Kansas

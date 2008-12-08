@@ -1,45 +1,51 @@
 require 'digest/sha1'
 
 class User < ActiveRecord::Base
-  has_many :scores, :dependent => true
-  has_many :picks, :dependent => true
-  
-  def session_info
-    {:name=>"#{self[:firstname]} #{self[:lastname]}",:uid=>self[:id],:admin=>self[:is_admin]}
-  end
-  
-  def name
-    self.firstname+" "+self.lastname
-  end
+	has_many :scores, :dependent => :delete_all
+	has_many :picks, :dependent => :delete_all
 
-  protected
+	DEFAULT_PASSWORD = Digest::SHA1.hexdigest "football!"
+	
+	before_validation :check_password_updated
+	after_validation :digest_updated_password
+	
+	validates_uniqueness_of :login, :message => "NOT A UNIQUE LOGIN"
+	validates_length_of :login, :within => 3..40
+	validates_length_of :password, :within => 5..40
+	validates_presence_of :login, :password
 
-  # If the record is updated we will check if the password is empty.
-  # If its empty we assume that the user didn't want to change his
-  # password and just reset it to the old value.
-  def before_validation
-    if password.empty? then
-      if self.new_record? then
-        self.password = "football!"
-        @password_update = :true
-      else
-        user = User.find(self.id)
-        self.password = user.password
-        @password_update = :false
-      end
-    else
-      @password_update = :true
-    end
-  end
+	def session_info
+		{:name=>"#{self[:firstname]} #{self[:lastname]}",:uid=>self[:id],:admin=>self[:is_admin]}
+	end
 
-  def after_validation
-    if @password_update
-      self.password = Digest::SHA1.hexdigest(self.password)
-    end
-  end
+	def name
+		self.firstname+" "+self.lastname
+	end
 
-  validates_uniqueness_of :login
-  validates_length_of :login, :within => 3..40
-  validates_length_of :password, :within => 5..40
-  validates_presence_of :login, :password
+	private
+	# If the record is updated we will check if the password is empty.
+	# If its empty we assume that the user didn't want to change his
+	# password and just reset it to the old value.
+	def check_password_updated
+		if self.new_record? then
+			@password_update = false
+		else
+			if password.empty? then
+				user = User.find(self.id)
+				self.password = user.password
+				@password_update = false
+			else
+				@password_update = true
+			end
+		end
+		true
+	end
+	
+	def digest_updated_password
+		if @password_update
+			self.password = Digest::SHA1.hexdigest(self.password)
+		end
+		true
+	end
+
 end
