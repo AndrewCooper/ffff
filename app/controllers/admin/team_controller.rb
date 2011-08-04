@@ -79,7 +79,8 @@ class Admin::TeamController < Admin::AdminController
 			end
 		end
 		if @params["logo"] == "true"
-		  if File.exists?(FFFF_LOGOS_DIR) && File.directory?(FFFF_LOGOS_DIR) && File.writable?(FFFF_LOGOS_DIR) then
+		  logos_dir = File.expand_path(FFFF_LOGOS_DIR)
+		  if File.exists?(logos_dir) && File.directory?(logos_dir) && File.writable?(logos_dir) then
   			host = "espn-att.starwave.com"
   			Net::HTTP.start(host,80) do |http|
   				@teams.each do |team|
@@ -90,8 +91,8 @@ class Admin::TeamController < Admin::AdminController
   				end
   			end
 			else
-			  logger.info "Error: #{FFFF_LOGOS_DIR} does not exist, is not a directory, or is not writable."
-			  flash[:warning] = "#{FFFF_LOGOS_DIR} does not exist, is not a directory, or is not writable. "
+			  logger.info "Error: #{logos_dir} does not exist, is not a directory, or is not writable."
+			  flash[:warning] = "#{logos_dir} does not exist, is not a directory, or is not writable. "
 		  end
 		end
 		if flash[:warning].nil? then
