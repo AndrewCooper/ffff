@@ -22,3 +22,6 @@ config.action_controller.perform_caching             = true
 
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
+
+FFFF_BACKUP_DIR = "/home/acooper/backups/rails/"
+FFFF_LOGOS_DIR = "/home/acooper/ffff.hkcreations.org/logos/"
