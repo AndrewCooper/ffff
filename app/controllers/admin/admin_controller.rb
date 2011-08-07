@@ -8,7 +8,7 @@ class Admin::AdminController < ApplicationController
   def authorize_admin
 	unless session[:user][:admin] == 1
 	  flash[:notice] = "Administrator access required."
-	  redirect_to :controller=>"/"
+	  redirect_to root_path
 	  false
 	end
   end
