@@ -4,8 +4,6 @@ class User < ActiveRecord::Base
   has_many :scores, :dependent => :delete_all
   has_many :picks, :dependent => :delete_all
 
-  DEFAULT_PASSWORD = Digest::SHA1.hexdigest "football!"
-	
   before_validation :check_password_updated
   after_validation :digest_updated_password
 	
