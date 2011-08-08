@@ -20,11 +20,11 @@
           <div class="ArticleFooterBody"></div>
         </div>
       </div>
-      <%= render_partial 'shared/game' %>
+      <%= render :partial=>'shared/game' %>
       <% if session[:user] %>
-        <%= render_partial 'shared/user' %>
+        <%= render :partial=>'shared/user' %>
       <% else %>
-        <%= render_partial 'shared/guest' %>
+        <%= render :partial=>'shared/guest' %>
       <% end %>
     </div>
 

@@ -42,5 +42,5 @@
 </div>
 <% logger.info "Session :"+session[:user].inspect %>
 <% if session[:user][:admin]==1 %>
-  <%= render_partial 'shared/admin' %>
+  <%= render :partial=>'shared/admin' %>
 <% end %>
