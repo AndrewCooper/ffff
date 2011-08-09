@@ -12,11 +12,11 @@
       <table class="editbox">
         <tr>
           <td>
-            <% if @item.id -%>
+            <% if @item.id %>
               <%= link_to_remote "Cancel",{:url=>{:action=>"list",:id=>@item.id},:update=>"item#{@item.id}", :loading=>visual_effect(:fade,"edit#{@item.id}",:duration=>0.25)}%>
-            <% else -%>
+            <% else %>
               <%= link_to_remote "Close",{:url=>{:action=>"new"},:update=>"item_new", :loading=>visual_effect(:fade,"new_item",:duration=>0.25)}%>
-            <% end -%>
+            <% end %>
           </td>
           <td class="label">First Name</td>
           <td><%= text_field "item","firstname" %></td>
@@ -38,11 +38,11 @@
         </tr>
         <tr >
           <td>
-            <% if @item.id -%>
+            <% if @item.id %>
               <%= submit_tag "Update" %>
-            <% else -%>
+            <% else %>
               <%= submit_tag "Create" %>
-            <% end -%>
+            <% end %>
           </td>
           <td class="label">Flags</td>
           <td >
