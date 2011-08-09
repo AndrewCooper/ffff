@@ -9,7 +9,6 @@ class LoginController < ApplicationController
     session[:user] = nil
     session[:challenge] = Digest::SHA1.hexdigest(rand.to_s)
     logger.info "Challenge: "+session[:challenge]
-    render :partial => "login"
   end
 
   def login
