@@ -18,7 +18,7 @@
   <%= @item.record %>
 </td>
 <td class="center">
-  <% form_remote_tag :url=>{:action=>"delete",:id=>@item.id},:confirm=>"This will delete #{@item.name}. Proceed?",:update=>"item#{@item.id}",:loading=>"Element.remove('item#{@item.id}')" do %>
+  <%= form_remote_tag :url=>{:action=>"delete",:id=>@item.id},:confirm=>"This will delete #{@item.name}. Proceed?",:update=>"item#{@item.id}",:loading=>"Element.remove('item#{@item.id}')" do %>
     <%= submit_tag "X" %>
   <% end %>
 </td>

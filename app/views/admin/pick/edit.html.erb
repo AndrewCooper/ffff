@@ -1,5 +1,5 @@
 <% @weeks.each_with_index do |games, week| %>
-  <% form_tag :action=>"edit" do %>
+  <%= form_tag :action=>"edit" do %>
     Week <%= week %>
     <table style="border-top:3px double black;">
       <% games.each do |game| -%>
