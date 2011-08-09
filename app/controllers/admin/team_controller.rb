@@ -18,18 +18,18 @@ class Admin::TeamController < Admin::AdminController
   end
 
   #http://espn.starwave.com/i/teamlogos/ncaa/med/#.gif
-  #	def image
-  #		if params[:logofile]
-  #			File.open("#{RAILS_ROOT}/public/logos/#{params['filename']}", "wb") do |f|
-  #				f.write(params['logofile'].read)
-  #			end
-  #		end
-  #	end
+  # def image
+  #   if params[:logofile]
+  #     File.open("#{RAILS_ROOT}/public/logos/#{params['filename']}", "wb") do |f|
+  #       f.write(params['logofile'].read)
+  #     end
+  #   end
+  # end
 
   def index
     @title = "Administration :: Teams"
   end
-	
+
   def list
     if params[:id]
       @item = Team.find(params[:id])
@@ -38,7 +38,7 @@ class Admin::TeamController < Admin::AdminController
       @items = Team.find(:all,:order=>"location")
     end
   end
-	
+
   def new
     @item = Team.new
     render :partial=>"admin/shared/newitem"
@@ -102,7 +102,7 @@ class Admin::TeamController < Admin::AdminController
   end
 
   private
-  def grab_info(http,team)	#http://sports.espn.go.com/ncf/xml/teamInfoXML_2_0_0?teamId=###
+  def grab_info(http,team)  #http://sports.espn.go.com/ncf/xml/teamInfoXML_2_0_0?teamId=###
     path = "/ncf/xml/teamInfoXML_2_0_0?teamId=#{team.espnid}"
     response = http.get(path)
     if response.code == '200'
@@ -116,7 +116,7 @@ class Admin::TeamController < Admin::AdminController
       team.rankAP = doc.root.elements["rankAP"].text.to_i
     end
   end
-	
+
   def grab_logo(http,team) #http://sports.espn.go.com/i/teamlogos/ncaa/med/#{team.espnid}.gif
     img = "/i/teamlogos/ncaa/med/#{team.espnid}.gif"
     response = http.get(img)

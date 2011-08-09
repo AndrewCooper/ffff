@@ -5,7 +5,7 @@ This email was sent because you wished to be notified when you had games unpicke
 The following games will occur within the next 24 hours and have not yet been picked:
 
 <% @games.each do |game| %>
-  <%=	game.gametime.strftime("%I:%M%p") %> : <%= game.aloc %> <%= game.aname %> at <%= game.hloc %> <%= game.hname %>
+  <%= game.gametime.strftime("%I:%M%p") %> : <%= game.aloc %> <%= game.aname %> at <%= game.hloc %> <%= game.hname %>
 <% end %>
 
 This is the only warning you will receive about these games. If a game is not picked before it starts, you will lose the chance and will have an empty pick for that game. If extenuating circumstances prevent you from making your picks, please contact me or Nic Kruckeberg (nic.kruckeberg@gmail.com).

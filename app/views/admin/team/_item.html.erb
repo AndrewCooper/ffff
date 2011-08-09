@@ -2,10 +2,10 @@
   <%= link_to_remote image_tag("edit_off.png", :alt=>"edit#{@item.id}", :mouseover=>image_path("edit_on.png")), {:url=>{:action=>"edit", :id=>@item.id}, :update=>"item#{@item.id}",:complete=>visual_effect(:appear,"edit#{@item.id}",:duration=>0.5)} %>
 </td>
 <td>
-  <%= @item.location %>	<%= @item.name %>
+  <%= @item.location %> <%= @item.name %>
 </td>
 <td>
-  <!--	<%= image_tag "/logos/#{@item.image}",:size=>"24x24" %> -->
+  <!--  <%= image_tag "/logos/#{@item.image}",:size=>"24x24" %> -->
   <%= @item.image %>
 </td>
 <td>

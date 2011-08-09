@@ -2,7 +2,7 @@
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
-  #	init_gettext "ffff"
+  # init_gettext "ffff"
   layout :is_component
   before_filter :authorize_user
 
@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password").
   # filter_parameter_logging :password
 
-  #	@@games_per_week = 7
+  # @@games_per_week = 7
 
   def authorize_user
     unless session[:user]

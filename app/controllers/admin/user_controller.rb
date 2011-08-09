@@ -1,8 +1,8 @@
-class Admin::UserController < Admin::AdminController	
+class Admin::UserController < Admin::AdminController  
   def delete
     User.delete(params[:id])
-    # 		Pick.delete_all("user_id = #{params[:id]}")
-    # 		Score.delete_all("user_id = #{params[:id]}")
+    #     Pick.delete_all("user_id = #{params[:id]}")
+    #     Score.delete_all("user_id = #{params[:id]}")
     render :nothing=>true
   end
 
@@ -15,11 +15,11 @@ class Admin::UserController < Admin::AdminController
     end
     render :partial => "edit"
   end
-	
+
   def index
     @title = "Administration :: Users"
   end
-	
+
   def list
     if params[:id]
       @item = User.find(params[:id])
@@ -28,7 +28,7 @@ class Admin::UserController < Admin::AdminController
       @items = User.find(:all,:order=>"lastname,firstname")
     end
   end
-	
+
   def new
     @item=User.new
     render :partial=>"admin/shared/newitem"

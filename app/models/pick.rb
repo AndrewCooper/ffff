@@ -34,25 +34,25 @@ class Pick < ActiveRecord::Base
       end
     end
     # if !mails.empty? then
-    # 	puts "#{mails.length} mails to be sent"
-    # 	options = ActionMailer::Base.server_settings
-    # 	exceptions = {}
-    # 	mails.each_slice(25) do |mails_slice|
-    # 		Net::SMTP.start(options[:address],options[:port],options[:domain],options[:user_name],options[:password],options[:authentication]) do |sender|
-    # 			mails_slice.each do |mail|
-    # 				begin
-    # 					puts "Sending alert to #{mail.to}"
-    # 					sender.sendmail mail.encoded, mail.from, mail.to
-    # 				rescue Exception => e
-    # 					exceptions[recipient] = e
-    # 					#needed as the next mail will send command MAIL FROM, which would
-    # 					#raise a 503 error: "Sender already given"
-    # 					sender.finish
-    # 					sender.start
-    # 				end
-    # 			end
-    # 		end
-    # 	end
+    #   puts "#{mails.length} mails to be sent"
+    #   options = ActionMailer::Base.server_settings
+    #   exceptions = {}
+    #   mails.each_slice(25) do |mails_slice|
+    #     Net::SMTP.start(options[:address],options[:port],options[:domain],options[:user_name],options[:password],options[:authentication]) do |sender|
+    #       mails_slice.each do |mail|
+    #         begin
+    #           puts "Sending alert to #{mail.to}"
+    #           sender.sendmail mail.encoded, mail.from, mail.to
+    #         rescue Exception => e
+    #           exceptions[recipient] = e
+    #           #needed as the next mail will send command MAIL FROM, which would
+    #           #raise a 503 error: "Sender already given"
+    #           sender.finish
+    #           sender.start
+    #         end
+    #       end
+    #     end
+    #   end
     # end
   end
 end

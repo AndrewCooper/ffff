@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   before_validation :check_password_updated
   after_validation :digest_updated_password
-	
+
   validates_uniqueness_of :login, :message => "NOT A UNIQUE LOGIN"
   validates_length_of :login, :within => 3..40
   validates_length_of :password, :within => 5..40
@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
     end
     true
   end
-	
+
   def digest_updated_password
     if @password_update
       self.password = OpenSSL::Digest::SHA1.hexdigest(self.password)

@@ -2,7 +2,7 @@ require 'openssl'
 
 class LoginController < ApplicationController
   before_filter :authorize_user,:except=>[:request_login,:login,:logout]
-	
+
   def request_login
     session[:challenge] = nil
     session[:user] = nil
@@ -24,7 +24,7 @@ class LoginController < ApplicationController
         end
       else
         flash[:notice]= "Password incorrect for #{params[:login]}"
-				
+
         session[:user] = nil
       end
     else
@@ -33,7 +33,7 @@ class LoginController < ApplicationController
     session[:challenge] = nil
     redirect_to root_path
   end
-  
+
   def logout
     session[:user] = nil
     redirect_to root_path
