@@ -1,9 +1,10 @@
 <br />
-<% form_tag({:controller => "login",:action => "login"},{:onsubmit => "response.value=hex_hmac_sha1(hex_sha1(password.value),challenge.value);password.value='';challenge.value='';Effect.BlindUp('loginFormDiv',{duration:0.25})"}) do -%>
-  <%= hidden_field_tag "response" -%>
+<%= form_tag({:controller => "login",:action => "login"},{:onsubmit => "response.value=hex_hmac_sha1(hex_sha1(password.value),challenge.value);password.value='';challenge.value='';Effect.BlindUp('loginFormDiv',{duration:0.25})"}) do %>
+  <%= hidden_field_tag "response" %>
   <%= hidden_field_tag "challenge", session[:challenge] %>
   Login:<br /><%= text_field_tag "login" %>
   Password:<br /><%= password_field_tag "password" %>
   <%= submit_tag "Log in" %>
 <% end %>
 <%= link_to "Forgot Password?", {:controller=>"user", :action=>"forgot_password"} %>
+
