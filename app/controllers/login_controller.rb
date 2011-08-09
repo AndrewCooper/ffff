@@ -31,11 +31,11 @@ class LoginController < ApplicationController
       flash[:notice] = "User #{params[:login]} not found."
     end
     session[:challenge] = nil
-    redirect_to :controller => "/"
+    redirect_to root_path
   end
   
   def logout
     session[:user] = nil
-    redirect_to :controller => "/"
+    redirect_to root_path
   end
 end
