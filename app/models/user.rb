@@ -1,4 +1,4 @@
-require 'digest/sha1'
+require 'openssl'
 
 class User < ActiveRecord::Base
   has_many :scores, :dependent => :delete_all
@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
 	
   def digest_updated_password
     if @password_update
-      self.password = Digest::SHA1.hexdigest(self.password)
+      self.password = OpenSSL::Digest::SHA1.hexdigest(self.password)
     end
     true
   end

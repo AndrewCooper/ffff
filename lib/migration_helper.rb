@@ -1,4 +1,4 @@
-require 'digest/sha1'
+require 'openssl'
 
 module MigrationHelper
 
@@ -8,6 +8,6 @@ module MigrationHelper
 
   private
 
-  DEFAULT_PASSWORD = Digest::SHA1.hexdigest "football!"
+  DEFAULT_PASSWORD = OpenSSL::Digest::SHA1.hexdigest "football!"
 end
 	

@@ -1,5 +1,4 @@
-require 'digest/sha1'
-require 'digest/hmac'
+require 'openssl'
 
 class LoginController < ApplicationController
   before_filter :authorize_user,:except=>[:request_login,:login,:logout]
@@ -7,14 +6,14 @@ class LoginController < ApplicationController
   def request_login
     session[:challenge] = nil
     session[:user] = nil
-    session[:challenge] = Digest::SHA1.hexdigest(rand.to_s)
+    session[:challenge] = OpenSSL::Digest::SHA1.hexdigest(rand.to_s)
     logger.info "Challenge: "+session[:challenge]
   end
 
   def login
     user = User.find(:first,:conditions=>["login=?",params[:login]])
     if user
-      calc_response = Digest::HMAC.hexdigest(user.password,session[:challenge],Digest::SHA1);
+      calc_response = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::SHA1.new,user.password,session[:challenge]);
       logger.info "Expected: "+calc_response
       if calc_response == params[:response]
         update_session(user)

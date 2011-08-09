@@ -6,8 +6,10 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
+require 'openssl'
+
 admin = User.find_or_create_by_login( :login=>"admin", 
-                                      :password=>"ffff@dm1n", 
+                                      :password=>OpenSSL::Digest::SHA1.hexdigest("ffff@dm1n"), 
                                       :firstname=>"FFFF", 
                                       :lastname=>"Admin", 
                                       :email=>"admin@example.com",
