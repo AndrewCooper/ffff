@@ -2,8 +2,6 @@
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
-  # init_gettext "ffff"
-  layout :is_component
   before_filter :authorize_user
 
   # See ActionController::RequestForgeryProtection for details
@@ -36,11 +34,6 @@ class ApplicationController < ActionController::Base
       session[:user] = user.session_info
       session[:user][:stats] = Score.user_stats(user[:id])
     end
-  end
-
-  private
-  def is_component
-    params["component"] ? nil : "standard"
   end
 
   def time_zone
