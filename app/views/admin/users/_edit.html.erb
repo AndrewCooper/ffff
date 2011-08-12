@@ -22,21 +22,21 @@
           <td><%= text_field "item","firstname" %></td>
         </tr>
         <tr>
-          <td ></td>
+          <td></td>
           <td class="label">Last Name</td>
           <td><%= text_field "item","lastname" %></td>
         </tr>
         <tr>
-          <td ></td>
+          <td></td>
           <td class="label">Login</td>
           <td><%= text_field "item","login" %></td>
         </tr>
-        <tr >
-          <td ></td>
+        <tr>
+          <td></td>
           <td class="label">Email</td>
           <td><%= text_field "item","email" %></td>
         </tr>
-        <tr >
+        <tr>
           <td>
             <% if @item.id %>
               <%= submit_tag "Update" %>
@@ -45,7 +45,7 @@
             <% end %>
           </td>
           <td class="label">Flags</td>
-          <td >
+          <td>
             <%= check_box "item","alerts" %>Alerts
             <%= check_box "item","is_admin" %>Admin
             <%= check_box "item","new_password" %>Set Password

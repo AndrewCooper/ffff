@@ -25,5 +25,5 @@
   <% end %>
 </td>
 <td class="center">
-    <%= link_to delete_image("delete#{item.id}"), admin_game_path(item), :remote=>true, :method=>:delete,:confirm=>"This will delete #{item.away_team.name} vs #{item.home_team.name}. Proceed?" %>
+  <%= link_to delete_image("delete#{item.id}"), admin_game_path(item), :remote=>true, :method=>:delete,:confirm=>"This will delete #{item.away_team.name} vs #{item.home_team.name}. Proceed?" %>
 </td>

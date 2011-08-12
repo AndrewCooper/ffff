@@ -30,7 +30,7 @@
             <%= @game.aconf %><br />
           </div>
         </td>
-        <td class="bt bb center" ><%= link_to image_tag("/logos/#{@game.aimg}",:size=>"50x50"),{:controller=>"team",:action=>"show",:id=>@game.aid} %></td>
+        <td class="bt bb center"><%= link_to image_tag("/logos/#{@game.aimg}",:size=>"50x50"),{:controller=>"team",:action=>"show",:id=>@game.aid} %></td>
         <td class="bt br bb center"><%= @game.pascore %><br /><span style="font-size:.7em">(<%= @game.away_score %>)</span></td>
         <td class="center" style="font-size:.6em">@<br/><%= @game.gametime.strftime("%I:%M%p") %><br /><%= @game.gametime.strftime("%a") %><br /><%= @game.gametime.strftime("%m/%d/%y") %><br /><%= @tz %></td>
         <td class="bt bl bb center"><%= @game.phscore %><br /><span style="font-size:.7em">(<%= @game.home_score %>)</span></td>
