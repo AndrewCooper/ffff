@@ -3,14 +3,14 @@ class Admin::GamesController < Admin::AdminController
   def index
     @title = "Administration :: Games"
     @item = Game.new
-    @items = Game.find_with_teamnames(:order=>"week,gametime")
-    @teams = Team.find_by_sql("SELECT location,name,id FROM teams ORDER BY location").collect{|t| [t.location+" "+t.name,t.id]}
+    @items = Game.order("week,gametime").includes(:away_team,:home_team)
+    @teams = Team.order("location").collect{|t| [t.location+" "+t.name,t.id]}
   end
 
   # GET /admin/games/:id
   def show
-    @item = Game.find_with_teamnames(:conditions=>"games.id = #{params[:id]}").first
-    @teams = Team.find_by_sql("SELECT location,name,id FROM teams ORDER BY location").collect{|t| [t.location+" "+t.name,t.id]}
+    @item = Game.find(params[:id])
+    @teams = Team.order("location").collect{|t| [t.location+" "+t.name,t.id]}
   end
 
   # GET /admin/games/new
@@ -20,14 +20,14 @@ class Admin::GamesController < Admin::AdminController
 
   # GET /admin/games/:id/edit
   def edit
-    @item = Game.find_with_teamnames(:conditions=>"games.id = #{params[:id]}").first
-    @teams = Team.find_by_sql("SELECT location,name,id FROM teams ORDER BY location").collect{|t| [t.location+" "+t.name,t.id]}
+    @item = Game.find(params[:id])
+    @teams = Team.order("location").collect{|t| [t.location+" "+t.name,t.id]}
   end
 
   # POST /admin/games
   def create
     @item = Game.create( params[:item] )
-    @items = Game.find_with_teamnames(:order=>"week,gametime")
+    @items = Game.order("week,gametime")
     respond_to do |format|
       format.html { redirect_to admin_games_path }
       format.js
@@ -36,7 +36,7 @@ class Admin::GamesController < Admin::AdminController
 
   # PUT /admin/games/:id
   def update
-    @item = Game.find_with_teamnames(:conditions=>"games.id = #{params[:id]}").first
+    @item = Game.find(params[:id])
     if @item.update_attributes(params[:item])
       respond_to do |format|
         format.html { redirect_to admin_games_path }
@@ -52,7 +52,7 @@ class Admin::GamesController < Admin::AdminController
 
   # DELETE /admin/games/:id
   def destroy
-    @item = Game.find_with_teamnames(:conditions=>"games.id = #{params[:id]}").first
+    @item = Game.find(params[:id])
     @item.destroy
     respond_to do |format|
       format.html { redirect_to admin_games_path }

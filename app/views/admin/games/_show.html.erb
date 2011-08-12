@@ -8,7 +8,7 @@
   <%= item.gametime.strftime("%Y/%m/%d %H:%M") %>
 </td>
 <td class="right">
-  <%= item.away_loc %> <%= item.away_name %>
+  <%= item.away_team.location %> <%= item.away_team.name %>
 </td>
 <td class="center">
   <%= item.away_score %>
@@ -17,7 +17,7 @@
   <%= item.home_score %>
 </td>
 <td class="left">
-  <%= item.home_loc %> <%= item.home_name %>
+  <%= item.home_team.location %> <%= item.home_team.name %>
 </td>
 <td class="center">
   <% if item.is_bowl? %>
@@ -25,5 +25,5 @@
   <% end %>
 </td>
 <td class="center">
-    <%= link_to delete_image("delete#{item.id}"), admin_game_path(item), :remote=>true, :method=>:delete,:confirm=>"This will delete #{item.away_name} vs #{item.home_name}. Proceed?" %>
+    <%= link_to delete_image("delete#{item.id}"), admin_game_path(item), :remote=>true, :method=>:delete,:confirm=>"This will delete #{item.away_team.name} vs #{item.home_team.name}. Proceed?" %>
 </td>
