@@ -1,0 +1,27 @@
+<td>
+  <%= link_to edit_image("edit#{item.id}"), edit_admin_user_path(item), :remote=>true %>
+</td>
+<td>
+  <%= item.lastname %>
+</td>
+<td>
+  <%= item.firstname %>
+</td>
+<td>
+  <%= item.login %>
+</td>
+<td>
+  <%= item.email %>
+</td>
+<td class="center">
+  <%= if item.alerts? then "X" else "-" end%>
+</td>
+<td class="center">
+  <%= if item.is_admin? then "X" else "-" end%>
+</td>
+<td class="center">
+  <%= if item.new_password? then "X" else "-" end%>
+</td>
+<td class="center">
+  <%= link_to delete_image("delete#{item.id}"), admin_user_path(item), :remote=>true, :method=>:delete,:confirm=>"This will delete #{item.name}. Proceed?" %>
+</td>

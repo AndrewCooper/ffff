@@ -50,6 +50,7 @@ FFFF::Application.routes.draw do
     resources :bowls
     resources :games
     resources :teams
+    resources :users
   end
 
   # You can have the root of your site routed with "root"

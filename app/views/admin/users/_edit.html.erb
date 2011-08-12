@@ -1,21 +1,23 @@
 <td></td>
-<td colspan="<%= @colspan %>">
-  <% if @item.id %>
-    <% divid = "edit#{@item.id}" %>
-    <% options = {:url=>{:action=>"update",:id=>@item.id}, :update => "item#{@item.id}",:loading=>visual_effect(:fade,"edit#{@item.id}",:duration=>0.25)} %>
+<td colspan="7">
+  <% if item.id %>
+    <% divid = "edit#{item.id}" %>
+    <% form_url = admin_user_path(item) %>
+    <% form_options = { :method=>:put, :remote=>true } %>
+    <% submit_str = "Update" %>
   <% else %>
     <% divid="new_item" %>
-    <% options = {:url=>{:action=>"update"}, :update => "item_list"} %>
+    <% form_url = admin_users_path %>
+    <% form_options = { :method=>:post, :remote=>true } %>
+    <% submit_str = "Create" %>
   <% end %>
   <div id="<%= divid %>">
-    <%= form_tag options do %>
+    <%= form_tag form_url, form_options do %>
       <table class="editbox">
         <tr>
           <td>
-            <% if @item.id %>
-              <%= link_to_remote "Cancel",{:url=>{:action=>"list",:id=>@item.id},:update=>"item#{@item.id}", :loading=>visual_effect(:fade,"edit#{@item.id}",:duration=>0.25)}%>
-            <% else %>
-              <%= link_to_remote "Close",{:url=>{:action=>"new"},:update=>"item_new", :loading=>visual_effect(:fade,"new_item",:duration=>0.25)}%>
+            <% if item.id %>
+              <%= link_to "Cancel", admin_user_path(item), :remote=>true %>
             <% end %>
           </td>
           <td class="label">First Name</td>
@@ -38,11 +40,7 @@
         </tr>
         <tr>
           <td>
-            <% if @item.id %>
-              <%= submit_tag "Update" %>
-            <% else %>
-              <%= submit_tag "Create" %>
-            <% end %>
+            <%= submit_tag submit_str  %>
           </td>
           <td class="label">Flags</td>
           <td>
