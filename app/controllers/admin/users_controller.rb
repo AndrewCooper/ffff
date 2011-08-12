@@ -6,9 +6,14 @@ class Admin::UsersController < Admin::AdminController
     @items = User.order("lastname,firstname")
   end
   
-  # GET /admin/users:id
-  def show
-    @item = User.find(params[:id])
+  # POST /admin/users
+  def create
+    @item = User.create(params[:item])
+    @items = User.order("lastname,firstname")
+    respond_to do |format|
+      format.html { redirect_to admin_users_path }
+      format.js
+    end
   end
 
   # GET /admin/users/new
@@ -21,14 +26,9 @@ class Admin::UsersController < Admin::AdminController
     @item = User.find(params[:id])
   end
 
-  # POST /admin/users
-  def create
-    @item = User.create(params[:item])
-    @items = User.order("lastname,firstname")
-    respond_to do |format|
-      format.html { redirect_to admin_users_path }
-      format.js
-    end
+  # GET /admin/users:id
+  def show
+    @item = User.find(params[:id])
   end
 
   # PUT /admin/users/:id

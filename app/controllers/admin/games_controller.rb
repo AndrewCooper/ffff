@@ -7,10 +7,14 @@ class Admin::GamesController < Admin::AdminController
     @teams = Team.order("location").collect{|t| [t.location+" "+t.name,t.id]}
   end
 
-  # GET /admin/games/:id
-  def show
-    @item = Game.find(params[:id])
-    @teams = Team.order("location").collect{|t| [t.location+" "+t.name,t.id]}
+  # POST /admin/games
+  def create
+    @item = Game.create( params[:item] )
+    @items = Game.order("week,gametime")
+    respond_to do |format|
+      format.html { redirect_to admin_games_path }
+      format.js
+    end
   end
 
   # GET /admin/games/new
@@ -24,14 +28,10 @@ class Admin::GamesController < Admin::AdminController
     @teams = Team.order("location").collect{|t| [t.location+" "+t.name,t.id]}
   end
 
-  # POST /admin/games
-  def create
-    @item = Game.create( params[:item] )
-    @items = Game.order("week,gametime")
-    respond_to do |format|
-      format.html { redirect_to admin_games_path }
-      format.js
-    end
+  # GET /admin/games/:id
+  def show
+    @item = Game.find(params[:id])
+    @teams = Team.order("location").collect{|t| [t.location+" "+t.name,t.id]}
   end
 
   # PUT /admin/games/:id

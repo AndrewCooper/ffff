@@ -9,22 +9,7 @@ class Admin::TeamsController < Admin::AdminController
     @items = Team.order("location")
   end
 
-  # GET /admin/games/:id
-  def show
-    @item = Team.find(params[:id])
-  end
-
-  # GET /admin/games/new
-  def new
-    @item = Team.new
-  end
-
-  # GET /admin/games/:id/edit
-  def edit
-    @item = Team.find(params[:id])
-  end
-
-  # POST /admin/games
+  # POST /admin/teams
   def create
     @item = Team.create(params[:item])
     @items = Team.order("location")
@@ -34,7 +19,22 @@ class Admin::TeamsController < Admin::AdminController
     end
   end
 
-  # PUT /admin/games/:id
+  # GET /admin/teams/new
+  def new
+    @item = Team.new
+  end
+
+  # GET /admin/teams/:id/edit
+  def edit
+    @item = Team.find(params[:id])
+  end
+
+  # GET /admin/teams/:id
+  def show
+    @item = Team.find(params[:id])
+  end
+
+  # PUT /admin/teams/:id
   def update
     @item = Team.find(params[:id])
     if @item.update_attributes(params[:item])
@@ -50,7 +50,7 @@ class Admin::TeamsController < Admin::AdminController
     end
   end
 
-  # DELETE /admin/games/:id
+  # DELETE /admin/teams/:id
   def destroy
     @item = Team.find(params[:id])
     @item.destroy
