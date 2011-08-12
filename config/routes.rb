@@ -49,6 +49,7 @@ FFFF::Application.routes.draw do
   namespace :admin do
     resources :bowls
     resources :games
+    resources :teams
   end
 
   # You can have the root of your site routed with "root"
