@@ -47,6 +47,7 @@ FFFF::Application.routes.draw do
   #     resources :products
   #   end
   namespace :admin do
+    resources :bowls
     resources :games
   end
 
