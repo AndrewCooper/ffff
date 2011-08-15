@@ -8,13 +8,6 @@ class ApplicationController < ActionController::Base
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => 'd230359592a4ee2e53e80210c43f9e70'
 
-  # See ActionController::Base for details
-  # Uncomment this to filter the contents of submitted sensitive data parameters
-  # from your application log (in this case, all fields with names like "password").
-  # filter_parameter_logging :password
-
-  # @@games_per_week = 7
-
   def authorize_user
     unless session[:user]
       flash[:notice] = "Login Required."
