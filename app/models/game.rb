@@ -4,6 +4,10 @@ class Game < ActiveRecord::Base
   belongs_to :away_team, :class_name=>"Team", :foreign_key=>"away_team_id"
   belongs_to :home_team, :class_name=>"Team", :foreign_key=>"home_team_id"
 
+  def fullname
+    self.away_team.fullname+" @ "+self.home_team.fullname
+  end
+
   def self.upcoming_games_with_picks(user_id = nil,time = nil)
     user_clause = if user_id.nil? then "" else "and picks.user_id = #{user_id}" end
     where_clause = if time.nil? then "" else "WHERE games.gametime >= '#{time.to_formatted_s(:db)}'" end
