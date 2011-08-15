@@ -1,0 +1,17 @@
+<% set_content_for :article_title, 'Ranking' %>
+<ul>
+  <% user = session[:user] %>
+  <li>Name: <%= user[:name] %></li>
+  <li>Rank: <%= user[:stats][:rank] %></li>
+  <li>Score: <%= user[:stats][:score] %></li>
+  <% ties = user[:stats][:ties] %>
+  <% if ties.size > 0 %>
+    <li>Tied With:
+    <ul style="margin-left:1em">
+      <% ties.each do |name| %>
+        <%= "<li>#{name}</li>" %>
+      <% end %>
+    </ul>
+    </li>
+  <% end %>
+</ul>
