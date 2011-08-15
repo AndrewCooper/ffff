@@ -1,53 +1,54 @@
 #left {
-	margin:0;
-	width:200px;
-	float:left;
+  margin:0;
+  width:200px;
+  float:left;
 }
 
 #main {
-	margin:auto auto auto 200px;
-	width:auto;
+  margin:auto auto auto 200px;
+  width:auto;
 }
 
 div.Article {
   background:  url("/images/layout/top_left.png") top left no-repeat;
   position:relative;
-  } 
+}
 
 div.ArticleHeader {
-	position:relative;
-	right:0px;
+  position:relative;
+  right:0px;
   background:  url("/images/layout/top_right.png") top right no-repeat;
   padding:15px 15px 0 15px;
   margin:0;
   font-size:1.3em;
   text-shadow: rgba(0,0,0,.4) 0px 2px 5px;
-  }
+}
 
 div.ArticleBody {
-	position:relative;
-	right:0px;
+  position:relative;
+  right:0px;
   background: url("/images/layout/border_right.png") top right repeat-y;
   padding:1em 15px;
   margin:0;
-  }
+  overflow:hidden;
+}
 
 div.ArticleLongContent {
-	background: url("/images/layout/border_left.png") top left repeat-y;
-	}
+  background: url("/images/layout/border_left.png") top left repeat-y;
+}
 
 div.ArticleFooter {
-	position:relative;
-	top:0px;
+  position:relative;
+  top:0px;
   background: url("/images/layout/bottom_left.png") bottom left no-repeat;
-  }
+}
 
 div.ArticleFooterBody {
-	position:relative;
-	right:0px;
+  position:relative;
+  right:0px;
   background: url("/images/layout/bottom_right.png") bottom right no-repeat;
   padding-bottom:15px;
-	text-align:center;
-	font-size:.75em;
-	font-style:italic;
-  }
+  text-align:center;
+  font-size:.75em;
+  font-style:italic;
+}
