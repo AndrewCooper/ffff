@@ -22,5 +22,8 @@ FFFF::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+
+  # Configure sensitive parameters which will be filtered from the log file.
+  config.filter_parameters = []
 end
 
