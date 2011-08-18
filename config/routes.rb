@@ -58,6 +58,8 @@ FFFF::Application.routes.draw do
     resources :games
     resources :teams
     resources :users
+
+    match "picks"=>"picks#index", :via=>:get
   end
 
   # You can have the root of your site routed with "root"

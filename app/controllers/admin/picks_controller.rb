@@ -1,8 +1,9 @@
 class Admin::PicksController < Admin::AdminController
-
+  # GET /admin/picks
   def index
     @title = "Administration :: Picks"
-    @users = User.find :all,:order=>"lastname,firstname"
+    @users = User.order("lastname,firstname")
+    @games = Game.order("week,gametime")
   end
 
   def edit

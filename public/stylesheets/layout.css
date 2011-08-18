@@ -52,3 +52,13 @@ div.ArticleFooterBody {
   font-size:.75em;
   font-style:italic;
 }
+
+div.BodyColumn {
+  float:left;
+  margin-left:1em;
+  margin-right:1em;
+}
+
+.clearboth {
+  clear:both;
+}
