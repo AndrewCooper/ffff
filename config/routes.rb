@@ -15,6 +15,9 @@ FFFF::Application.routes.draw do
     resources :users
 
     match "picks"=>"picks#index", :via=>:get
+    match "picks/user/:user_id"=>"picks#edit", :via=>:get, :as=>"user_picks"
+    match "picks/game/:game_id"=>"picks#edit", :via=>:get, :as=>"game_picks"
+    match "picks/week/:week_id"=>"picks#edit", :via=>:get, :as=>"week_picks"
   end
 
   root :to => "score#index"
