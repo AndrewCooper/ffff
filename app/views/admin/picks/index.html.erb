@@ -8,7 +8,7 @@
     </ul>
   </div>
 </div>
-<div class="BodyColumn" style="width:20%;">
+<div class="BodyColumn" style="width:50%;">
   <h2>Edit picks for game:</h2>
   <% week = -1 %>
   <div id="game_list">
@@ -18,7 +18,7 @@
           <% week = game.week %>
           <h3>Week <%= week %></h3>
         <% end %>
-        <li><%= link_to game.name, admin_game_picks_path(game.id) %></li>
+        <li><%= link_to game.fullname, admin_game_picks_path(game.id) %></li>
       <% end %>
     </ul>
   </div>
