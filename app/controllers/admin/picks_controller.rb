@@ -3,7 +3,7 @@ class Admin::PicksController < Admin::AdminController
   def index
     @title = "Administration :: Picks"
     @users = User.order("lastname,firstname")
-    @games = Game.order("week,gametime")
+    @games = Game.order("week,gametime").includes([:away_team,:home_team])
   end
 
   def edit
