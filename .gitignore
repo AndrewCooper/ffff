@@ -20,3 +20,4 @@ pickle-email-*.html
 # Rails ( custom )
 /public/index.html
 
+/public/logos
