@@ -12,7 +12,7 @@ class Admin::PicksController < Admin::AdminController
       @user=User.find(params[:user_id])
 
       matches = {}
-      games = Game.order("week,gametime")
+      games = Game.order("week,gametime").includes([:away_team,:home_team])
       games.each { |g| matches[g.id] = {:game=>g,:picks=>[]} }
 
       picks = Pick.where( :user_id=>@user.id )
