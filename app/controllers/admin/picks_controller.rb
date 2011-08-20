@@ -29,4 +29,24 @@ class Admin::PicksController < Admin::AdminController
     elsif params[:week_id]
     end
   end
+
+  # PUT /admin/picks
+  def update
+    Pick.transaction do
+      # update existing picks
+      picks = params["picks"]
+      unless picks.nil?
+        p = Pick.update(picks.keys, picks.values)
+      end
+
+      # create missing picks
+      picks = params["newpicks"]
+      unless picks.nil?
+        params["newpicks"].each do |pick|
+          Pick.create(pick)
+        end
+      end
+    end
+    redirect_to(:action=>"index")
+  end
 end
