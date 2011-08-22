@@ -26,6 +26,16 @@ class Admin::PicksController < Admin::AdminController
       end
       render "edit_picks_user"
     elsif params[:game_id]
+      @game = Game.find(params[:game_id])
+
+      @matches = {}
+      users = User.order("lastname,firstname")
+      users.each { |u| @matches[u.id] = { :user=>u, :picks=>[] } }
+
+      picks = Pick.where( :game_id=>@game.id )
+      picks.each { |p| @matches[p.user_id][:picks].push(p) }
+
+      render "edit_picks_game"
     elsif params[:week_id]
     end
   end
