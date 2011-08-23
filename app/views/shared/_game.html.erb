@@ -1,7 +1,7 @@
 <% set_content_for :article_title, 'Game' %>
 <ul>
   <li><%= link_to "Make Picks",:controller=>"/pick",:action=>"make" %></li>
-  <li><%= link_to "Past Picks",:controller=>"/pick",:action=>"review" %></li>
+  <li><%= link_to "Past Picks", picks_path %></li>
   <li><%= link_to "Weekly Scores",:controller=>"/score",:action=>"show" %></li>
   <li><%= link_to "Browse Teams",:controller=>"/team" %></li>
 </ul>

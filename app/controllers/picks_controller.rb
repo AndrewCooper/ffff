@@ -1,4 +1,25 @@
 class PicksController < ApplicationController
+  # GET /picks
+  def index
+    @title = "FFFF :: Review Picks"
+    @tz = time_zone
+
+    @user=User.find(session[:user][:uid])
+
+    matches = {}
+    games = Game.order("week,gametime").includes([:away_team,:home_team,:bowl])
+    games.each { |g| matches[g.id] = {:game=>g,:picks=>[]} }
+
+    picks = Pick.where( :user_id=>@user.id )
+    picks.each { |p| matches[p.game_id][:picks].push(p) }
+
+    @weeks = {}
+    matches.each do |gid,match|
+      week = match[:game].week
+      if @weeks[week].nil? then @weeks[week] = [] end
+      @weeks[week] << match
+    end
+  end
 
   def make
     @title = "FFFF :: Make Picks"
@@ -43,22 +64,5 @@ class PicksController < ApplicationController
       flash[:notice] = "Your picks have been updated."
       redirect_to(:action=>"make")
     end
-  end
-
-  def review
-    @title = "FFFF :: Review Picks"
-    @tz = time_zone
-    @games = Game.find_by_sql("SELECT games.id AS gid, games.gametime, games.week, games.home_score, games.away_score, games.is_bowl,
-    picks.id AS pid, picks.home_score AS phscore, picks.away_score AS pascore,
-    away.name AS aname, away.image AS aimg, away.location AS aloc, away.conference AS aconf, away.rankAP AS arankap, away.rankUSA AS arankusa, away.record AS arec, away.id AS aid, away.espnid AS aespnid,
-    home.name AS hname, home.image AS himg, home.location AS hloc, home.conference AS hconf, home.rankAP AS hrankap, home.rankUSA AS hrankusa, home.record AS hrec, home.id AS hid, home.espnid AS hespnid,
-    bowl.name AS bname, bowl.location AS bloc, bowl.multiplier AS bmult, bowl.url AS burl
-    FROM games
-    LEFT JOIN picks ON picks.game_id = games.id and picks.user_id = #{session[:user][:uid]}
-    LEFT JOIN teams AS away ON away.id = games.away_team_id
-    LEFT JOIN teams AS home ON home.id = games.home_team_id
-    LEFT JOIN bowls AS bowl ON bowl.game_id = games.id
-    ORDER BY games.week,games.gametime")
-    @weeks = Game.find_by_sql("SELECT DISTINCT week FROM games ORDER BY week")
   end
 end

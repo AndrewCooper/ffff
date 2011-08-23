@@ -7,6 +7,7 @@ FFFF::Application.routes.draw do
     end
   end
 
+  get "picks"=>"picks#index", :as=>"picks"
 
   namespace :admin do
     resources :bowls
