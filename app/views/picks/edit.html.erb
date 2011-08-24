@@ -1,0 +1,65 @@
+<table style="font-size:.8em;">
+  <tr>
+    <% @weeks.each do |week,matches|%>
+      <td><%= link_to "Week #{week}",:anchor=>week %></td>
+      <% if ( week % 7 ) == 0 %>
+        </tr><tr>
+      <% end %>
+    <% end %>
+  </tr>
+</table>
+<hr />
+<%= form_for :pick, :url=>picks_path, :html=>{:method=>:put} do |f| %>
+  <% @weeks.each do |week,matches| %>
+    <a name="<%= week %>"></a>
+    <table style="border:4px #fff ridge; padding: 1em; margin: 0 auto; width:90%;" cellpadding="3px" cellspacing="0">
+      <thead><tr><td class="center" colspan="7"><h1>Week <%= week %></h1></td></tr></thead>
+
+      <% matches.each do |match| %>
+        <% @game = match[:game] %>
+        <% if match[:picks].size == 0 %>
+          <% @pick = Pick.new( :user_id=>@user.id, :game_id=>@game.id ) %>
+          <% pickarray="newpicks[]" %>
+        <% else %>
+          <% @pick = match[:picks][0] %>
+          <% pickarray="picks[]" %>
+        <% end %>
+        <% if (@game.is_bowl? && @game.bowl) %>
+          <tr>
+            <td colspan="7" class="center bt bl br">
+              <h2><%= @game.bowl.name %></h2>
+            </td>
+          </tr>
+        <% end %>
+        <%= fields_for pickarray,@pick do |p_fields| %>
+          <%= p_fields.hidden_field :user_id %>
+          <%= p_fields.hidden_field :game_id %>
+          <tr>
+            <td class="bt bb bl" style="text-align:left; width:30%;">
+              <div style="font-weight: bold;"><%= @game.away_team.location %> <%= @game.away_team.name %></div>
+              <div style="font-style:italic; font-size:.6em;">
+                Record: <%= @game.away_team.record %><br />
+                Rank: <%= @game.away_team.rankAP %> AP - <%= @game.away_team.rankUSA %> USA<br />
+                <%= @game.away_team.conference %><br />
+              </div>
+            </td>
+            <td class="bt bb center"><%= link_to image_tag("/logos/#{@game.away_team.image}",:size=>"50x50"),{:controller=>"team",:action=>"show",:id=>@game.away_team.id} %></td>
+            <td class="bt br bb center"><%= p_fields.number_field :away_score, :size=>3 %></td>
+            <td class="center" style="font-size:.6em">@<br/><%= @game.gametime.strftime("%I:%M%p") %><br /><%= @game.gametime.strftime("%a") %><br /><%= @game.gametime.strftime("%m/%d/%y") %><br /><%= @tz %></td>
+            <td class="bt bl bb center"><%= p_fields.number_field :home_score, :size=>3 %></td>
+            <td class="bt bb center"><%= link_to image_tag("/logos/#{@game.home_team.image}",:size=>"50x50"),{:controller=>"team",:action=>"show",:id=>@game.home_team.id} %></td>
+            <td class="bt br bb" style="text-align:left; width:30%;">
+              <div style="font-weight: bold;"><%= @game.home_team.location %> <%= @game.home_team.name %></div>
+              <div style="font-style:italic; font-size:.6em;">
+                Record: <%= @game.home_team.record %><br />
+                Rank: <%= @game.home_team.rankAP %> AP - <%= @game.home_team.rankUSA %> USA<br />
+                <%= @game.home_team.conference %><br />
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+      <tr style='text-align:center'><td colspan="7"><%= submit_tag "Submit" %></td></tr>
+    </table>
+  <% end %>
+<% end %>

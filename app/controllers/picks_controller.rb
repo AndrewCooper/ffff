@@ -21,48 +21,75 @@ class PicksController < ApplicationController
     end
   end
 
-  def make
+  # GET /picks/edit
+  def edit
     @title = "FFFF :: Make Picks"
-    @now = current_app_time
     @tz = time_zone
-    if request.get?
-      games = Game.upcoming_games_with_picks(session[:user][:uid],@now)
-      @weeks = []
-      if games.size == 0
-        flash.now[:notice] = "There are no games for you to pick right now."
-      else
-        games.each do |g|
-          if @weeks[game.week].nil?
-            @weeks[game.week] = [g]
-          else
-            @weeks[game.week] << g
-          end
-        end
-      end
-    else
-      picks = params["picks"]
-      picks.each do |key,pick|
-        game = Game.find(pick["game_id"])
-        if @now < game.gametime
-          if pick["pick_id"] == ""
-            dbpick = Pick.new
-            dbpick.away_score = pick["away_score"] == "" ? 0 : pick["away_score"]
-            dbpick.home_score = pick["home_score"] == "" ? 0 : pick["home_score"]
-            dbpick.game_id = pick["game_id"]
-            dbpick.user_id = session[:user][:uid]
-            dbpick.save
-          else
-            dbpick = Pick.find(pick["pick_id"].to_i)
-            dbpick.home_score = pick["home_score"].to_i
-            dbpick.away_score = pick["away_score"].to_i
-            dbpick.save
-          end
-        else
-          flash[:warning] = "The games for some of your picks have started. These picks are not updated."
-        end
-      end
-      flash[:notice] = "Your picks have been updated."
-      redirect_to(:action=>"make")
+    @user = User.find(session[:user][:uid])
+
+    now = current_app_time
+
+    matches = {}
+    games = Game.where("gametime > ?",now).order("week,gametime").includes([:away_team,:home_team,:bowl])
+    games.each { |g| matches[g.id] = {:game=>g,:picks=>[]} }
+
+    picks = Pick.where("game_id IN (?) AND user_id = ?",matches.keys,@user.id)
+    picks.each { |p| matches[p.game_id][:picks].push(p) }
+
+    @weeks = {}
+    matches.each do |gid,match|
+      week = match[:game].week
+      if @weeks[week].nil? then @weeks[week] = [] end
+      @weeks[week] << match
     end
+  end
+
+  # PUT /picks
+  def update
+    @now = current_app_time
+    created = 0
+    updated = 0
+    overdue = 0
+    Pick.transaction do
+      # update existing picks
+      picks = params["picks"]
+      unless picks.nil?
+        picks.each do |pid,pick|
+          game = Game.find(pick["game_id"])
+          if @now < game.gametime
+            if Pick.update(pid,pick)
+              updated += 1
+            end
+          else
+            overdue += 1
+          end
+        end
+      end
+
+      # create missing picks
+      picks = params["newpicks"]
+      unless picks.nil?
+        params["newpicks"].each do |pick|
+          game = Game.find(pick["game_id"])
+          if @now < game.gametime
+            if Pick.create(pick)
+              created += 1
+            end
+          else
+            overdue += 1
+          end
+        end
+      end
+    end
+    if created > 0
+      flash[:notice] = "#{created} new picks created."
+    end
+    if updated > 0
+      flash[:notice] = (flash.notice || "") + "#{updated} existing picks updated."
+    end
+    if overdue > 0
+      flash[:warning] += "#{overdue} games have already started. These picks were not updated."
+    end
+    redirect_to(:action=>"index")
   end
 end

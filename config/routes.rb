@@ -1,5 +1,4 @@
 FFFF::Application.routes.draw do
-
   resource :user, :only => [:edit,:update] do
     member do
       get 'forgot_password' => :forgot_password
@@ -8,6 +7,8 @@ FFFF::Application.routes.draw do
   end
 
   get "picks"=>"picks#index", :as=>"picks"
+  put "picks"=>"picks#update", :as=>"picks"
+  get "picks/edit"=>"picks#edit", :as=>"edit_picks"
 
   namespace :admin do
     resources :bowls
