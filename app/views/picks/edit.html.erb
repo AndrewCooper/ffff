@@ -17,13 +17,7 @@
 
       <% matches.each do |match| %>
         <% @game = match[:game] %>
-        <% if match[:picks].size == 0 %>
-          <% @pick = Pick.new( :user_id=>@user.id, :game_id=>@game.id ) %>
-          <% pickarray="newpicks[]" %>
-        <% else %>
-          <% @pick = match[:picks][0] %>
-          <% pickarray="picks[]" %>
-        <% end %>
+        <% @pick = match[:picks][0] %>
         <% if (@game.is_bowl? && @game.bowl) %>
           <tr>
             <td colspan="7" class="center bt bl br">
@@ -31,7 +25,7 @@
             </td>
           </tr>
         <% end %>
-        <%= fields_for pickarray,@pick do |p_fields| %>
+        <%= fields_for "picks[]",@pick do |p_fields| %>
           <%= p_fields.hidden_field :user_id %>
           <%= p_fields.hidden_field :game_id %>
           <tr>
