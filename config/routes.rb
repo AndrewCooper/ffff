@@ -10,6 +10,9 @@ FFFF::Application.routes.draw do
   put "picks"=>"picks#update", :as=>"picks"
   get "picks/edit"=>"picks#edit", :as=>"edit_picks"
 
+  get "score"=>"score#index", :as=>"scores"
+  get "score/rankings"=>"score#rankings", :as=>"rankings"
+
   namespace :admin do
     resources :bowls
     resources :games
@@ -23,7 +26,7 @@ FFFF::Application.routes.draw do
     match "picks/week/:week_id"=>"picks#edit", :via=>:get, :as=>"week_picks"
   end
 
-  root :to => "score#index"
+  root :to => "score#rankings"
 
   # See how all your routes lay out with "rake routes"
 

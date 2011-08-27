@@ -1,13 +1,13 @@
 class ScoreController < ApplicationController
-  before_filter :authorize_user, :except=>:index
+  before_filter :authorize_user, :except=>:rankings
 
-  def index
+  def rankings
     @title = "FFFF :: Home"
     update_session()
-    @scores = Score.find_by_sql("SELECT users.id,SUM(scores.wins) AS sum_wins,SUM(scores.closests) AS sum_closests, SUM(scores.sevens) AS sum_sevens, SUM(scores.perfects) AS sum_perfects, SUM(scores.total) AS sum_total, users.firstname AS firstname, users.lastname AS lastname FROM users LEFT JOIN scores ON users.id = scores.user_id GROUP BY users.id ORDER BY sum_total DESC,users.lastname,users.firstname")
+    @scores = User.ranked.all
   end
 
-  def show
+  def index
     @title = "FFFF :: Weekly Scores"
     @now = current_app_time
     @gamecount = Game.count

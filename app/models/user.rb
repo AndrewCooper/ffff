@@ -20,6 +20,10 @@ class User < ActiveRecord::Base
     self.firstname+" "+self.lastname
   end
 
+  def self.ranked
+    select('users.*').joins(:scores).select('SUM(scores.wins) AS wins').select('SUM(scores.closests) AS closests').select('SUM(scores.sevens) AS sevens').select('SUM(scores.perfects) AS perfects').select('SUM(scores.total) AS total').group('users.id').order('total DESC,users.lastname,users.firstname')
+  end
+
   private
   # If the record is updated we will check if the password is empty.
   # If its empty we assume that the user didn't want to change his
