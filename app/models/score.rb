@@ -1,6 +1,6 @@
 class Score < ActiveRecord::Base
   belongs_to :user
-	
+
   def Score.user_stats (uid)
     myscore = Score.find_by_sql("SELECT user_id,SUM(total) AS sum_total FROM scores WHERE user_id=#{uid} GROUP BY user_id").first
     if myscore

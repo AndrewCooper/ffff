@@ -1,11 +1,11 @@
 class Admin::ScoreController < Admin::AdminController
   def index
-	@title = "Administration :: Scores"
+    @title = "Administration :: Scores"
   end
 
   def calculate
-	@title = "Administration :: Calculation Results"
-	if request.post?
+    @title = "Administration :: Calculation Results"
+    if request.post?
       games = Game.find :all, :order=>"week,gametime"
       while games.size > 0
         wins = []
@@ -56,7 +56,7 @@ class Admin::ScoreController < Admin::AdminController
             end #picks.each
           end #if
         end #games.each
-	
+
         wins.each_index do |uid|
           if !wins[uid] then next end
           score = Score.find(:first,:conditions=>["week = ? and user_id = ?",week,uid]) || Score.new(:week=>week,:user_id=>uid)
@@ -70,8 +70,8 @@ class Admin::ScoreController < Admin::AdminController
         week += 1
       end #while
       flash.now[:notice] = "Scores Calculated. Results follow."
-	end
-	@scores = Score.find(:all,:order=>"user_id,week",:include=>:user)
-	update_session()
+    end
+    @scores = Score.find(:all,:order=>"user_id,week",:include=>:user)
+    update_session()
   end #def calculate
 end

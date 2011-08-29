@@ -1,0 +1,27 @@
+<% @weeks.each_with_index do |games, week| %>
+  <%= form_tag :action=>"edit" do %>
+    Week <%= week %>
+    <table style="border-top:3px double black;">
+      <% games.each do |game| %>
+        <tr>
+          <%= hidden_field_tag "picks[#{game.gid}][game_id]", game.gid %>
+          <%= hidden_field_tag "picks[#{game.gid}][pick_id]", game.pid %>
+          <%= hidden_field_tag "picks[#{game.gid}][user_id]", @user.id %>
+          <td style="text-align:right;">
+            <%= game.aloc %>
+            <%= text_field_tag "picks[#{game.gid}][away_score]",game.pascore,:size=>3 %>
+          </td>
+          <td>
+            @
+          </td>
+          <td style="text-align:left;">
+            <%= text_field_tag "picks[#{game.gid}][home_score]",game.phscore,:size=>3 %>
+            <%= game.hloc %>
+          </td>
+        </tr>
+      <% end %>
+      <tr style='text-align:center'><td colspan="3"><%= submit_tag "Submit" %>
+    </table>
+  <% end %>
+  <br />
+<% end %>

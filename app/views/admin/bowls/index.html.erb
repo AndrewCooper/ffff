@@ -1,0 +1,7 @@
+<div id="item_new" style="margin-left:2em">
+  <%= render :partial=>"edit", :locals=>{:item=>@item} %>
+</div><br />
+<hr />
+<div id="item_list">
+  <%= render :partial=>"list",:locals=>{:items=>@items} %>
+</div>
