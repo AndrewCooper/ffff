@@ -17,3 +17,11 @@ wildcatsVSjayhawks:
   week: 2
   gametime: <%= Time.now.yesterday.to_s(:db) %>
   
+pokesVSwildcats:
+  home_team_id: wildcats
+  home_score: 34
+  away_team_id: pokes
+  away_score: 37
+  is_bowl: 1
+  week: 3
+  gametime: <%= Time.now.to_s(:db) %>
