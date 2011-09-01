@@ -1,4 +1,3 @@
-
 require 'test_helper'
 
 class PickTest < ActiveSupport::TestCase
@@ -20,24 +19,18 @@ class PickTest < ActiveSupport::TestCase
 
     p = picks( :usera_first_pick )
     p["home_score"] = -1           # Negative integer
-    assert_invalid( p )
+    assert( !p.valid? )
     p["home_score"] = 50           # Positive integer
-    assert_valid( p )
+    assert( p.valid? )
 
     p["away_score"] = -1           # Negative integer
-    assert_invalid( p )
+    assert( !p.valid? )
     p["away_score"] = 50           # Positive integer
-    assert_valid( p )
+    assert( p.valid? )
 
     p["pick_score"] = -1           # Negative integer
-    assert_invalid( p )
+    assert( !p.valid? )
     p["pick_score"] = 50           # Positive integer
-    assert_valid( p )
+    assert( p.valid? )
   end
-	
-  def test_pick_alerts
-    Pick.email_alerts
-    assert_equal( 1, ActionMailer::Base.deliveries.length )
-  end
-	
 end
