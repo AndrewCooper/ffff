@@ -15,4 +15,9 @@ class PicksControllerTest < Test::Unit::TestCase
   def test_truth
     assert true
   end
+
+  def test_pick_alerts
+    Pick.email_alerts
+    assert_equal( 1, ActionMailer::Base.deliveries.length )
+  end
 end
