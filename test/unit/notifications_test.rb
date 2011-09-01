@@ -1,51 +1,35 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require 'notifications'
+require 'test_helper'
 
-class NotificationsTest < Test::Unit::TestCase
-  FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures'
-  CHARSET = "utf-8"
-
-  include ActionMailer::Quoting
+class NotificationsTest < ActionMailer::TestCase
 
   def setup
-    ActionMailer::Base.delivery_method = :test
-    ActionMailer::Base.perform_deliveries = true
-    ActionMailer::Base.deliveries = []
-
-    @expected = TMail::Mail.new
-    @expected.set_content_type "text", "plain", { "charset" => CHARSET }
+    @user = User.first
+    @newpass = "AsDfGhJkL"
+    @games = [ Game.first ]
+    @from = 'admin@hkcreations.org'
   end
 
-  def test_signup
-    @expected.subject = 'Notifications#signup'
-    @expected.body    = read_fixture('signup')
-    @expected.date    = Time.now
-
-    assert_equal @expected.encoded, Notifications.create_signup(@expected.date).encoded
+  test "signup" do
+    mail = Notifications.signup( @user )
+    assert_equal "Notifications#signup", mail.subject
+    assert_equal [@user.email], mail.to
+    assert_equal [@from], mail.from
+    assert_match "Hi", mail.body.encoded
   end
 
-  def test_forgot_password
-    @expected.subject = 'Notifications#forgot_password'
-    @expected.body    = read_fixture('forgot_password')
-    @expected.date    = Time.now
-
-    assert_equal @expected.encoded, Notifications.create_forgot_password(@expected.date).encoded
+  test "forgot_password" do
+    mail = Notifications.forgot_password( @user, @newpass )
+    assert_equal "Forgotten Password for FFFF", mail.subject
+    assert_equal [@user.email], mail.to
+    assert_equal [@from], mail.from
+    assert_match "Hi", mail.body.encoded
   end
 
-  def test_picks_alert
-    @expected.subject = 'Notifications#picks_alert'
-    @expected.body    = read_fixture('picks_alert')
-    @expected.date    = Time.now
-
-    assert_equal @expected.encoded, Notifications.create_picks_alert(@expected.date).encoded
-  end
-
-  private
-  def read_fixture(action)
-    IO.readlines("#{FIXTURES_PATH}/notifications/#{action}")
-  end
-
-  def encode(subject)
-    quoted_printable(subject, CHARSET)
+  test "picks_alert" do
+    mail = Notifications.picks_alert( @user, @games )
+    assert_equal "Pending Picks Alert", mail.subject
+    assert_equal [@user.email], mail.to
+    assert_equal [@from], mail.from
+    assert_match "Hi", mail.body.encoded
   end
 end
