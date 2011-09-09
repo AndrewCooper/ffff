@@ -1,12 +1,7 @@
-<div class="Article">
-  <div class="ArticleHeader">Game Options</div>
-  <div class="ArticleBody">
-    <ul>
-      <li><%= link_to "Weekly Scores",:controller=>"/score",:action=>"show" %></li>
-      <li><%= link_to "Browse Teams",:controller=>"/team" %></li>
-    </ul>
-  </div>
-  <div class="ArticleFooter">
-    <div class="ArticleFooterBody"></div>
-  </div>
-</div>
+<% set_content_for :article_title, 'Game' %>
+<ul>
+  <li><%= link_to "Make Picks", edit_picks_path %></li>
+  <li><%= link_to "Past Picks", picks_path %></li>
+  <li><%= link_to "Weekly Scores",:controller=>"/score",:action=>"show" %></li>
+  <li><%= link_to "Browse Teams",:controller=>"/team" %></li>
+</ul>

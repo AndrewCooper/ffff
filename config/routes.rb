@@ -1,55 +1,28 @@
 FFFF::Application.routes.draw do
+  resource :user, :only => [:edit,:update] do
+    member do
+      get 'forgot_password' => :forgot_password
+      put 'forgot_password' => :reset_password
+    end
+  end
 
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
+  get "picks"=>"picks#index", :as=>"picks"
+  put "picks"=>"picks#update", :as=>"picks"
+  get "picks/edit"=>"picks#edit", :as=>"edit_picks"
 
-  # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
-  # Keep in mind you can assign values other than :controller and :action
+  namespace :admin do
+    resources :bowls
+    resources :games
+    resources :teams
+    resources :users
 
-  # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
+    match "picks"=>"picks#index", :via=>:get
+    match "picks"=>"picks#update", :via=>:put
+    match "picks/user/:user_id"=>"picks#edit", :via=>:get, :as=>"user_picks"
+    match "picks/game/:game_id"=>"picks#edit", :via=>:get, :as=>"game_picks"
+    match "picks/week/:week_id"=>"picks#edit", :via=>:get, :as=>"week_picks"
+  end
 
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Sample resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
-  #     end
-  #   end
-
-  # Sample resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
-
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  # root :to => "welcome#index"
   root :to => "score#index"
 
   # See how all your routes lay out with "rake routes"

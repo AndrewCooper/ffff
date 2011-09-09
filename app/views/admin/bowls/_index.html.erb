@@ -10,9 +10,9 @@
       <td></td>
     </tr>
   </thead>
-  <% @items.each do |item| %>
+  <% items.each do |item| %>
     <tr id="item<%= item.id %>" style="text-align:left;">
-      <%= render :partial => "item" %>
+      <%= render :partial => "show", :locals=>{:item=>item} %>
     </tr>
   <% end %>
 </table>

@@ -1,55 +1,59 @@
 class Admin::UsersController < Admin::AdminController
-  def delete
-    User.delete(params[:id])
-    #     Pick.delete_all("user_id = #{params[:id]}")
-    #     Score.delete_all("user_id = #{params[:id]}")
-    render :nothing=>true
-  end
-
-  def edit
-    @colspan = 7
-    if params[:id]
-      @item = User.find(params[:id])
-    else
-      @item = User.new
-    end
-    render :partial => "edit"
-  end
-
+  # GET /admin/users
   def index
     @title = "Administration :: Users"
+    @item = User.new
+    @items = User.order("lastname,firstname")
   end
-
-  def list
-    if params[:id]
-      @item = User.find(params[:id])
-      render(:partial => "item") and return
-    else
-      @items = User.find(:all,:order=>"lastname,firstname")
+  
+  # POST /admin/users
+  def create
+    @item = User.create(params[:item])
+    @items = User.order("lastname,firstname")
+    respond_to do |format|
+      format.html { redirect_to admin_users_path }
+      format.js
     end
   end
 
+  # GET /admin/users/new
   def new
     @item=User.new
-    render :partial=>"admin/shared/newitem"
   end
 
+  # GET /admin/users/:id/edit
+  def edit
+    @item = User.find(params[:id])
+  end
+
+  # GET /admin/users:id
+  def show
+    @item = User.find(params[:id])
+  end
+
+  # PUT /admin/users/:id
   def update
-    if params[:id]
-      @item = User.find(params[:id])
-      if @item.update_attributes(params[:item])
-        redirect_to :action => "list",:id=>params[:id]
-      else
-        redirect_to :action => "edit",:id=>params[:id]
+    @item = User.find(params[:id])
+    if @item.update_attributes(params[:item])
+      respond_to do |format|
+        format.html { redirect_to admin_users_path }
+        format.js { render :action=>:show }
       end
     else
-      @item = User.new(params[:item])
-      if @item.save
-        redirect_to :action => "list","component"=>true
-      else
-        logger.error "Errors: "+@item.errors.inspect
-        render :text => (@item.errors.inspect  + "\n")
+      respond_to do |format|
+        format.html { redirect_to edit_admin_user_path(params[:id]) }
+        format.js { render :action=>:edit }
       end
+    end
+  end
+
+  # DELETE /admin/users/:id
+  def destroy
+    @item = User.find(params[:id])
+    @item.destroy
+    respond_to do |format|
+      format.html { redirect_to admin_users_path }
+      format.js
     end
   end
 end
