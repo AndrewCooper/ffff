@@ -1,26 +1,26 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 pokesVSsooners:
-  home_team_id: sooners
+  home_team: sooners
   home_score: 21
-  away_team_id: pokes
+  away_team: pokes
   away_score: 26
   is_bowl: 0
   week: 1
   gametime: <%= Time.now.tomorrow.to_s(:db) %>
 
 wildcatsVSjayhawks: 
-  home_team_id: jayhawks
+  home_team: jayhawks
   home_score: 37
-  away_team_id: wildcats
+  away_team: wildcats
   away_score: 34
   is_bowl: 0
   week: 2
   gametime: <%= Time.now.yesterday.to_s(:db) %>
   
 pokesVSwildcats:
-  home_team_id: wildcats
+  home_team: wildcats
   home_score: 34
-  away_team_id: pokes
+  away_team: pokes
   away_score: 37
   is_bowl: 1
   week: 3
