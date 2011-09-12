@@ -1,20 +1,20 @@
 td.bt {
-	border-top:1px #666 solid;
+	border-top:1px solid #666;
 }
 td.br {
-	border-right:1px #666 solid;
+	border-right:1px solid #666;
 }
 td.bb {
-	border-bottom:1px #666 solid;
+	border-bottom:1px solid #666;
 }
 td.bl {
-	border-left:1px #666 solid;
+	border-left:1px solid #666;
 }
 td.colhead {
-	border-bottom:3px #666 double;
+	border-bottom:3px double #666;
 }
 td.ball {
-	border:1px #666 double;
+	border:1px solid #666;
 }
 td.bcell {
 	border-color: #999;
