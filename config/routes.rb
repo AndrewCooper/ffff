@@ -13,6 +13,8 @@ FFFF::Application.routes.draw do
   get "score"=>"score#index", :as=>"scores"
   get "score/rankings"=>"score#rankings", :as=>"rankings"
 
+  resources :teams, :only => [:show]
+
   namespace :admin do
     resources :bowls
     resources :games
