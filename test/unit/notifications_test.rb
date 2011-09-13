@@ -31,6 +31,7 @@ class NotificationsTest < ActionMailer::TestCase
     assert_equal "Pending Picks Alert", mail.subject
     assert_equal [@user.email], mail.to
     assert_equal [@from], mail.from
-    assert_match "Hi", mail.body.encoded
+    assert_match "Hi #{@user.firstname}", mail.body.encoded
+    assert_match "#{@games[0].gametime.strftime("%I:%M%p")} : #{@games[0].fullname}", mail.body.encoded
   end
 end
