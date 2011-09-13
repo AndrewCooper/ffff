@@ -14,7 +14,7 @@ class NotificationsTest < ActionMailer::TestCase
     assert_equal "Notifications#signup", mail.subject
     assert_equal [@user.email], mail.to
     assert_equal [@from], mail.from
-    assert_match "Hi", mail.body.encoded
+    assert_match "Notifications#signup", mail.body.encoded
   end
 
   test "forgot_password" do
