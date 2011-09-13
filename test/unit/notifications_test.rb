@@ -22,7 +22,8 @@ class NotificationsTest < ActionMailer::TestCase
     assert_equal "Forgotten Password for FFFF", mail.subject
     assert_equal [@user.email], mail.to
     assert_equal [@from], mail.from
-    assert_match "Hi", mail.body.encoded
+    assert_match "Hi #{@user.firstname}", mail.body.encoded
+    assert_match "Your new password is: #{@newpass}", mail.body.encoded
   end
 
   test "picks_alert" do
