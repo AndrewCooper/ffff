@@ -15,3 +15,21 @@ usera_score2:
   sevens: 0
   perfects: 0
   user: usera
+
+userb_score1:
+  week: 1
+  total: 10
+  closests: 0
+  wins: 0
+  sevens: 0
+  perfects: 0
+  user: userb
+
+userc_score1:
+  week: 2
+  total: 5
+  closests: 0
+  wins: 0
+  sevens: 0
+  perfects: 0
+  user: userc
