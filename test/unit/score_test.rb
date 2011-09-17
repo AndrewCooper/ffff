@@ -16,6 +16,6 @@ class ScoreTest < ActiveSupport::TestCase
     stats = Score.user_stats( users(:usera).id )
     assert_equal 2, stats[:rank]
     assert_equal 8, stats[:score]
-    assert_equal 0, stats[:ties].count
+    assert_equal 1, stats[:ties].count
   end
 end

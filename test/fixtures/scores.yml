@@ -27,9 +27,9 @@ userb_score1:
 
 userc_score1:
   week: 2
-  total: 5
-  closests: 0
-  wins: 0
+  total: 8
+  closests: 2
+  wins: 6
   sevens: 0
   perfects: 0
   user: userc
