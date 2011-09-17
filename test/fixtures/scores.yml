@@ -1,18 +1,18 @@
 usera_score1: 
   week: 1
   total: 4
-  closests: 0
+  closests: 1
   wins: 4
   sevens: 0
-  perfects: 0
+  perfects: 1
   user: usera
 
 usera_score2:
   week: 2
   total: 4
-  closests: 0
-  wins: 4
-  sevens: 0
+  closests: 3
+  wins: 5
+  sevens: 1
   perfects: 0
   user: usera
 
