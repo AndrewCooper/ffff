@@ -21,7 +21,15 @@ class User < ActiveRecord::Base
   end
 
   def self.ranked
-    select('users.*').joins(:scores).select('SUM(scores.wins) AS wins').select('SUM(scores.closests) AS closests').select('SUM(scores.sevens) AS sevens').select('SUM(scores.perfects) AS perfects').select('SUM(scores.total) AS total').group('users.id').order('total DESC,users.lastname,users.firstname')
+    q = select('users.*')
+    q = q.joins(:scores)
+    q = q.select('SUM(scores.wins) AS wins')
+    q = q.select('SUM(scores.closests) AS closests')
+    q = q.select('SUM(scores.sevens) AS sevens')
+    q = q.select('SUM(scores.perfects) AS perfects')
+    q = q.select('SUM(scores.total) AS total')
+    q = q.group('users.id')
+    q = q.order('total DESC,users.lastname,users.firstname')
   end
 
   private
