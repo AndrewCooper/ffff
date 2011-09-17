@@ -1,6 +1,3 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 admin:
   login: admin
   password: 5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8 # SHA1(password)
