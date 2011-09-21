@@ -30,4 +30,5 @@ group :development, :test do
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
   gem 'ruby-debug', :platform => 'ruby_18'
   gem 'ruby-debug19', :platform => 'ruby_19', :require => 'ruby-debug'
+  gem 'rails_code_qa'
 end
