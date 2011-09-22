@@ -1,4 +1,8 @@
 FFFF::Application.routes.draw do
+  get  "login"  => "login#request_login"
+  post "login"  => "login#login"
+  get  "logout" => "login#logout"
+
   resource :user, :only => [:edit,:update] do
     member do
       get 'forgot_password' => :forgot_password
