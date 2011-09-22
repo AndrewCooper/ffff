@@ -1,16 +1,7 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require 'user_controller'
-
-# Re-raise errors caught by the controller.
-class UserController; def rescue_action(e) raise e end; end
+require 'test_helper'
 
 class UserControllerTest < ActionController::TestCase
-  fixtures :users
-	
   def setup
-    @controller = UserController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
   end
 
   def test_forgot_password_success

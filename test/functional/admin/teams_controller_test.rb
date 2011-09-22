@@ -1,14 +1,7 @@
-require File.dirname(__FILE__) + '/../../test_helper'
-require 'admin/team_controller'
+require 'test_helper'
 
-# Re-raise errors caught by the controller.
-class Admin::TeamsController; def rescue_action(e) raise e end; end
-
-class Admin::TeamsControllerTest < Test::Unit::TestCase
+class Admin::TeamsControllerTest < ActionController::TestCase
   def setup
-    @controller = Admin::TeamsController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
   end
 
   # Replace this with your real tests.

@@ -1,14 +1,7 @@
-require File.dirname(__FILE__) + '/../../test_helper'
-require 'admin/pick_controller'
+require 'test_helper'
 
-# Re-raise errors caught by the controller.
-class Admin::PicksController; def rescue_action(e) raise e end; end
-
-class Admin::PicksControllerTest < Test::Unit::TestCase
+class Admin::PicksControllerTest < ActionController::TestCase
   def setup
-    @controller = Admin::PicksController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
   end
 
   # Replace this with your real tests.
