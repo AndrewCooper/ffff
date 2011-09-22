@@ -13,7 +13,12 @@ class User < ActiveRecord::Base
   validates_presence_of :login, :password
 
   def session_info
-    {:name=>"#{self[:firstname]} #{self[:lastname]}",:uid=>self[:id],:admin=>self[:is_admin]}
+    {
+      :name=>"#{self[:firstname]} #{self[:lastname]}",
+      :uid=>self[:id],
+      :admin=>self[:is_admin],
+      :stats=>Score.user_stats(self.id)
+    }
   end
 
   def name

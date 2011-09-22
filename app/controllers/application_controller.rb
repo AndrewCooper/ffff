@@ -25,7 +25,6 @@ class ApplicationController < ActionController::Base
     end
     if user
       session[:user] = user.session_info
-      session[:user][:stats] = Score.user_stats(user[:id])
     end
   end
 
