@@ -1,23 +1,34 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require 'pick_controller'
+require 'test_helper'
 
-# Re-raise errors caught by the controller.
-class PicksController; def rescue_action(e) raise e end; end
-
-class PicksControllerTest < Test::Unit::TestCase
+class PicksControllerTest < ActionController::TestCase
   def setup
-    @controller = PicksController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+    @user = users(:usera)
+    @session = { :user => @user.session_info }
   end
 
   # Replace this with your real tests.
-  def test_truth
-    assert true
+  test 'should get index' do
+    get :index, nil, @session
+    assert_response :success
+    assert_not_nil assigns(:title)
+    assert_not_nil assigns(:tz)
+    assert_not_nil assigns(:user)
+    assert_not_nil assigns(:weeks)
   end
 
-  def test_pick_alerts
-    Pick.email_alerts
-    assert_equal( 1, ActionMailer::Base.deliveries.length )
+  test 'should get edit' do
+    get :edit, nil, @session
+    assert_response :success
+    assert_not_nil assigns(:title)
+    assert_not_nil assigns(:tz)
+    assert_not_nil assigns(:user)
+    assert_not_nil assigns(:weeks)
+  end
+
+  test 'should update picks' do
+    params = { :picks => {} }
+    put :update, params, @session
+    assert_redirected_to picks_path
+    assert_equal nil, flash[:notice]
   end
 end
