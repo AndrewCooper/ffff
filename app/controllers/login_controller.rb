@@ -3,13 +3,17 @@ require 'openssl'
 class LoginController < ApplicationController
   before_filter :authorize_user,:except=>[:request_login,:login,:logout]
 
+  # GET /login
   def request_login
-    session[:challenge] = nil
     session[:user] = nil
     session[:challenge] = OpenSSL::Digest::SHA1.hexdigest(rand.to_s)
-    logger.info "Challenge: "+session[:challenge]
+    respond_to do |format|
+      format.html { redirect_to root_path }
+      format.js
+    end
   end
 
+  # POST /login
   def login
     user = User.find(:first,:conditions=>["login=?",params[:login]])
     if user
@@ -34,6 +38,7 @@ class LoginController < ApplicationController
     redirect_to root_path
   end
 
+  # GET /logout
   def logout
     session[:user] = nil
     redirect_to root_path
