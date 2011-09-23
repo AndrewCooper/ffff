@@ -32,7 +32,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'instance method session_info' do
-    session_hash = { :name=>"#{@user.firstname} #{@user.lastname}", :uid=>@user.id, :admin=>@user.is_admin }
+    session_hash = { :name=>"#{@user.firstname} #{@user.lastname}", :uid=>@user.id, :admin=>@user.is_admin, :stats=>{ :rank=>2, :score=>8, :ties=>[users(:userc).id] } }
     assert_equal session_hash, @user.session_info
   end
 
