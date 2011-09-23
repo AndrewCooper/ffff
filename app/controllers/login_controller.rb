@@ -1,6 +1,7 @@
 require 'openssl'
 
 class LoginController < ApplicationController
+  include LoginResponseCalculation
   before_filter :authorize_user,:except=>[:request_login,:login,:logout]
 
   # GET /login
@@ -17,8 +18,7 @@ class LoginController < ApplicationController
   def login
     user = User.find(:first,:conditions=>["login=?",params[:login]])
     if user
-      calc_response = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::SHA1.new,user.password,session[:challenge]);
-      logger.info "Expected: "+calc_response
+      calc_response = calculate_login_response( user.password, session[:challenge] )
       if calc_response == params[:response]
         update_session(user)
         if user.new_password?
