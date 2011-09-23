@@ -55,4 +55,16 @@ class LoginControllerTest < ActionController::TestCase
     assert_equal 'User asdf not found.', flash[:notice]
     assert_equal nil, session[:user]
   end
+
+  test 'logout' do
+    get :request_login, {:format=>:js}
+    user = users(:usera)
+    params = {:login => user.login, :response => calculate_login_response( user.password, session[:challenge] ) }
+    post :login, params
+
+    get :logout
+    assert_response :redirect
+    assert_redirected_to root_path
+    assert_equal nil, session[:user]
+  end
 end
