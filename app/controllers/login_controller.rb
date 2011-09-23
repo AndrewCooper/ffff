@@ -16,6 +16,7 @@ class LoginController < ApplicationController
 
   # POST /login
   def login
+    redir_path = root_path
     user = User.find(:first,:conditions=>["login=?",params[:login]])
     if user
       calc_response = calculate_login_response( user.password, session[:challenge] )
@@ -24,18 +25,17 @@ class LoginController < ApplicationController
         if user.new_password?
           user.update_attribute("new_password",0)
           flash[:notice] = "You are now encouraged to change your password."
-          redirect_to(:controller => "/user",:action=>"profile") and return
+          redir_path = edit_user_path
         end
       else
         flash[:notice]= "Password incorrect for #{params[:login]}"
-
         session[:user] = nil
       end
     else
       flash[:notice] = "User #{params[:login]} not found."
     end
     session[:challenge] = nil
-    redirect_to root_path
+    redirect_to redir_path
   end
 
   # GET /logout
