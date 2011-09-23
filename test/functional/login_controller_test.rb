@@ -45,4 +45,14 @@ class LoginControllerTest < ActionController::TestCase
     assert_match /Password incorrect for/, flash[:notice]
     assert_equal nil, session[:user]
   end
+
+  test 'login user not found' do
+    get :request_login, {:format=>:js}
+    params = {:login => "asdf", :response => "asdf" }
+    post :login, params
+    assert_response :redirect
+    assert_redirected_to root_path
+    assert_equal 'User asdf not found.', flash[:notice]
+    assert_equal nil, session[:user]
+  end
 end
