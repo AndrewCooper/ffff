@@ -24,4 +24,14 @@ class LoginControllerTest < ActionController::TestCase
     assert_redirected_to edit_user_path
     assert_equal "You are now encouraged to change your password.", flash[:notice]
   end
+
+  test 'login userb successfully, don\'t change password' do
+    get :request_login, {:format=>:js}
+    user = users(:userb)
+    params = {:login => user.login, :response => calculate_login_response( user.password, session[:challenge] ) }
+    post :login, params
+    assert_response :redirect
+    assert_redirected_to root_path
+    assert_equal nil, flash[:notice]
+  end
 end

@@ -24,7 +24,7 @@ userb:
   lastname: the second
   email: null.pointer.exception@hkcreations.org
   is_admin: 0
-  new_password: 1
+  new_password: 0
   alerts: 1
 
 userc:
