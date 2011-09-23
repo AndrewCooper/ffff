@@ -34,4 +34,15 @@ class LoginControllerTest < ActionController::TestCase
     assert_redirected_to root_path
     assert_equal nil, flash[:notice]
   end
+
+  test 'login usera failure' do
+    get :request_login, {:format=>:js}
+    user = users(:usera)
+    params = {:login => user.login, :response => "asdf" }
+    post :login, params
+    assert_response :redirect
+    assert_redirected_to root_path
+    assert_match /Password incorrect for/, flash[:notice]
+    assert_equal nil, session[:user]
+  end
 end
