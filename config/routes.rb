@@ -27,7 +27,6 @@ FFFF::Application.routes.draw do
 
     get "database"=>"database#index"
     post "database/reset"=>"database#reset"
-    post "database/backup"=>"database#backup"
 
     match "picks"=>"picks#index", :via=>:get
     match "picks"=>"picks#update", :via=>:put
