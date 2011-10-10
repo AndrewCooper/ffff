@@ -1,7 +1,7 @@
 class Admin::DatabaseController < ApplicationController
 
   def index
-  @title = "Administration :: Database"
+    @title = "Administration :: Database"
   end
   
   def reset
