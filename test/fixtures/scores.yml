@@ -33,3 +33,12 @@ userc_score1:
   sevens: 0
   perfects: 0
   user: userc
+
+usera_score3:
+  week: 7
+  total: 0
+  closests: 0
+  wins: 0
+  sevens: 0
+  perfects: 0
+  user: usera

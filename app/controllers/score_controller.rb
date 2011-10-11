@@ -34,9 +34,11 @@ class ScoreController < ApplicationController
     end
 
     Pick.select("picks.*,games.week").joins(:game).all.each do |pick|
-      if @weeks[pick.week].nil?
-        next
-      end
+      # This doesn't seem to be possible, but leaving the commented code here
+      # just in case it happens.
+      #if @weeks[pick.week].nil?
+      #  next
+      #end
       if @weeks[pick.week][:users][pick.user_id].nil?
         next
       end
