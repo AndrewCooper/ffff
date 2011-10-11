@@ -1,10 +1,7 @@
 class Admin::AdminController < ApplicationController
   before_filter :authorize_admin
 
-  def index
-    @title = "Administration :: Configuration"
-  end
-
+  protected
   def authorize_admin
     unless session[:user][:admin] == 1
       flash[:notice] = "Administrator access required."
