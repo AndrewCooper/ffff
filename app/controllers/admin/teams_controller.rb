@@ -22,6 +22,7 @@ class Admin::TeamsController < Admin::AdminController
   # GET /admin/teams/new
   def new
     @item = Team.new
+    render :action=>:edit
   end
 
   # GET /admin/teams/:id/edit
