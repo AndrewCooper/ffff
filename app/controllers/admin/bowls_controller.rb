@@ -20,6 +20,8 @@ class Admin::BowlsController < Admin::AdminController
   # GET /admin/bowls/new
   def new
     @item=Bowl.new
+    @games = Game.where(:is_bowl=>true).order("week,gametime").collect {|p| ["#{p.away_team.location} #{p.away_team.name} @ #{p.home_team.location} #{p.home_team.name}",p.id]}
+    render :action=>:edit
   end
 
   # GET /admin/bowls/:id/edit
