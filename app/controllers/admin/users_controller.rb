@@ -19,6 +19,7 @@ class Admin::UsersController < Admin::AdminController
   # GET /admin/users/new
   def new
     @item=User.new
+    render :action=>:edit
   end
 
   # GET /admin/users/:id/edit
