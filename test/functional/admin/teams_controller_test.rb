@@ -64,6 +64,21 @@ class Admin::TeamsControllerTest < ActionController::TestCase
     assert_equal @team, Team.find(@team.id)
   end
 
+  test 'should put failed update as html' do
+    @team.rankAP = -1
+    put :update, {:id=>@team.id,:item=>@team.attributes}, @session
+    assert_response :redirect
+    assert_redirected_to edit_admin_team_path(@team.id)
+    assert_equal @team, Team.find(@team.id)
+  end
+
+  test 'should put failed update as js' do
+    @team.rankAP = -1
+    xhr :put, :update, {:id=>@team.id,:item=>@team.attributes}, @session
+    assert_response :success
+    assert_equal @team, Team.find(@team.id)
+  end
+
   test 'should delete as html' do
     delete :destroy, {:id=>@team.id}, @session
     assert_response :redirect

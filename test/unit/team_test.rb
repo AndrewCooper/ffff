@@ -23,6 +23,45 @@ class TeamTest < ActiveSupport::TestCase
     assert_equal 1, @team.home_games.all.count( @home_game )
   end
 
+  test 'validates :rankAP, :numericality => { :only_integer => true, :greater_than_or_equal_to => 0 }' do
+    assert @team.valid?
+
+    @team.rankAP = -1
+    assert @team.invalid?
+
+    @team.rankAP = 0
+    assert @team.valid?
+
+    @team.rankAP = 500
+    assert @team.valid?
+  end
+
+  test 'validates :rankUSA, :numericality => { :only_integer => true, :greater_than_or_equal_to => 0 }' do
+    assert @team.valid?
+
+    @team.rankUSA = -1
+    assert @team.invalid?
+
+    @team.rankUSA = 0
+    assert @team.valid?
+
+    @team.rankUSA = 500
+    assert @team.valid?
+  end
+
+  test 'validates :espnid, :numericality => { :only_integer => true, :greater_than_or_equal_to => 0 }' do
+    assert @team.valid?
+
+    @team.espnid = -1
+    assert @team.invalid?
+
+    @team.espnid = 0
+    assert @team.valid?
+
+    @team.espnid = 500
+    assert @team.valid?
+  end
+
   test "fullname" do
     assert_equal @team.location + " " + @team.name, @team.fullname
   end

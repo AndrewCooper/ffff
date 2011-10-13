@@ -45,7 +45,7 @@ class Admin::TeamsController < Admin::AdminController
       end
     else
       respond_to do |format|
-        format.html { redirect_to edit_admin_game_path(params[:id]) }
+        format.html { redirect_to edit_admin_team_path(params[:id]) }
         format.js { render :action=>:edit }
       end
     end
