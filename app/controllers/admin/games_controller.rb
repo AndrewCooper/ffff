@@ -20,6 +20,8 @@ class Admin::GamesController < Admin::AdminController
   # GET /admin/games/new
   def new
     @item=Game.new
+    @teams = Team.order("location").collect{|t| [t.location+" "+t.name,t.id]}
+    render :action=>:edit
   end
 
   # GET /admin/games/:id/edit
