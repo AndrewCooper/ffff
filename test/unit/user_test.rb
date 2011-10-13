@@ -48,10 +48,10 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'has_many :scores, :dependent => :delete_all' do
-    assert_equal 2, @user.scores.count
+    assert_equal 3, @user.scores.count
     score_ids = @user.scores.collect{ |s| s.user_id }
-    assert_equal [@user.id]*2, score_ids
-    assert_equal [scores(:usera_score1).week, scores(:usera_score2).week].sort, @user.scores.collect { |s| s.week }.sort
+    assert_equal [@user.id]*3, score_ids
+    assert_equal [scores(:usera_score1).week, scores(:usera_score2).week, scores(:usera_score3).week].sort, @user.scores.collect { |s| s.week }.sort
     User.destroy(@user)
     assert_raise ActiveRecord::RecordNotFound do
       Score.find( score_ids )
