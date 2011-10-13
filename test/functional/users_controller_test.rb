@@ -50,6 +50,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test 'should put reset_password' do
+    ActionMailer::Base.deliveries.clear
     @params = { :username => users(:usera).login }
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do
       put :reset_password, @params
