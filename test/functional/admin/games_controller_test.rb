@@ -71,6 +71,21 @@ class Admin::GamesControllerTest < ActionController::TestCase
     assert_equal @game, Game.find(@game.id)
   end
 
+  test 'should put failed update as html' do
+    @game.home_score = -5
+    put :update, {:id=>@game.id,:item=>@game.attributes}, @session
+    assert_response :redirect
+    assert_redirected_to edit_admin_game_path( @game.id)
+    assert_not_equal @game.attributes, Game.find(@game.id).attributes
+  end
+
+  test 'should put failed update as js' do
+    @game.home_score = -5
+    xhr :put, :update, {:id=>@game.id,:item=>@game.attributes}, @session
+    assert_response :success
+    assert_not_equal @game.attributes, Game.find(@game.id).attributes
+  end
+
   test 'should delete as html' do
     delete :destroy, {:id=>@game.id}, @session
     assert_response :redirect

@@ -45,6 +45,61 @@ class GameTest < ActiveSupport::TestCase
     assert_equal 0, test_picks.count
   end
 
+  test 'validates :away_score, :numericality => { :only_integer=>:true, :greater_than_or_equal_to=>0 }' do
+    assert @game.valid?
+
+    @game.away_score = -1
+    assert @game.invalid?
+
+    @game.away_score = 0
+    assert @game.valid?
+
+    @game.away_score = 1
+    assert @game.valid?
+  end
+
+  test 'validates :home_score, :numericality => { :only_integer=>:true, :greater_than_or_equal_to=>0 }' do
+    assert @game.valid?
+
+    @game.home_score = -1
+    assert @game.invalid?
+
+    @game.home_score = 0
+    assert @game.valid?
+
+    @game.home_score = 1
+    assert @game.valid?
+  end
+
+  test 'validates :week, :numericality => { :only_integer=>:true, :greater_than_or_equal_to=>1 }' do
+    assert @game.valid?
+
+    @game.week = -1
+    assert @game.invalid?
+
+    @game.week = 0
+    assert @game.invalid?
+
+    @game.week = 1
+    assert @game.valid?
+  end
+
+  test 'validates :is_bowl, :inclusion => { :in => [true, false] }' do
+    assert @game.valid?
+
+    @game.is_bowl = -1
+    assert @game.invalid?
+
+    @game.is_bowl = 0
+    assert @game.valid?
+
+    @game.is_bowl = 1
+    assert @game.valid?
+
+    @game.is_bowl = 2
+    assert @game.invalid?
+  end
+
   test "fullname" do
     at = teams(:pokes)
     ht = teams(:sooners)

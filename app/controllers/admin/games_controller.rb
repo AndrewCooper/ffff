@@ -47,7 +47,10 @@ class Admin::GamesController < Admin::AdminController
     else
       respond_to do |format|
         format.html { redirect_to edit_admin_game_path(params[:id]) }
-        format.js { render :action=>:edit }
+        format.js do
+          @teams = Team.order("location").collect{|t| [t.location+" "+t.name,t.id]}
+          render :action=>:edit
+        end
       end
     end
   end
