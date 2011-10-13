@@ -67,6 +67,21 @@ class Admin::BowlsControllerTest < ActionController::TestCase
     assert_equal @bowl, Bowl.find(@bowl.id)
   end
 
+  test 'should put failed update as html' do
+    @bowl.multiplier = -5
+    put :update, {:id=>@bowl.id,:item=>@bowl.attributes}, @session
+    assert_response :redirect
+    assert_redirected_to edit_admin_bowl_path( @bowl.id )
+    assert_not_equal @bowl.attributes, Bowl.find(@bowl.id).attributes
+  end
+
+  test 'should put failed update as js' do
+    @bowl.multiplier = -5
+    xhr :put, :update, {:id=>@bowl.id,:item=>@bowl.attributes}, @session
+    assert_response :success
+    assert_not_equal @bowl.attributes, Bowl.find(@bowl.id).attributes
+  end
+
   test 'should delete as html' do
     delete :destroy, {:id=>@bowl.id}, @session
     assert_response :redirect

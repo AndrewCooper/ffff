@@ -46,7 +46,10 @@ class Admin::BowlsController < Admin::AdminController
     else
       respond_to do |format|
         format.html { redirect_to edit_admin_bowl_path(params[:id]) }
-        format.js { render :action=>:edit }
+        format.js do
+          @games = Game.where(:is_bowl=>true).order("week,gametime").collect {|p| ["#{p.away_team.location} #{p.away_team.name} @ #{p.home_team.location} #{p.home_team.name}",p.id]}
+          render :action=>:edit
+        end
       end
     end
   end

@@ -14,4 +14,14 @@ class BowlTest < ActiveSupport::TestCase
     assert_not_nil @bowl.game
     assert_kind_of Game, @bowl.game
   end
+
+  # Cannot actually test non-integer values for multiplier, as Ruby
+  # auto-converts to Integer at assignment
+  test 'validates :multiplier, :numericality => { :only_integer => true, :greater_than => 0 }' do
+    @bowl.multiplier = -5
+    assert !@bowl.valid?
+
+    @bowl.multiplier = 99
+    assert @bowl.valid?
+  end
 end
