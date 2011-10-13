@@ -36,7 +36,6 @@ class Admin::PicksController < Admin::AdminController
       picks.each { |p| @matches[p.user_id][:picks].push(p) }
 
       render "edit_picks_game"
-    elsif params[:week_id]
     end
   end
 
