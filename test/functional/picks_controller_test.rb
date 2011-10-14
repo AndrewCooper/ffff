@@ -11,7 +11,6 @@ class PicksControllerTest < ActionController::TestCase
     get :index, nil, @session
     assert_response :success
     assert_not_nil assigns(:title)
-    assert_not_nil assigns(:tz)
     assert_not_nil assigns(:user)
     assert_not_nil assigns(:weeks)
   end
@@ -20,7 +19,6 @@ class PicksControllerTest < ActionController::TestCase
     get :edit, nil, @session
     assert_response :success
     assert_not_nil assigns(:title)
-    assert_not_nil assigns(:tz)
     assert_not_nil assigns(:user)
     assert_not_nil assigns(:weeks)
   end

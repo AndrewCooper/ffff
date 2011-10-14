@@ -5,7 +5,7 @@ pokesVSsooners:
   away_score: 26
   is_bowl: 0
   week: 1
-  gametime: <%= Time.now.tomorrow.to_s(:db) %>
+  gametime: <%= Time.zone.now.tomorrow.to_s(:db) %>
 
 wildcatsVSjayhawks: 
   home_team: jayhawks
@@ -14,7 +14,7 @@ wildcatsVSjayhawks:
   away_score: 34
   is_bowl: 0
   week: 2
-  gametime: <%= Time.now.yesterday.to_s(:db) %>
+  gametime: <%= Time.zone.now.yesterday.to_s(:db) %>
   
 pokesVSwildcats:
   home_team: wildcats
@@ -23,4 +23,4 @@ pokesVSwildcats:
   away_score: 37
   is_bowl: 1
   week: 3
-  gametime: <%= Time.now.to_s(:db) %>
+  gametime: <%= Time.zone.now.to_s(:db) %>

@@ -39,7 +39,13 @@
             </td>
             <td class="bt bb center"><%= link_to image_tag("/logos/#{@game.away_team.image}",:size=>"50x50"), team_path( @game.away_team ) %></td>
             <td class="bt br bb center"><%= p_fields.number_field :away_score, :size=>3 %></td>
-            <td class="center" style="font-size:.6em">@<br/><%= @game.gametime.strftime("%I:%M%p") %><br /><%= @game.gametime.strftime("%a") %><br /><%= @game.gametime.strftime("%m/%d/%y") %><br /><%= @tz %></td>
+            <td class="center" style="font-size:.6em">
+              @<br/>
+              <%= @game.gametime.strftime("%a") %><br />
+              <%= @game.gametime.strftime("%m/%d/%y") %><br />
+              <%= @game.gametime.strftime("%I:%M%p") %><br />
+              <%= @game.gametime.zone %>
+            </td>
             <td class="bt bl bb center"><%= p_fields.number_field :home_score, :size=>3 %></td>
             <td class="bt bb center"><%= link_to image_tag("/logos/#{@game.home_team.image}",:size=>"50x50"), team_path( @game.home_team ) %></td>
             <td class="bt br bb" style="text-align:left; width:30%;">

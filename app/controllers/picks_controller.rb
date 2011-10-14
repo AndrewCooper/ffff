@@ -2,7 +2,6 @@ class PicksController < ApplicationController
   # GET /picks
   def index
     @title = "FFFF :: Review Picks"
-    @tz = time_zone
 
     @user=User.find(session[:user][:uid])
 
@@ -24,10 +23,9 @@ class PicksController < ApplicationController
   # GET /picks/edit
   def edit
     @title = "FFFF :: Make Picks"
-    @tz = time_zone
     @user = User.find(session[:user][:uid])
 
-    now = current_app_time
+    now = Time.now
 
     @weeks = {}
     games = Game.where("gametime > ?",now).order("week,gametime").includes([:away_team,:home_team,:bowl])
@@ -46,7 +44,7 @@ class PicksController < ApplicationController
 
   # PUT /picks
   def update
-    @now = current_app_time
+    @now = Time.now
     updated = 0
     overdue = 0
     # update existing picks

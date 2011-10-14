@@ -28,18 +28,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def time_zone
-    if Time.new.dst?
-      FFFF_SERVER_TIMEZONE[1]
-    else
-      FFFF_SERVER_TIMEZONE[0]
-    end
-  end
-
-  def current_app_time
-    Time.new+FFFF_SERVER_OFFSET
-  end
-
   def random_password(size = 8)
     chars = (('a'..'z').to_a + ('a'..'z').to_a + ('0'..'9').to_a)
     (1..size).collect{|a| chars[rand(chars.size)] }.join
