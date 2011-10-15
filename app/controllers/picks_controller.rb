@@ -67,7 +67,7 @@ class PicksController < ApplicationController
       flash[:notice] = "#{updated} picks updated."
     end
     if overdue > 0
-      flash[:warning] += "#{overdue} games have already started. These picks were not updated."
+      flash[:warning] = "#{overdue} games have already started. These picks were not updated."
     end
     redirect_to(:action=>"index")
   end
