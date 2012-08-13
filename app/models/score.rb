@@ -1,6 +1,8 @@
 class Score < ActiveRecord::Base
   belongs_to :user
 
+  attr_accessible :user_id, :week, :wins, :closests, :perfects, :sevens, :total
+
   def self.user_stats (uid)
     stats = { :rank=>nil, :score=>nil, :ties=>[] }
     scores = Score.group(:user_id).sum(:total)
