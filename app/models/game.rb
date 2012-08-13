@@ -4,6 +4,7 @@ class Game < ActiveRecord::Base
   belongs_to :away_team, :class_name=>"Team", :foreign_key=>"away_team_id"
   belongs_to :home_team, :class_name=>"Team", :foreign_key=>"home_team_id"
 
+  attr_accessible :away_score, :away_team, :away_team_id, :gametime, :home_score, :home_team, :home_team_id, :is_bowl, :week
   validates :away_score, :numericality => { :only_integer=>:true, :greater_than_or_equal_to=>0 }
   validates :home_score, :numericality => { :only_integer=>:true, :greater_than_or_equal_to=>0 }
   validates :week,       :numericality => { :only_integer=>:true, :greater_than_or_equal_to=>1 }

@@ -1,6 +1,6 @@
 module ApplicationHelper
   def set_content_for(name, content = nil, &block)
-    @_content_for[name] = ""
+    @view_flow.set(name, "")
     content_for(name, content, &block)
   end
 

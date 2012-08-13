@@ -1,2 +1,0 @@
-divid="item#{@item.id}"
-page.replace_html( divid, :partial=>"show", :locals=>{:item=>@item} )

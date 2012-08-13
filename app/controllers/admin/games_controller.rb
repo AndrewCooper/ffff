@@ -9,7 +9,7 @@ class Admin::GamesController < Admin::AdminController
 
   # POST /admin/games
   def create
-    @item = Game.create( params[:item] )
+    @item = Game.create( params[:item].except("id") )
     @items = Game.order("week,gametime")
     respond_to do |format|
       format.html { redirect_to admin_games_path }

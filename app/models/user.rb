@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   has_many :scores, :dependent => :delete_all
   has_many :picks, :dependent => :delete_all
 
+  attr_accessible :login, :password, :firstname, :lastname, :email, :is_admin, :new_password, :alerts
+
   before_validation :check_password_updated
   after_validation :digest_updated_password
 

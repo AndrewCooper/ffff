@@ -18,21 +18,21 @@ class Admin::GamesControllerTest < ActionController::TestCase
   test 'should post create as html' do
     b = Game.new( :home_team=>teams(:sooners), :away_team=>teams(:jayhawks),
                   :home_score=>10, :away_score=>14,
-                  :is_bowl=>0, :week=>4, :gametime=>Time.now+1.week )
+                  :is_bowl=>0, :week=>4, :gametime=>Time.parse("2012-08-13 18:00:00") )
     post :create, {:item=>b.attributes}, @session
     assert_response :redirect
     assert_redirected_to admin_games_path
-    assert_equal b.attributes, assigns[:item].attributes.except!("id")
+    assert_equal b.attributes.except("id"), assigns[:item].attributes.except("id")
     assert_not_nil assigns[:items]
   end
 
   test 'should post create as js' do
     b = Game.new( :home_team=>teams(:sooners), :away_team=>teams(:jayhawks),
                   :home_score=>10, :away_score=>14,
-                  :is_bowl=>0, :week=>4, :gametime=>Time.now+1.week )
+                  :is_bowl=>0, :week=>4, :gametime=>Time.parse("2012-08-13 18:00:00") )
     xhr :post, :create, {:item=>b.attributes}, @session
     assert_response :success
-    assert_equal b.attributes, assigns[:item].attributes.except!("id")
+    assert_equal b.attributes.except("id"), assigns[:item].attributes.except("id")
     assert_not_nil assigns[:items]
   end
 

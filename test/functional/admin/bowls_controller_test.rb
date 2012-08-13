@@ -20,7 +20,7 @@ class Admin::BowlsControllerTest < ActionController::TestCase
     post :create, {:item=>b.attributes}, @session
     assert_response :redirect
     assert_redirected_to admin_bowls_path
-    assert_equal b.attributes, assigns[:item].attributes.except!("id")
+    assert_equal b.attributes.except("id"), assigns[:item].attributes.except("id")
     assert_not_nil assigns[:items]
   end
 
@@ -28,7 +28,7 @@ class Admin::BowlsControllerTest < ActionController::TestCase
     b = Bowl.new( :name=>"asdf", :location=>"qwer", :multiplier=>5, :url=>"asldkjf", :game_id=>games(:wildcatsVSjayhawks).id )
     xhr :post, :create, {:item=>b.attributes}, @session
     assert_response :success
-    assert_equal b.attributes, assigns[:item].attributes.except!("id")
+    assert_equal b.attributes.except("id"), assigns[:item].attributes.except("id")
     assert_not_nil assigns[:items]
   end
 

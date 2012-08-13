@@ -46,7 +46,7 @@ class PickTest < ActiveSupport::TestCase
   end
 
   test "calculate_score" do
-    p = Pick.new( :home_score=>10, :away_score=>20 )
+    p = Pick.new( { :home_score=>10, :away_score=>20 }, :without_protection => true )
     assert_equal  0, p.calculate_score( 10, 20 )      # perfect pick
     assert_equal 10, p.calculate_score(  5, 20 )      # away_score >
     assert_equal 10, p.calculate_score( 15, 20 )      # away_score <

@@ -59,7 +59,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'validates_uniqueness_of :login, :message => "NOT A UNIQUE LOGIN"' do
-    userclone = users(:usera).clone
+    userclone = User.new( { :login => users(:usera)[:login] }, :without_protection => true )
     assert !userclone.valid?
     assert userclone.errors[:login].any?
   end

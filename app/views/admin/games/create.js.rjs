@@ -1,1 +1,0 @@
-page.replace_html('item_index', :partial=>"index", :locals=>{:items=>@items} )

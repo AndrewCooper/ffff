@@ -1,9 +1,10 @@
 require 'test_helper'
+require 'action_view/flows'
 
 class ApplicationHelperTest < ActionView::TestCase
   def setup
     super
-    @_content_for = Hash.new {|h,k| h[k] = "" }
+    @view_flow = ActionView::OutputFlow.new
   end
 
   # Works with Rails/ActionPack 3.0.9
