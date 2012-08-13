@@ -1,7 +1,6 @@
 require 'test_helper'
 
-class NotificationsTest < ActionMailer::TestCase
-
+class NotificationTest < ActionMailer::TestCase
   def setup
     @user = User.first
     @newpass = "AsDfGhJkL"

@@ -1,10 +1,10 @@
 class Notifications < ActionMailer::Base
+  default from: 'FFFF Administration <admin@hkcreations.org>'
 
   def signup( user )
     @user       = user
     @subject    = 'Notifications#signup'
     @recipients = user.email
-    @from       = 'FFFF Administration <admin@hkcreations.org>'
     @sent_on    = Time.now
   end
 
@@ -13,7 +13,6 @@ class Notifications < ActionMailer::Base
     @password   = new_pass
     @subject    = 'Forgotten Password for FFFF'
     @recipients = user.email
-    @from       = 'FFFF Administration <admin@hkcreations.org>'
     @sent_on    = Time.now
   end
 
@@ -22,7 +21,6 @@ class Notifications < ActionMailer::Base
     @games      = games
     @subject    = 'Pending Picks Alert'
     @recipients = user.email
-    @from       = 'FFFF Administration <admin@hkcreations.org>'
     @sent_on    = Time.now
   end
 end
