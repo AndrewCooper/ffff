@@ -46,7 +46,7 @@ class Admin::PicksControllerTest < ActionController::TestCase
     assert_redirected_to admin_picks_path
 
     np = Pick.where(:user_id=>@pick.user_id,:game_id=>@pick.game_id).first
-    assert_equal @pick.attributes,
+    assert_equal @pick.attributes.except("id"),
                  np.attributes.except("id")
   end
 end
