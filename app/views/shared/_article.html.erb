@@ -1,5 +1,7 @@
 <div class="Article">
-  <div class="ArticleHeader"><%= yield :article_title %></div>
+  <div class="ArticleHeader">
+    <%= content_for :article_title %>
+  </div>
   <div class="ArticleLongContent">
     <div class="ArticleBody">
       <%= yield %>
