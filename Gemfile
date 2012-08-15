@@ -51,3 +51,6 @@ group :development, :test do
   gem 'debugger'
   gem 'rails_code_qa'
 end
+
+# Use Thin as the app server
+gem 'thin'
