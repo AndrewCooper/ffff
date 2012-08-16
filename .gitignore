@@ -16,3 +16,9 @@
 
 # Ignore code coverage data
 /coverage
+
+# Ignore team logos
+/public/logos
+
+# Ignore precompiled assets
+/public/assets
