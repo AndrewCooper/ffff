@@ -1,0 +1,44 @@
+<%= form_for( @item, :url=>user_path ) do |f| %>
+  <table summary="Summary" class="className" cellspacing="" cellpadding="" border="0">
+    <tr class="">
+      <td class="label"><%= f.label :login, 'Login:' %></td>
+      <td class=""><%= f.text_field :login %><span class="footnote">3-40 characters</span></td>
+    </tr>
+    <tr class="">
+      <td class="label"><%= f.label :firstname, 'First Name:' %></td>
+      <td class=""><%= f.text_field :firstname %></td>
+    </tr>
+    <tr class="">
+      <td class="label"><%= f.label :lastname, 'Last Name:' %></td>
+      <td class=""><%= f.text_field :lastname %></td>
+    </tr>
+    <tr class="">
+      <td class="label"><%= f.label :email, 'Email:' %></td>
+      <td class=""><%= f.text_field :email %></td>
+    </tr>
+    <tr class="">
+      <td class="label"><%= f.label :alerts, 'Receive Pick Alerts?' %></td>
+      <td class=""><%= f.check_box :alerts %></td>
+    </tr>
+    <tr class="">
+      <td class=""></td>
+      <td class="" colspan="2">&nbsp;</td>
+    </tr>
+    <tr class="">
+      <td class=""></td>
+      <td class="footnote" colspan="2">Leave blank for no password change.</td>
+    </tr>
+    <tr class="">
+      <td class="label"><%= label :password, :new, 'New Password:' %></td>
+      <td class=""><%= password_field :password, :new %><span class="footnote">5-40 characters</span></td>
+    </tr>
+    <tr class="">
+      <td class="label"><%= label :password, :confirm, 'Confirm:' %></td>
+      <td class=""><%= password_field :password, :confirm %></td>
+    </tr>
+    <tr class="">
+      <td></td>
+      <td class="center"><%= submit_tag "Update" %></td>
+    </tr>
+  </table>
+<% end %>

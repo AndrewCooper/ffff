@@ -1,5 +1,6 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-first_bowl:
-  id: 1
-another_bowl:
-  id: 2
+pokesVSwildcats:
+  name: pokesVSwildcats
+  location: Manhattan, KS
+  game: pokesVSwildcats
+  multiplier: 2
+  url: http://www.pokesVSwildcats.com/

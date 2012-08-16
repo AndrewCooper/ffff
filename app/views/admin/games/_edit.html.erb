@@ -1,0 +1,52 @@
+<td colspan="10">
+  <% if item.id %>
+    <% divid = "edit#{item.id}" %>
+    <% form_url = admin_game_path(item) %>
+    <% form_options = { :method=>:put, :remote=>true } %>
+    <% submit_str = "Update" %>
+  <% else %>
+    <% divid="new_item" %>
+    <% form_url = admin_games_path %>
+    <% form_options = { :method=>:post, :remote=>true } %>
+    <% submit_str = "Create" %>
+  <% end %>
+  <div id="<%= divid %>">
+    <%= form_tag form_url, form_options do %>
+      <table class="editbox">
+        <tr>
+          <td>
+            <% if item.id %>
+              <%= link_to "Cancel", admin_game_path(item), :remote=>true %>
+            <% end %>
+          </td>
+          <td class="label">Week</td>
+          <td colspan="2"><%= text_field "item","week",:size=>3 %></td>
+        </tr>
+        <tr>
+        <td></td>
+        <td class="label">Game Time</td>
+        <td colspan="2"><%= datetime_select "item", "gametime" %></td>
+        <tr>
+          <td></td>
+          <td class="label">Away Team</td>
+          <td class="left"><%= select "item","away_team_id", teams %></td>
+          <td class="left"><%= text_field "item","away_score",:size=>3 %> points</td>
+        </tr>
+        <tr>
+          <td>
+          </td>
+          <td class="label">Home Team</td>
+          <td class="left"><%= select "item","home_team_id", teams %></td>
+          <td class="left"><%= text_field "item","home_score",:size=>3 %> points</td>
+        </tr>
+        <tr>
+          <td>
+            <%= submit_tag submit_str  %>
+          </td>
+          <td class="label">Bowl Game?</td>
+          <td colspan="2" class="left"><%= check_box "item","is_bowl" %> </td>
+        </tr>
+      </table>
+    <% end %>
+  </div>
+</td>

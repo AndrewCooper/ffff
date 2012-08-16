@@ -1,0 +1,5 @@
+<% set_content_for :article_title, 'User' %>
+<ul>
+  <li><%= link_to "Edit Profile", edit_user_path %></li>
+  <li><%= link_to("Logout",{:controller => "/login",:action => "logout"}) %></li>
+</ul>

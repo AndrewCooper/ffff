@@ -1,0 +1,70 @@
+<table style="font-size:.8em;">
+  <tr>
+    <% @weeks.each do |week_id,week|%>
+      <td><%= link_to "Week #{week_id}",:anchor=>week_id %></td>
+      <% if week_id % 7 == 0 %>
+        </tr><tr>
+      <% end %>
+    <% end %>
+  </tr>
+</table>
+<table style="text-align:center; border-collapse:collapse;" border="0" cellpadding="1" cellspacing="0">
+  <% @weeks.each do |week_id,week| %>
+    <thead>
+      <tr style="text-align:center;" valign="bottom">
+        <td><a name="<%= week_id %>"></a><h1>Week <%= week_id %></h1></td>
+        <% week[:games].each do |game_id,game| %>
+          <td class="bl bt colhead">
+            <%= link_to team_logo(game.away_team, :size=>"24x24", :alt=>""), team_path(game.away_team) %>
+            <br /><%= game.away_score %>
+          </td>
+          <td class="br bt colhead">
+            <%= link_to team_logo(game.home_team, :size=>"24x24", :alt=>""), team_path(game.home_team) %>
+            <br /><%= game.home_score %>
+          </td>
+        <% end %>
+        <td class="bl bt br colhead" style="width:1em;">W</td>
+        <td class="bl bt br colhead" style="width:1em;">C</td>
+        <td class="bl bt br colhead" style="width:1em;">P</td>
+        <td class="bl bt br colhead" style="width:1em;">7</td>
+        <td class="bl bt br colhead" style="width:1em;">T</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% week[:users].each do |user_id,user_data| %>
+        <tr>
+          <td rowspan="2" style="text-align:right;">
+            <%= @users[user_id].name %>&nbsp;
+          </td>
+          <% week[:games].each do |game_id,game| %>
+            <% pick = user_data[:picks][game_id] || Pick.new %>
+            <td class="bl bt bcell"><%= pick.away_score %></td>
+            <td class="bt br bcell"><%= pick.home_score %></td>
+          <% end %>
+          <td rowspan="2" class="ball bcell"><%= user_data[:score].wins %></td>
+          <td rowspan="2" class="ball bcell"><%= user_data[:score].closests %></td>
+          <td rowspan="2" class="ball bcell"><%= user_data[:score].perfects %></td>
+          <td rowspan="2" class="ball bcell"><%= user_data[:score].sevens %></td>
+          <td rowspan="2" class="ball bcell"><%= user_data[:score].total %></td>
+        </tr>
+        <tr class="bb">
+          <% week[:games].each do |game_id,game| %>
+            <td colspan="2" class="bl bb br bcell">
+              <% pick = user_data[:picks][game_id] %>
+              <% if pick && pick.pick_score && pick.pick_score != -1 %>
+                <% if pick.is_closest == 1 %>
+                  <span class="closest">(<%= pick.pick_score %>)</span>
+                <% else %>
+                  (<%= pick.pick_score %>)
+                <% end %>
+              <% else %>
+                <span style="color:#444;">(N/A)</span>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+      <tr><td>&nbsp;</td></tr>
+    </tbody>
+  <% end %>
+</table>

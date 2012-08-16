@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HKC's Fall Fanatic Football Frenzy III</title>
+    <%= stylesheet_link_tag "application" %>
+    <%= javascript_include_tag 'sha1' %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+
+    <div id="left">
+      <div class="Article">
+        <div class="ArticleHeader"><%= link_to image_tag("hkc_logo.png", :alt=>"FFFF Home"),root_path %></div>
+        <div class="ArticleFooter">
+          <div class="ArticleFooterBody"></div>
+        </div>
+      </div>
+      <% if session[:user] %>
+        <%= render :partial=>'shared/game', :layout=>"shared/article" %>
+        <%= render :partial=>'shared/stats', :layout=>"shared/article" %>
+        <%= render :partial=>'shared/user', :layout=>"shared/article" %>
+        <% if session[:user][:admin]==1 %>
+          <%= render :partial=>'shared/admin', :layout=>"shared/article" %>
+        <% end %>
+      <% else %>
+        <%= render :partial=>'shared/guest', :layout=>"shared/article" %>
+      <% end %>
+    </div>
+
+    <div id="main">
+      <div class="Article">
+        <div class="ArticleHeader"></div>
+        <div class="ArticleFooter">
+          <div class="ArticleFooterBody"><%= image_tag("ffff_logo.png", :alt=>"Fall Fanatic Football Frenzy, version 3.0") %></div>
+        </div>
+      </div>
+      <div class="Article">
+        <div class="ArticleHeader"><%= @title %>&nbsp;</div>
+        <div class="ArticleLongContent">
+          <div class="ArticleBody">
+            <% if flash[:warning] %>
+              <div class="warning">
+                <%= flash[:warning] %>
+              </div>
+            <% end %>
+            <% if flash[:notice] %>
+              <div class="notice">
+                <%= flash[:notice] %>
+              </div>
+            <% end %>
+            <%= yield %>
+          </div>
+          <div class="ArticleFooter">
+            <div class="ArticleFooterBody">Fall Fanatic Football Frenzy is a service of HK Creations. &copy;2005</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

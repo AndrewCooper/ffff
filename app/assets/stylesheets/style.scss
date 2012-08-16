@@ -1,0 +1,78 @@
+body {
+  margin:0;
+  padding:0;
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 10pt;
+  color:#333;
+  background-image:image-url("layout/background.png");
+}
+
+h1 {
+  font-size:1.3em;
+  font-weight:normal;
+  text-shadow: rgba(0,0,0,.4) 0px 2px 5px;
+}
+
+h2 {
+  font-size:1.1em;
+  font-weight:normal;
+  text-shadow: rgba(0,0,0,.4) 0px 2px 5px;
+  margin:.25em;
+}
+
+a {
+  color:#09c;
+  text-decoration:underline;
+}
+a:link {color:#06c;} a:visited {color:#06c;} a:hover {text-decoration:none;}
+
+ul {
+  list-style:circle inside none;
+  margin:0px;
+  padding:0px;
+}
+
+img {
+  border-width: 0;
+}
+
+span.closest {
+  color: red;
+  font-weight: bold;
+}
+
+.editbox {
+  border-width: 1px 0;
+  border-color: black;
+  border-style: solid;
+  background:#BBB;
+}
+form {
+  display:inline;
+}
+.footnote {
+  font-size:.75em;
+  font-style:italic;
+}
+.label {
+  font-weight: bold;
+  text-align: right;
+}
+.notice {
+  background-color:#ccc;
+  color: #063;
+  text-align:center;
+  margin:1em 3em;
+  padding:1em;
+}
+.warning {
+  background-color:#ccc;
+  color: #f60;
+  text-align:center;
+  margin:1em 3em;
+  padding:1em;
+}
+
+div#loginFormDiv input {
+  width: 90%;
+}

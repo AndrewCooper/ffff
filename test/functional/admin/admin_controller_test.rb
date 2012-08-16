@@ -1,18 +1,42 @@
-require File.dirname(__FILE__) + '/../../test_helper'
-require 'admin/admin_controller'
+require 'test_helper'
 
-# Re-raise errors caught by the controller.
-class Admin::AdminController; def rescue_action(e) raise e end; end
+class Admin::FakeController < Admin::AdminController
+  def index
+    flash[:notice] = "OK"
+    render :text => "OK"
+  end
+end
 
-class Admin::AdminControllerTest < Test::Unit::TestCase
-  def setup
-    @controller = Admin::AdminController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+class Admin::FakeControllerTest < ActionController::TestCase
+  test 'should get index when authorized' do
+    with_routing do |set|
+      fake_routes(set)
+      @session = { :user => users(:admin).session_info }
+      get :index, nil, @session
+      assert_response :success
+      assert_equal "OK", flash[:notice]
+      assert_equal "OK", @response.body
+    end
   end
 
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  test 'should redirect to root when unauthorized' do
+    with_routing do |set|
+      fake_routes(set)
+      @session = { :user => users(:usera).session_info }
+      get :index, nil, @session
+      assert_response :redirect
+      assert_redirected_to root_path
+      assert_equal "Administrator access required.", flash[:notice]
+    end
+  end
+
+  private
+  def fake_routes( set )
+    set.draw do
+      namespace :admin do
+        get "fake" => "fake#index"
+      end
+      root :to => "score#rankings"
+    end
   end
 end

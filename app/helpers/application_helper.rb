@@ -1,3 +1,19 @@
-# Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  def set_content_for(name, content = nil, &block)
+    @view_flow.set(name, "")
+    content_for(name, content, &block)
+  end
+
+  def team_logo( team, options={} )
+    if options[:id].nil?
+      options[:id] = "image#{team.id}"
+    end
+
+    if options[:alt].nil?
+      options[:alt] = "#{team.location} #{team.name} Logo"
+    end
+
+    image_tag "/logos/#{team.image}", options
+  end
 end
+

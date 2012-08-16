@@ -1,0 +1,37 @@
+<table>
+  <%= form_for :pick, :url=>admin_picks_path, :html=>{:method=>:put} do |f| %>
+    <% @weeks.each do |week,matches| %>
+      <thead>
+        <tr><td><h3>Week <%= week %></h3></td></tr>
+      </thead>
+      <tbody>
+        <% matches.each do |match| %>
+          <% game = match[:game] %>
+          <tr>
+            <td style="text-align:right;"><%= game.away_team.fullname %></td>
+            <td>@</td>
+            <td style="text-align:left;"> <%= game.home_team.fullname %></td>
+          </tr>
+          <% if match[:picks].size == 0 %>
+            <% match[:picks].push Pick.new( :user_id=>@user.id, :game_id=>game.id ) %>
+            <% pickarray="newpicks[]" %>
+          <% else %>
+            <% pickarray="picks[]" %>
+          <% end %>
+          <% match[:picks].each do |pick| %>
+            <tr>
+              <%= fields_for pickarray,pick do |p_fields| %>
+                <%= p_fields.hidden_field :user_id %>
+                <%= p_fields.hidden_field :game_id %>
+                <td style="text-align:right;"><%= p_fields.number_field :away_score, :size=>3 %></td>
+                <td>&nbsp;</td>
+                <td style="text-align:left;"><%= p_fields.number_field :home_score, :size=>3 %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
+        <tr style='text-align:center'><td colspan="3"><%= submit_tag "Submit" %></td></tr>
+      </tbody>
+    <% end %>
+  <% end %>
+</table>

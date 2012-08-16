@@ -1,0 +1,61 @@
+<td colspan="7">
+  <% if item.id %>
+    <% divid = "edit#{item.id}" %>
+    <% form_url = admin_team_path(item) %>
+    <% form_options = { :method=>:put, :remote=>true } %>
+    <% submit_str = "Update" %>
+  <% else %>
+    <% divid="new_item" %>
+    <% form_url = admin_teams_path %>
+    <% form_options = { :method=>:post, :remote=>true } %>
+    <% submit_str = "Create" %>
+  <% end %>
+  <div id="<%= divid %>">
+    <%= form_tag form_url, form_options do %>
+      <table class="editbox">
+        <tr>
+          <td>
+            <% if item.id %>
+              <%= link_to "Cancel", admin_team_path(item), :remote=>true %>
+            <% end %>
+          </td>
+          <td class="label">Location</td>
+          <td><%= text_field "item","location" %></td>
+          <td rowspan="5"><%= team_logo(item) %></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="label">Name</td>
+          <td><%= text_field "item","name" %></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="label">Logo</td>
+          <td><%= text_field "item", "image", :onblur => "change_image(\'image#{item.id}\',\'/logos/\'+item_image.value)" %></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="label">Conference</td>
+          <td><%= text_field "item","conference" %></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="label">AP Rank</td>
+          <td><%= text_field "item","rankAP" %></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="label">USA Today Rank</td>
+          <td><%= text_field "item","rankUSA" %></td>
+        </tr>
+        <tr>
+          <td>
+            <%= submit_tag submit_str %>
+          </td>
+          <td class="label">Record</td>
+          <td><%= text_field "item","record" %></td>
+        </tr>
+      </table>
+    <% end %>
+  </div>
+</td>

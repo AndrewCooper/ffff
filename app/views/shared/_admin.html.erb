@@ -1,0 +1,10 @@
+<% set_content_for :article_title, 'Administration' %>
+<ul>
+  <li><%= link_to("Users", admin_users_path) %></li>
+  <li><%= link_to("Teams", admin_teams_path) %></li>
+  <li><%= link_to("Games", admin_games_path) %></li>
+  <li><%= link_to("Bowls", admin_bowls_path) %></li>
+  <li><%= link_to("Picks", admin_picks_path) %></li>
+  <li><%= link_to("Scores",{:controller=>"/admin/score"}) %></li>
+  <li><%= link_to("Database",{:controller=>"/admin/database"}) %></li>
+</ul>

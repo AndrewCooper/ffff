@@ -1,0 +1,5 @@
+<% set_content_for :article_title, 'Guest' %>
+<div id="loginFormDiv">
+  You are not logged in.<br />
+  <%= link_to "Click to log in.", {:controller=>"login",:action=>"request_login"}, :remote=>true %>
+</div>

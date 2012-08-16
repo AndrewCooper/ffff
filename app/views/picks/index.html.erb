@@ -1,0 +1,61 @@
+<table style="font-size:.8em;">
+  <tr>
+    <% @weeks.each do |week,matches|%>
+      <td><%= link_to "Week #{week}",:anchor=>week %></td>
+      <% if ( week % 7 ) == 0 %>
+        </tr><tr>
+      <% end %>
+    <% end %>
+  </tr>
+</table>
+<hr />
+<% @weeks.each do |week,matches| %>
+  <a name="<%= week %>"></a>
+  <table style="border:4px #fff ridge; padding: 1em; margin: 0 auto; width:90%;" cellpadding="3px" cellspacing="0">
+    <thead><tr><td class="center" colspan="7"><h1>Week <%= week %></h1></td></tr></thead>
+
+    <% matches.each do |match| %>
+      <% @game = match[:game] %>
+      <% @pick = match[:picks][0] || Pick.new %>
+      <% if (@game.is_bowl? && @game.bowl) %>
+        <tr>
+          <td colspan="7" class="center bt bl br">
+            <h2><%= @game.bowl.name %></h2>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td class="bt bb bl" style="text-align:left; width:30%;">
+          <div style="font-weight: bold;"><%= @game.away_team.location %> <%= @game.away_team.name %></div>
+          <div style="font-style:italic; font-size:.6em;">
+            Record: <%= @game.away_team.record %><br />
+            Rank: <%= @game.away_team.rankAP %> AP - <%= @game.away_team.rankUSA %> USA<br />
+            <%= @game.away_team.conference %><br />
+          </div>
+        </td>
+        <td class="bt bb center"><%= link_to image_tag("/logos/#{@game.away_team.image}",:size=>"50x50"), team_path( @game.away_team ) %></td>
+        <td class="bt br bb center"><%= @pick.away_score %><br /><span style="font-size:.7em">(<%= @game.away_score %>)</span></td>
+        <td class="center" style="font-size:.6em">
+          @<br/>
+          <%= @game.gametime.strftime("%a") %><br />
+          <%= @game.gametime.strftime("%m/%d/%y") %><br />
+          <%= @game.gametime.strftime("%I:%M%p") %><br />
+          <%= @game.gametime.zone %>
+        </td>
+        <td class="bt bl bb center"><%= @pick.home_score %><br /><span style="font-size:.7em">(<%= @game.home_score %>)</span></td>
+        <td class="bt bb center"><%= link_to image_tag("/logos/#{@game.home_team.image}",:size=>"50x50"), team_path( @game.home_team ) %></td>
+        <td class="bt br bb" style="text-align:left; width:30%;">
+          <div style="font-weight: bold;"><%= @game.home_team.location %> <%= @game.home_team.name %></div>
+          <div style="font-style:italic; font-size:.6em;">
+            Record: <%= @game.home_team.record %><br />
+            Rank: <%= @game.home_team.rankAP %> AP - <%= @game.home_team.rankUSA %> USA<br />
+            <%= @game.home_team.conference %><br />
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="height:0px;"></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
