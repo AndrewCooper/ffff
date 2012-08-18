@@ -22,3 +22,9 @@
 
 # Ignore precompiled assets
 /public/assets
+
+# Ignore SASS cache
+/.sass-cache
+
+# Ignore database configuration
+/config/database.yml
