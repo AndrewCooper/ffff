@@ -1,2 +1,2 @@
-divid="item#{@item.id}"
+divid="#item<%= @item.id %>"
 page.remove( divid )
