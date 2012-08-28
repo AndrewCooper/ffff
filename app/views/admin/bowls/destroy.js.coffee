@@ -1,1 +1,2 @@
-$("<%= "item#{@item.id}" %>").remove();
+divid="#item<%= @item.id %>"
+$(divid).remove();
