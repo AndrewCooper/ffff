@@ -1,20 +1,10 @@
-<div class="Article">
-  <div class="ArticleHeader">Administration</div>
-  <div class="ArticleLongContent">
-    <div class="ArticleBody">
-      <ul>
-        <!-- <li><%= link_to("Configuration",{:controller=>"/admin/admin"}) %></li> -->
-        <li><%= link_to("Users",{:controller=>"/admin/user"}) %></li>
-        <li><%= link_to("Teams",{:controller=>"/admin/team"}) %></li>
-        <li><%= link_to("Games",{:controller=>"/admin/game"}) %></li>
-        <li><%= link_to("Bowls",{:controller=>"/admin/bowl"}) %></li>
-        <li><%= link_to("Picks",{:controller=>"/admin/pick"}) %></li>
-        <li><%= link_to("Scores",{:controller=>"/admin/score"}) %></li>
-        <li><%= link_to("Database",{:controller=>"/admin/database"}) %></li>
-      </ul>
-    </div>
-  </div>
-  <div class="ArticleFooter">
-    <div class="ArticleFooterBody"></div>
-  </div>
-</div>
+<% set_content_for :article_title, 'Administration' %>
+<ul>
+  <li><%= link_to("Users", admin_users_path) %></li>
+  <li><%= link_to("Teams", admin_teams_path) %></li>
+  <li><%= link_to("Games", admin_games_path) %></li>
+  <li><%= link_to("Bowls", admin_bowls_path) %></li>
+  <li><%= link_to("Picks", admin_picks_path) %></li>
+  <li><%= link_to("Scores",{:controller=>"/admin/score"}) %></li>
+  <li><%= link_to("Database",{:controller=>"/admin/database"}) %></li>
+</ul>

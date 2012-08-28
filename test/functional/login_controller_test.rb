@@ -1,71 +1,70 @@
 require 'test_helper'
 
-# Set salt to 'change-me' because thats what the fixtures assume. 
-User.salt = 'change-me'
-
-# Raise errors beyond the default web-based presentation
-#class LoginController; def rescue_action(e) raise e end; end
-
-
 class LoginControllerTest < ActionController::TestCase
+  include LoginResponseCalculation
 
-  def setup
-    @controller = LoginController.new
-    @request, @response = ActionController::TestRequest.new, ActionController::TestResponse.new
-    @request.host = "localhost"
+  test 'should get login as html' do
+    get :request_login
+    assert_response :redirect
   end
 
-  def test_auth_bob
-    @request.session[:return_to] = "/bogus/location"
-
-    post :login, :user_login => "bob", :user_password => "test"
-    assert_session_has :user
-
-    assert_equal @bob, @response.session[:user]
-
-    assert_redirect_url "/bogus/location"
+  test 'should get login as js' do
+    get :request_login, {:format=>:js}
+    assert_response :success
+    assert_not_nil session[:challenge]
+    assert_nil     session[:user]
   end
 
-  def test_signup
-    @request.session[:return_to] = "/bogus/location"
-
-    post :signup, :user => { :login => "newbob", :password => "newpassword", :password_confirmation => "newpassword" }
-    assert_session_has :user
-
-    assert_redirect_url "/bogus/location"
+  test 'login usera successfully, change password' do
+    get :request_login, {:format=>:js}
+    user = users(:usera)
+    params = {:login => user.login, :response => calculate_login_response( user.password, session[:challenge] ) }
+    post :login, params
+    assert_response :redirect
+    assert_redirected_to edit_user_path
+    assert_equal "You are now encouraged to change your password.", flash[:notice]
   end
 
-  def test_bad_signup
-    @request.session[:return_to] = "/bogus/location"
-
-    post :signup, :user => { :login => "newbob", :password => "newpassword", :password_confirmation => "wrong" }
-    assert_invalid_column_on_record "user", :password
-    assert_success
-
-    post :signup, :user => { :login => "yo", :password => "newpassword", :password_confirmation => "newpassword" }
-    assert_invalid_column_on_record "user", :login
-    assert_success
-
-    post :signup, :user => { :login => "yo", :password => "newpassword", :password_confirmation => "wrong" }
-    assert_invalid_column_on_record "user", [:login, :password]
-    assert_success
+  test 'login userb successfully, don\'t change password' do
+    get :request_login, {:format=>:js}
+    user = users(:userb)
+    params = {:login => user.login, :response => calculate_login_response( user.password, session[:challenge] ) }
+    post :login, params
+    assert_response :redirect
+    assert_redirected_to root_path
+    assert_equal nil, flash[:notice]
   end
 
-  def test_invalid_login
-    post :login, :user_login => "bob", :user_password => "not_correct"
-
-    assert_session_has_no :user
-
-    assert_template_has "login"
+  test 'login usera failure' do
+    get :request_login, {:format=>:js}
+    user = users(:usera)
+    params = {:login => user.login, :response => "asdf" }
+    post :login, params
+    assert_response :redirect
+    assert_redirected_to root_path
+    assert_match /Password incorrect for/, flash[:notice]
+    assert_equal nil, session[:user]
   end
 
-  def test_login_logoff
+  test 'login user not found' do
+    get :request_login, {:format=>:js}
+    params = {:login => "asdf", :response => "asdf" }
+    post :login, params
+    assert_response :redirect
+    assert_redirected_to root_path
+    assert_equal 'User asdf not found.', flash[:notice]
+    assert_equal nil, session[:user]
+  end
 
-    post :login, :user_login => "bob", :user_password => "test"
-    assert_session_has :user
+  test 'logout' do
+    get :request_login, {:format=>:js}
+    user = users(:usera)
+    params = {:login => user.login, :response => calculate_login_response( user.password, session[:challenge] ) }
+    post :login, params
 
     get :logout
-    assert_session_has_no :user
-
+    assert_response :redirect
+    assert_redirected_to root_path
+    assert_equal nil, session[:user]
   end
 end

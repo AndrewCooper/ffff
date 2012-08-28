@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   has_many :scores, :dependent => :delete_all
   has_many :picks, :dependent => :delete_all
 
+  attr_accessible :login, :password, :firstname, :lastname, :email, :is_admin, :new_password, :alerts
+
   before_validation :check_password_updated
   after_validation :digest_updated_password
 
@@ -13,11 +15,28 @@ class User < ActiveRecord::Base
   validates_presence_of :login, :password
 
   def session_info
-    {:name=>"#{self[:firstname]} #{self[:lastname]}",:uid=>self[:id],:admin=>self[:is_admin]}
+    {
+      :name=>"#{self[:firstname]} #{self[:lastname]}",
+      :uid=>self[:id],
+      :admin=>self[:is_admin],
+      :stats=>Score.user_stats(self.id)
+    }
   end
 
   def name
     self.firstname+" "+self.lastname
+  end
+
+  def self.ranked
+    q = select('users.*')
+    q = q.joins(:scores)
+    q = q.select('SUM(scores.wins) AS wins')
+    q = q.select('SUM(scores.closests) AS closests')
+    q = q.select('SUM(scores.sevens) AS sevens')
+    q = q.select('SUM(scores.perfects) AS perfects')
+    q = q.select('SUM(scores.total) AS total')
+    q = q.group('users.id')
+    q = q.order('total DESC,users.lastname,users.firstname')
   end
 
   private

@@ -1,0 +1,29 @@
+<td>
+  <%= link_to edit_image("edit#{item.id}"), edit_admin_game_path(item), :remote=>true %>
+</td>
+<td class="center">
+  <%= item.week %>
+</td>
+<td>
+  <%= item.gametime.strftime("%Y/%m/%d %H:%M") %>
+</td>
+<td class="right">
+  <%= item.away_team.location %> <%= item.away_team.name %>
+</td>
+<td class="center">
+  <%= item.away_score %>
+</td>
+<td class="center">
+  <%= item.home_score %>
+</td>
+<td class="left">
+  <%= item.home_team.location %> <%= item.home_team.name %>
+</td>
+<td class="center">
+  <% if item.is_bowl? %>
+    X
+  <% end %>
+</td>
+<td class="center">
+  <%= link_to delete_image("delete#{item.id}"), admin_game_path(item), :remote=>true, :method=>:delete,:confirm=>"This will delete #{item.away_team.name} vs #{item.home_team.name}. Proceed?" %>
+</td>

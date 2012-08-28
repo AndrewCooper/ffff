@@ -1,6 +1,25 @@
-Edit picks for user:
-<ul>
-  <% @users.each do |user| %>
-    <li><%= link_to "#{user.firstname} #{user.lastname}",:action=>:edit,:id=>user.id %></li>
-  <% end %>
-</ul>
+<div class="BodyColumn" style="width:20%;">
+  <h2>Edit picks for user:</h2>
+  <div id="user_list">
+    <ul>
+      <% @users.each do |user| %>
+        <li><%= link_to user.name, admin_user_picks_path(user.id) %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+<div class="BodyColumn" style="width:50%;">
+  <h2>Edit picks for game:</h2>
+  <% week = -1 %>
+  <div id="game_list">
+    <ul>
+      <% @games.each do |game| %>
+        <% if week != game.week %>
+          <% week = game.week %>
+          <h3>Week <%= week %></h3>
+        <% end %>
+        <li><%= link_to game.fullname, admin_game_picks_path(game.id) %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

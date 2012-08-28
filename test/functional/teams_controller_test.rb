@@ -1,18 +1,17 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require 'team_controller'
+require 'test_helper'
 
-# Re-raise errors caught by the controller.
-class TeamsController; def rescue_action(e) raise e end; end
-
-class TeamsControllerTest < Test::Unit::TestCase
-  def setup
-    @controller = TeamsController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+class TeamsControllerTest < ActionController::TestCase
+  test 'should get index' do
+    get :index
+    assert_response :success
+    assert_equal "FFFF :: Browse Teams", assigns[:title]
+    assert_not_nil assigns[:teams]
   end
 
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  test 'should get show' do
+    get :show, {:id=>teams(:pokes).id}
+    assert_response :success
+    assert_equal "FFFF :: Show Team", assigns[:title]
+    assert_not_nil assigns[:team]
   end
 end

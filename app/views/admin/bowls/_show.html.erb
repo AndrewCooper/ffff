@@ -1,0 +1,23 @@
+<td>
+  <%= link_to edit_image("edit#{item.id}"), edit_admin_bowl_path(item), :remote=>true %>
+</td>
+<td class="left">
+  <%= item.name %>
+</td>
+<td class="left">
+  <%= item.location %>
+</td>
+<td class="center">
+  <%= item.multiplier %>
+</td>
+<td class="center">
+  <%= item.game.away_team.name %> @ <%= item.game.home_team.name %>
+</td>
+<td class="center">
+  <% if item.url != "" %>
+    <a href="<%= item.url %>" target="_TOP">URL</a>
+  <% end %>
+</td>
+<td class="center">
+  <%= link_to delete_image("delete#{item.id}"), admin_bowl_path(item), :method=>:delete, :remote=>true, :confirm=>"This will delete #{item.name}. Proceed?" %>
+</td>

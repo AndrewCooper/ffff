@@ -1,0 +1,18 @@
+<table style="width:100%">
+  <thead>
+    <tr>
+      <td></td>
+      <td class="left">Name</td>
+      <td class="left">Location</td>
+      <td class="center">Mult</td>
+      <td class="center">Game</td>
+      <td class="center">URL</td>
+      <td></td>
+    </tr>
+  </thead>
+  <% items.each do |item| %>
+    <tr id="item<%= item.id %>" style="text-align:left;">
+      <%= render :partial => "show", :locals=>{:item=>item} %>
+    </tr>
+  <% end %>
+</table>

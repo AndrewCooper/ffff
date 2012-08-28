@@ -3,17 +3,17 @@
 #
 # Examples:
 #
-#   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
-#   Mayor.create(:name => 'Daley', :city => cities.first)
+#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
+#   Mayor.create(name: 'Emanuel', city: cities.first)
 
-require 'openssl'
-
-admin = User.find_or_create_by_login( :login=>"admin", 
-                                      :password=>OpenSSL::Digest::SHA1.hexdigest("ffff@dm1n"), 
-                                      :firstname=>"FFFF", 
-                                      :lastname=>"Admin", 
-                                      :email=>"admin@example.com",
-                                      :is_admin=>1,
-                                      :new_password=>1,
-                                      :alerts=>0 )
+# require 'openssl'
+#
+# admin = User.find_or_create_by_login( :login=>"admin",
+#                                       :password=>OpenSSL::Digest::SHA1.hexdigest("ffff@dm1n"),
+#                                       :firstname=>"FFFF",
+#                                       :lastname=>"Admin",
+#                                       :email=>"admin@example.com",
+#                                       :is_admin=>1,
+#                                       :new_password=>1,
+#                                       :alerts=>0 )
 

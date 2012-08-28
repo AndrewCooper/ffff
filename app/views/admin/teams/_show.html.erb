@@ -1,0 +1,22 @@
+<td>
+  <%= link_to edit_image("edit#{item.id}"), edit_admin_team_path(item), :remote=>true %>
+</td>
+<td>
+  <%= item.location %> <%= item.name %>
+</td>
+<td>
+  <%= image_tag "/logos/#{item.image}",:size=>"24x24" %>
+  <%= item.image %>
+</td>
+<td>
+  <%= item.conference %>
+</td>
+<td>
+  <%= item.rankAP %>/<%= item.rankUSA %>
+</td>
+<td>
+  <%= item.record %>
+</td>
+<td class="center">
+  <%= link_to delete_image("delete#{item.id}"), admin_team_path(item), :remote=>true, :method=>:delete,:confirm=>"This will delete #{item.name}. Proceed?" %>
+</td>

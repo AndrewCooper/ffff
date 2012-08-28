@@ -1,14 +1,21 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
-class ScoreTest < Test::Unit::TestCase
-  fixtures :scores
-
+class ScoreTest < ActiveSupport::TestCase
   def setup
-    @score = Score.find(1)
+    @user = users(:usera)
+    @score = scores(:usera_score1)
   end
 
-  # Replace this with your real tests.
-  def test_truth
-    assert_kind_of Score,  @score
+  test "belongs_to :user" do
+    assert_not_nil @score.user
+    assert_kind_of User, @score.user
+    assert_equal @user, @score.user
+  end
+
+  test "user_stats" do
+    stats = Score.user_stats( users(:usera).id )
+    assert_equal 2, stats[:rank]
+    assert_equal 8, stats[:score]
+    assert_equal 1, stats[:ties].count
   end
 end

@@ -1,71 +1,66 @@
 class Admin::BowlsController < Admin::AdminController
-
-  # GET /admin/bowl
+  # GET /admin/bowls
   def index
     @title = "Administration :: Bowls"
     @item = Bowl.new
-    @items = Bowl.find(:all, :order=>"name")
-    @games = Game.find_with_teamnames(:conditions=>"is_bowl = 1",:order=>"week,gametime").collect {|p| ["#{p.away_loc} #{p.away_name} @ #{p.home_loc} #{p.home_name}",p.id]}
+    @items = Bowl.order("name")
+    @games = Game.where(:is_bowl=>true).order("week,gametime").collect {|p| ["#{p.away_team.location} #{p.away_team.name} @ #{p.home_team.location} #{p.home_team.name}",p.id]}
   end
 
-  # GET /admin/bowl/new
+  # POST /admin/bowls
+  def create
+    @item = Bowl.create( params[:item] )
+    @items = Bowl.order("name")
+    respond_to do |format|
+      format.html { redirect_to admin_bowls_path }
+      format.js
+    end
+  end
+
+  # GET /admin/bowls/new
   def new
     @item=Bowl.new
-    render :partial=>"admin/shared/newitem"
+    @games = Game.where(:is_bowl=>true).order("week,gametime").collect {|p| ["#{p.away_team.location} #{p.away_team.name} @ #{p.home_team.location} #{p.home_team.name}",p.id]}
+    render :action=>:edit
   end
 
-  # POST /admin/bowl
-  def create
+  # GET /admin/bowls/:id/edit
+  def edit
+    @item = Bowl.find(params[:id])
+    @games = Game.where(:is_bowl=>true).order("week,gametime").collect {|p| ["#{p.away_team.location} #{p.away_team.name} @ #{p.home_team.location} #{p.home_team.name}",p.id]}
   end
 
-  # GET /admin/bowl/:id
+  # GET /admin/bowls/:id
   def show
     @item = Bowl.find(params[:id])
   end
 
-  # GET /admin/bowl/:id/edit
-  def edit
-    @colspan = 5
-    if params[:id]
-      @item = Bowl.find(params[:id])
-    else
-      @item = Bowl.new
-    end
-    @games = Game.find_with_teamnames(:conditions=>"is_bowl = 1",:order=>"week,gametime").collect {|p| ["#{p.away_loc} #{p.away_name} @ #{p.home_loc} #{p.home_name}",p.id]}
-    render :partial => "edit"
-  end
-
-  # PUT /admin/bowl/:id
+  # PUT /admin/bowls/:id
   def update
-    if params[:id]
-      @item = Bowl.find(params[:id])
-      if @item.update_attributes(params[:item])
-        redirect_to :action => "list",:id=>params[:id]
-      else
-        render :text=>(@item.errors.inspect  + "\n")
+    @item = Bowl.find(params[:id])
+    if @item.update_attributes(params[:item])
+      respond_to do |format|
+        format.html { redirect_to admin_bowls_path }
+        format.js { render :action=>:show }
       end
     else
-      @item = Bowl.new(params[:item])
-      if @item.save
-        redirect_to :action => "list","component"=>true
-      else
-        logger.info "Errors: "+@item.errors.inspect
-        render :text=>(@item.errors.inspect  + "\n")
+      respond_to do |format|
+        format.html { redirect_to edit_admin_bowl_path(params[:id]) }
+        format.js do
+          @games = Game.where(:is_bowl=>true).order("week,gametime").collect {|p| ["#{p.away_team.location} #{p.away_team.name} @ #{p.home_team.location} #{p.home_team.name}",p.id]}
+          render :action=>:edit
+        end
       end
     end
   end
 
-  # DELETE /admin/bowl/:id
-  def delete
-    Bowl.delete(params[:id])
-    render :nothing=>true
-  end
-
-  def list
-    if params[:id]
-      #     @game = Game.find_with_teamnames(:conditions=>"games.id = #{@item.game_id}").first
-      render(:partial => "item") and return
-    else
+  # DELETE /admin/bowls/:id
+  def destroy
+    @item = Bowl.find(params[:id])
+    @item.destroy
+    respond_to do |format|
+      format.html { redirect_to admin_bowls_path }
+      format.js
     end
   end
 end
